@@ -82,8 +82,12 @@
         visible: false,
         // 查询条件
         queryParam: {
-          dictCode: "",
-          dictName: "",
+          dictName: '',
+          dictCode: ''
+        },
+        queryType: {
+          dictName: 'like',
+          dictCode: 'like'
         },
         // 表头
         columns: [
@@ -138,12 +142,14 @@
     },
     computed: {
       importExcelUrl: function () {
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
+        return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
       }
     },
     methods: {
       getQueryParams() {
-        var param = Object.assign({}, this.queryParam, this.isorter);
+        this.filterQueryParamsByQueryType()
+
+        let param = Object.assign({}, this.queryParamWithQueryType, this.isorter);
         param.field = this.getQueryField();
         param.pageNo = this.ipagination.current;
         param.pageSize = this.ipagination.pageSize;

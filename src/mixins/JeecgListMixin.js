@@ -3,13 +3,29 @@
  * 高级查询按钮调用 superQuery方法  高级查询组件ref定义为superQueryModal
  * data中url定义 list为查询列表  delete为删除单条记录  deleteBatch为批量删除
  */
-import { filterObj } from '@/utils/util';
+import keys from 'lodash.keys'
+
+import { filterObj } from '@/utils/util'
 import { deleteAction, getAction } from '@/api/manage'
 export const JeecgListMixin = {
   data(){
     return {
       /* 查询条件 */
       queryParam: {},
+      queryParamWithQueryType: {},
+      /* 查询条件类型 */
+      queryType: {},
+      queryTypeAlias: {
+        like: v => `*${v}*`, // 全模糊.
+        llike: v => `*${v}`, // 左模糊.
+        rlike: v => `${v}*`, // 右模糊.
+        gt: v => `>${v}`, // 大于.
+        gte: v => `>=${v}`, // 大于等于.
+        eq: v => v, // 等于.
+        lt: v => `<${v}`, // 小于.
+        lte: v => `<=${v}`, // 小于等于.
+        ne: v => `!${v}`, // 不等于.
+      },
       /* 数据源 */
       dataSource:[],
       /* 分页参数 */
@@ -82,13 +98,25 @@ export const JeecgListMixin = {
       }
       this.loadData()
     },
+    filterQueryParamsByQueryType() {
+      keys(this.queryParam).forEach(v => {
+        if (this.queryType[v] && this.queryTypeAlias[this.queryType[v]]) {
+          this.queryParamWithQueryType[v] = this.queryTypeAlias[this.queryType[v]](this.queryParam[v])
+        } else {
+          this.queryParamWithQueryType[v] = this.queryParam[v]
+        }
+      })
+    },
     getQueryParams() {
       //获取查询条件
       let sqp = {}
       if(this.superQueryParams){
         sqp['superQueryParams']=encodeURI(this.superQueryParams)
       }
-      var param = Object.assign(sqp, this.queryParam, this.isorter ,this.filters);
+
+      this.filterQueryParamsByQueryType()
+
+      var param = Object.assign(sqp, this.queryParamWithQueryType, this.isorter ,this.filters);
       param.field = this.getQueryField();
       param.pageNo = this.ipagination.current;
       param.pageSize = this.ipagination.pageSize;
@@ -102,7 +130,6 @@ export const JeecgListMixin = {
       });
       return str;
     },
-
     onSelectChange(selectedRowKeys, selectionRows) {
       this.selectedRowKeys = selectedRowKeys;
       this.selectionRows = selectionRows;
@@ -200,7 +227,7 @@ export const JeecgListMixin = {
     /* 导出 */
     handleExportXls(){
       let paramsStr = encodeURI(JSON.stringify(this.getQueryParams()));
-      let url = `${window._CONFIG['domianURL']}/${this.url.exportXlsUrl}?paramsStr=${paramsStr}`;
+      let url = `${window._CONFIG['domainURL']}/${this.url.exportXlsUrl}?paramsStr=${paramsStr}`;
       window.location.href = url;
     },
     /* 导入 */
@@ -216,5 +243,4 @@ export const JeecgListMixin = {
       }
     },
   }
-
 }

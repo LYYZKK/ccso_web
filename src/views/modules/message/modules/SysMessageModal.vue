@@ -2,7 +2,7 @@
   <a-drawer
     :title="title"
     :maskClosable="true"
-    width=650
+    width="650"
     placement="right"
     :closable="true"
     @close="close"
@@ -47,7 +47,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="发送时间">
-          <a-date-picker showTime format='YYYY-MM-DD HH:mm:ss' v-decorator="[ 'esSendTime', {}]"/>
+          <a-date-picker showTime format="YYYY-MM-DD HH:mm:ss" v-decorator="[ 'esSendTime', {}]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"

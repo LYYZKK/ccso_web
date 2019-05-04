@@ -18,8 +18,10 @@
           :wrapperCol="wrapperCol"
           label="客户姓名"
           hasFeedback>
-          <a-input placeholder="请输入客户姓名" v-decorator="['name', {rules: [{ required: true, message: '请输入客户姓名!' }]}]"
-                   :readOnly="disableSubmit"/>
+          <a-input
+            placeholder="请输入客户姓名"
+            v-decorator="['name', {rules: [{ required: true, message: '请输入客户姓名!' }]}]"
+            :readOnly="disableSubmit"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -173,8 +175,8 @@
         url: {
           add: "/test/order/addCustomer",
           edit: "/test/order/editCustomer",
-          fileUpload: window._CONFIG['domianURL'] + "/sys/common/upload",
-          imgerver: window._CONFIG['domianURL'] + "/sys/common/view",
+          fileUpload: window._CONFIG['domainURL'] + "/sys/common/upload",
+          imgerver: window._CONFIG['domainURL'] + "/sys/common/view",
           getOrderCustomerList: "/test/order/listOrderCustomerByMainId",
         },
         validatorRules: {

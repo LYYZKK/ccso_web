@@ -68,13 +68,15 @@
         <!-- 渲染菜单类型  -->
         <span slot="menuType" slot-scope="text, record">
           <span v-if="record.menuType === 0"><a-icon type="setting" style="color: blue;"/>&nbsp;<a-tag color="blue">一级菜单</a-tag></span>
-          <span v-else-if="record.menuType === 1"><a-icon type="setting" style="color: #eb2f96; fontSize: 12px;"/>&nbsp;<a-tag color="#eb2f96">子菜单</a-tag></span>
-          <span v-else-if="record.menuType === 2"><a-icon type="bars" style="color: #52c41a;"/>&nbsp;<a-tag color="#52c41a">按钮</a-tag></span>
+          <span v-else-if="record.menuType === 1"><a-icon type="setting" style="color: magenta; fontSize: 12px;"/>&nbsp;<a-tag color="magenta">子菜单</a-tag></span>
+          <span v-else-if="record.menuType === 2"><a-icon type="bars" style="color: cyan; fontSize: 12px;"/>&nbsp;<a-tag color="cyan">按钮/数据权限</a-tag></span>
         </span>
 
         <!-- 渲染菜单图标 -->
         <span slot="icon" slot-scope="text, record">
-          <a-icon :type="record.icon"/> {{ record.icon }}
+          <a-popover :content="iconPopover(record.icon)" trigger="hover">
+            {{ record.icon }}
+          </a-popover>
         </span>
       </a-table>
     </div>
@@ -158,6 +160,9 @@
           list: '/sys/permission/list',
           delete: '/sys/permission/delete',
           deleteBatch: '/sys/permission/deleteBatch'
+        },
+        iconPopover: icon => {
+          return (<a-icon type={icon} />)
         }
       }
     },

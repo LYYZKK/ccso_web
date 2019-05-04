@@ -22,20 +22,20 @@
           <a-col :md="10" :sm="24">
             <template>
               <a-dropdown :trigger="[this.dropTrigger]" @visibleChange="dropStatus">
-               <span style="user-select: none">
-            <a-tree
-              checkable
-              multiple
-              @select="onSelect"
-              @check="onCheck"
-              @rightClick="rightHandle"
-              :selectedKeys="selectedKeys"
-              :checkedKeys="checkedKeys"
-              :treeData="departTree"
-              :checkStrictly="true"
-              :expandedKeys="iExpandedKeys"
-              :autoExpandParent="autoExpandParent"
-              @expand="onExpand"/>
+                <span style="user-select: none">
+                  <a-tree
+                    checkable
+                    multiple
+                    @select="onSelect"
+                    @check="onCheck"
+                    @rightClick="rightHandle"
+                    :selectedKeys="selectedKeys"
+                    :checkedKeys="checkedKeys"
+                    :treeData="departTree"
+                    :checkStrictly="true"
+                    :expandedKeys="iExpandedKeys"
+                    :autoExpandParent="autoExpandParent"
+                    @expand="onExpand"/>
                 </span>
                 <!--新增右键点击事件,和增加添加和删除功能-->
                 <a-menu slot="overlay">

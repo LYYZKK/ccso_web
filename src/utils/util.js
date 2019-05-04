@@ -23,7 +23,7 @@ export function triggerWindowResizeEvent() {
 }
 
 /**
- * 过滤对象中为空的属性
+ * 过滤对象中为空的属性, 根据
  * @param obj
  * @returns {*}
  */

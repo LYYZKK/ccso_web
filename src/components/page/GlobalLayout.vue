@@ -1,6 +1,5 @@
 <template>
   <a-layout class="layout" :class="[device]">
-
     <template v-if="layoutMode === 'sidemenu'">
       <a-drawer
         v-if="device === 'mobile'"
@@ -17,7 +16,9 @@
           @menuSelect="menuSelect"
           :theme="navTheme"
           :collapsed="false"
-          :collapsible="true"></side-menu>
+          :collapsible="true"
+        >
+        </side-menu>
       </a-drawer>
 
       <side-menu
@@ -26,7 +27,9 @@
         :menus="menus"
         :theme="navTheme"
         :collapsed="collapsed"
-        :collapsible="true"></side-menu>
+        :collapsible="true"
+      >
+      </side-menu>
     </template>
     <!-- 下次优化这些代码 -->
     <template v-else>
@@ -45,7 +48,9 @@
           @menuSelect="menuSelect"
           :theme="navTheme"
           :collapsed="false"
-          :collapsible="true"></side-menu>
+          :collapsible="true"
+        >
+        </side-menu>
       </a-drawer>
     </template>
 

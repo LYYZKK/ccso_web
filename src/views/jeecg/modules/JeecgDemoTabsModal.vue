@@ -11,21 +11,21 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
 
-        <a-card class="card"  :bordered="false">
+        <a-card class="card" :bordered="false">
           <a-row class="form-row" :gutter="16">
             <a-col :lg="8">
               <a-form-item label="任务名">
-                <a-input placeholder="请输入任务名称"  v-decorator="[ 'task.name', {rules: [{ required: true, message: '请输入任务名称', whitespace: true}]} ]"/>
+                <a-input placeholder="请输入任务名称" v-decorator="[ 'task.name', {rules: [{ required: true, message: '请输入任务名称', whitespace: true}]} ]"/>
               </a-form-item>
             </a-col>
             <a-col :lg="8">
               <a-form-item label="任务描述">
-                <a-input placeholder="请输入任务描述"  v-decorator="['task.description', {rules: [{ required: true, message: '请输入任务描述', whitespace: true}]} ]"/>
+                <a-input placeholder="请输入任务描述" v-decorator="['task.description', {rules: [{ required: true, message: '请输入任务描述', whitespace: true}]} ]"/>
               </a-form-item>
             </a-col>
             <a-col :lg="8">
               <a-form-item label="执行人">
-                <a-select placeholder="请选择执行人" v-decorator="['task.executor',{rules: [{ required: true, message: '请选择执行人'}]}  ]">
+                <a-select placeholder="请选择执行人" v-decorator="['task.executor',{rules: [{ required: true, message: '请选择执行人'}]} ]">
                   <a-select-option value="黄丽丽">黄丽丽</a-select-option>
                   <a-select-option value="李大刀">李大刀</a-select-option>
                 </a-select>
@@ -35,7 +35,7 @@
           <a-row class="form-row" :gutter="16">
             <a-col :lg="8">
               <a-form-item label="责任人">
-                <a-select placeholder="请选择责任人" v-decorator="['task.manager',  {rules: [{ required: true, message: '请选择责任人'}]} ]">
+                <a-select placeholder="请选择责任人" v-decorator="['task.manager', {rules: [{ required: true, message: '请选择责任人'}]} ]">
                   <a-select-option value="王伟">王伟</a-select-option>
                   <a-select-option value="李红军">李红军</a-select-option>
                 </a-select>
@@ -63,9 +63,15 @@
 
             <a-table :columns="columns" :dataSource="data" :pagination="false" size="middle">
               <template v-for="(col, i) in ['name', 'workId', 'department']" :slot="col" slot-scope="text, record, index">
-                <a-tooltip  title="必填项" :defaultVisible="false" overlayStyle="{ color: 'red' }">
-                  <a-input :key="col" v-if="record.editable" style="margin: -5px 0"  :value="text" :placeholder="columns[i].title" @change="e => handlerRowChange(e.target.value, record.key, col)"/>
-                <template v-else>{{ text }}</template>
+                <a-tooltip title="必填项" :defaultVisible="false" overlayStyle="{ color: 'red' }">
+                  <a-input
+                    :key="col"
+                    v-if="record.editable"
+                    style="margin: -5px 0"
+                    :value="text"
+                    :placeholder="columns[i].title"
+                    @change="e => handlerRowChange(e.target.value, record.key, col)"/>
+                  <template v-else>{{ text }}</template>
                 </a-tooltip>
               </template>
               <template slot="operation" slot-scope="text, record, index">

@@ -204,7 +204,9 @@
         })
       },
       getQueryParams(){
-        var param = Object.assign({}, this.queryParam,this.isorter);
+        this.filterQueryParamsByQueryType()
+
+        let param = Object.assign({}, this.queryParamWithQueryType, this.isorter);
         param.field = this.getQueryField();
         param.pageNo = this.ipagination.current;
         param.pageSize = this.ipagination.pageSize;

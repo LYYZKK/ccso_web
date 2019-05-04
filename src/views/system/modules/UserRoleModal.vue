@@ -2,7 +2,7 @@
   <a-drawer
     :title="title"
     :maskClosable="true"
-    width=650
+    width="650px"
     placement="right"
     :closable="true"
     @close="close"
@@ -10,7 +10,7 @@
     style="height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;">
 
     <a-form>
-      <a-form-item label='所拥有的权限'>
+      <a-form-item label="所拥有的权限">
         <a-tree
           checkable
           @check="onCheck"

@@ -1,5 +1,5 @@
 # JDate 日期组件 使用文档
-  
+
 ###### 说明: antd-vue日期组件需要用moment中转一下，用起来不是很方便，特二次封装，使用时只需要传字符串即可
 ## 参数配置
 | 参数           | 类型      | 必填 |说明|
@@ -17,12 +17,12 @@
 <j-date v-model="dateStr"></j-date>
 ```
 
-2.组件带有v-decorator的使用方法  
+2.组件带有v-decorator的使用方法
   a).设置trigger-change属性为true
   ```vue
     <j-date :trigger-change="true" v-decorator="['dateStr',{}]"></j-date>
   ```
-    
+
   b).设置decorator的option.trigger为input
    ```vue
     <j-date v-decorator="['dateStr',{trigger:'input'}]"></j-date>
@@ -84,7 +84,7 @@ fieldList结构示例：
     text:"年龄"
   }]
 ```
-页面代码概述:  
+页面代码概述:
 ----
 1.import之后再components之内声明
 ```vue
@@ -123,13 +123,25 @@ handleSuperQuery(arg) {
 ```
 5.改造list页面方法
 ```vue
+  filterQueryParamsByQueryType() {
+    keys(this.queryParam).forEach(v => {
+      if (this.queryType[v] && this.queryTypeAlias[this.queryType[v]]) {
+        this.queryParamWithQueryType[v] = this.queryTypeAlias[this.queryType[v]](this.queryParam[v])
+      } else {
+        this.queryParamWithQueryType[v] = this.queryParam[v]
+      }
+    })
+  },
   // 获取查询条件
   getQueryParams() {
     let sqp = {}
     if(this.superQueryParams){
       sqp['superQueryParams']=encodeURI(this.superQueryParams)
     }
-    var param = Object.assign(sqp, this.queryParam, this.isorter);
+
+    this.filterQueryParamsByQueryType()
+
+    var param = Object.assign(sqp, this.queryParamWithQueryType, this.isorter);
     param.field = this.getQueryField();
     param.pageNo = this.ipagination.current;
     param.pageSize = this.ipagination.pageSize;
@@ -142,7 +154,7 @@ this.$refs.superQueryModal.show();
 ```
 
 # JEllipsis 字符串超长截取省略号显示
-  
+
 ###### 说明: 遇到超长文本展示，通过此标签可以截取省略号显示，鼠标放置会提示全文本
 ## 参数配置
 | 参数  | 类型     | 必填 |    说明      |
@@ -156,14 +168,14 @@ this.$refs.superQueryModal.show();
 <j-ellipsis :value="text"/>
 
 
-# Modal弹框实现最大化功能  
+# Modal弹框实现最大化功能
 
 1.定义modal的宽度：
 ```vue
   <a-modal
     :width="modalWidth"
-    
-    
+
+
     />
 ```
 2.自定义modal的title,居右显示切换图标
@@ -195,4 +207,3 @@ this.$refs.superQueryModal.show();
         modalWidth:800,
         modaltoggleFlag:true,
 ```
-

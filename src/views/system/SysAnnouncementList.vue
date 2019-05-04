@@ -105,19 +105,29 @@
 <script>
   import SysAnnouncementModal from './modules/SysAnnouncementModal'
   import {doReleaseData, doReovkeData} from '@/api/api'
+  import {constantCfgMixin} from "@/mixins/constant.cfg"
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
+
+  import {initDictOptions, filterDictOptionByText} from '@/components/dict/JDictSelectUtil'
 
   export default {
     name: "SysAnnouncementList",
-    mixins: [JeecgListMixin],
+    mixins: [JeecgListMixin, constantCfgMixin],
     components: {
       SysAnnouncementModal
     },
     data() {
       return {
         description: '系统通告表管理页面',
-        // 查询条件
-        queryParam: {},
+        queryType: {
+          msgContent: 'like',
+          titile: 'like'
+        },
+        sendStatusMap: {
+          0: (<a-badge status="error" text="未发布" />),
+          1: (<a-badge status="success" text="已发布" />),
+          2: (<a-badge status="warning" text="已撤销" />)
+        },
         // 表头
         columns: [
           {
@@ -126,15 +136,38 @@
             key: 'rowIndex',
             width: 60,
             align: "center",
-            customRender: function (t, r, index) {
+            customRender: (t, r, index) => {
               return parseInt(index) + 1;
             }
           },
-
           {
             title: '标题',
             align: "center",
             dataIndex: 'titile'
+          },
+          {
+            title: '通告对象类型',
+            align: "center",
+            dataIndex: 'msgType',
+            customRender: (text) => {
+              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.msgTypeDictOptions, text))
+            }
+          },
+          {
+            title: '优先级',
+            align: "center",
+            dataIndex: 'priority',
+            customRender: (text) => {
+              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.priorityDictOptions, text))
+            }
+          },
+          {
+            title: '发布状态',
+            align: "center",
+            dataIndex: 'sendStatus',
+            customRender: (text) => {
+              return this.sendStatusMap[text] || text
+            }
           },
           /*{
                 title: '内容',
@@ -155,52 +188,6 @@
             title: '发布人',
             align: "center",
             dataIndex: 'sender'
-          },
-          {
-            title: '优先级',
-            align: "center",
-            dataIndex: 'priority',
-            customRender: function (text) {
-              if (text == 'L') {
-                return "低";
-              } else if (text == "M") {
-                return "中";
-              } else if (text == "H") {
-                return "高";
-              } else {
-                return text;
-              }
-            }
-          },
-          {
-            title: '通告对象类型',
-            align: "center",
-            dataIndex: 'msgType',
-            customRender: function (text) {
-              if (text == 'USER') {
-                return "指定用户";
-              } else if (text == "ALL") {
-                return "全体用户";
-              } else {
-                return text;
-              }
-            }
-          },
-          {
-            title: '发布状态',
-            align: "center",
-            dataIndex: 'sendStatus',
-            customRender: function (text) {
-              if (text == 0) {
-                return "未发布";
-              } else if (text == 1) {
-                return "已发布";
-              } else if (text == 2) {
-                return "已撤销";
-              } else {
-                return text;
-              }
-            }
           },
           {
             title: '发布时间',
@@ -237,13 +224,26 @@
     },
     computed: {
       importExcelUrl: function(){
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
+        return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
       }
     },
     methods: {
+      initDictConfig() {
+        // 初始化字典 - 优先级
+        initDictOptions('priority').then((res) => {
+          if (res.success) {
+            this.priorityDictOptions = res.result;
+          }
+        })
+        // 初始化字典 - 通告对象类型
+        initDictOptions('msg_type').then((res) => {
+          if (res.success) {
+            this.msgTypeDictOptions = res.result;
+          }
+        })
+      },
       //执行发布操作
-      releaseData: function (id) {
-        console.log(id);
+      releaseData(id) {
         var that = this;
         doReleaseData({id: id}).then((res) => {
           if (res.success) {

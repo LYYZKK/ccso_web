@@ -1,7 +1,7 @@
 <template>
   <a-drawer
     title="数据规则/按钮权限配置"
-    width=365
+    width="365px"
     :closable="false"
     @close="onClose"
     :visible="visible"

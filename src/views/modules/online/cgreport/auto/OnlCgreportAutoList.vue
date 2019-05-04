@@ -165,7 +165,9 @@
         })
       },
       getQueryParams() {
-        let param = Object.assign({}, this.queryParam, this.sorter);
+        this.filterQueryParamsByQueryType()
+
+        let param = Object.assign({}, this.queryParamWithQueryType, this.isorter);
         param.pageNo = this.table.pagination.current;
         param.pageSize = this.table.pagination.pageSize;
         return filterObj(param);
@@ -181,7 +183,7 @@
         this.toggleSearchStatus = !this.toggleSearchStatus;
       },
       exportExcel() {
-        let url = `${window._CONFIG['domianURL']}/online/cgreport/api/exportXls/${this.reportCode}`;
+        let url = `${window._CONFIG['domainURL']}/online/cgreport/api/exportXls/${this.reportCode}`;
         window.location.href = url;
       },
       handleChangeInTableSelect(selectedRowKeys, selectionRows) {

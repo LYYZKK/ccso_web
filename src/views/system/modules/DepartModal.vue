@@ -2,7 +2,7 @@
   <a-modal
     :title="title"
     :width="800"
-    :ok=false
+    :ok="false"
     :visible="visible"
     :confirmLoading="confirmLoading"
     :okButtonProps="{ props: {disabled: disableSubmit} }"
@@ -21,14 +21,14 @@
           <a-input id="departName" placeholder="请输入机构/部门名称" v-decorator="['departName', validatorRules.departName ]"/>
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" :hidden="seen" label="上级部门" hasFeedback>
-        <a-tree-select
-          style="width:100%"
-          :dropdownStyle="{maxHeight:'200px',overflow:'auto'}"
-          :treeData="departTree"
-          v-model="model.parentId"
-          placeholder="请选择上级部门"
-          :disabled="condition">
-        </a-tree-select>
+          <a-tree-select
+            style="width:100%"
+            :dropdownStyle="{maxHeight:'200px',overflow:'auto'}"
+            :treeData="departTree"
+            v-model="model.parentId"
+            placeholder="请选择上级部门"
+            :disabled="condition">
+          </a-tree-select>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -40,13 +40,13 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="传真">
-          <a-input placeholder="请输入传真" v-decorator="['fax', {}]"  />
+          <a-input placeholder="请输入传真" v-decorator="['fax', {}]" />
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="地址">
-          <a-input placeholder="请输入地址" v-decorator="['address', {}]"  />
+          <a-input placeholder="请输入地址" v-decorator="['address', {}]" />
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -58,7 +58,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="备注">
-          <a-textarea placeholder="请输入备注" v-decorator="['memo', {}]"  />
+          <a-textarea placeholder="请输入备注" v-decorator="['memo', {}]" />
         </a-form-item>
 
       </a-form>

@@ -27,7 +27,7 @@
     </div>
 
     <!-- 操作按钮区域 -->
-    <div class="table-operator"  style="margin-top: 5px">
+    <div class="table-operator" style="margin-top: 5px">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls">导出</a-button>
       <a-upload name="file" :showUploadList="false" :multiple="false" :action="importExcelUrl" @change="handleImportExcel">
@@ -109,8 +109,10 @@
     },
     data () {
       return {
-
         description: '角色管理页面',
+        queryType: {
+          roleName: 'like'
+        },
         // 查询条件
         queryParam: {roleName:'',createTimeIsRange:[]},
         // 表头
@@ -170,7 +172,7 @@
     },
     computed: {
       importExcelUrl: function(){
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
+        return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
       }
     },
     methods: {

@@ -43,6 +43,36 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
+          label="展示方式">
+          <a-select
+            showSearch
+            placeholder="请选择展示方式"
+            v-decorator="['itemShowType']"
+          >
+            <a-select-option value="">请选择</a-select-option>
+            <a-select-option v-for="(_type, key) in DICT_SHOW_TYPES" :key="key" :value="_type.value">{{ _type.description }}</a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="颜色值">
+          <a-select
+            showSearch
+            placeholder="请选择颜色值"
+            v-decorator="['itemShowColor']"
+          >
+            <a-select-option value="">请选择</a-select-option>
+            <a-select-option v-for="(_color, key) in DICT_SHOW_COLORS" :key="key" :value="_color.value">
+              <a-tag :color="_color.value">{{ _color.description }}</a-tag>
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
           label="是否启用"
           hasFeedback>
           <a-switch checkedChildren="启用" unCheckedChildren="禁用" @change="onChose" v-model="visibleCheck"/>
@@ -54,10 +84,13 @@
 
 <script>
   import pick from 'lodash.pick'
+
+  import {constantCfgMixin} from "@/mixins/constant.cfg"
   import {addDictItem, editDictItem} from '@/api/api'
 
   export default {
     name: "DictItemModal",
+    mixins: [constantCfgMixin],
     data() {
       return {
         title: "操作",
@@ -100,7 +133,7 @@
         this.model.status = this.status;
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'itemText', 'itemValue', 'description', 'sortOrder'))
+          this.form.setFieldsValue(pick(this.model, 'itemText', 'itemValue', 'description', 'sortOrder', 'itemShowType', 'itemShowColor'))
         });
       },
       onChose(checked) {

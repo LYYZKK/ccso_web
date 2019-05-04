@@ -2,26 +2,26 @@
   <a-card :bordered="false">
     <a-form @submit="handleSubmit" :form="form">
       <a-col :md="24" :sm="24">
-      <a-form-item label="Note" :labelCol="{ span: 7 }" :wrapperCol="{ span: 15 }">
-        <a-input v-decorator="['note',{rules: [{ required: true, message: 'Please input your note!' }]}]"/>
-      </a-form-item>
+        <a-form-item label="Note" :labelCol="{ span: 7 }" :wrapperCol="{ span: 15 }">
+          <a-input v-decorator="['note',{rules: [{ required: true, message: 'Please input your note!' }]}]"/>
+        </a-form-item>
       </a-col>
       <a-col :md="24" :sm="24">
-      <a-form-item label="Gender" :labelCol="{ span: 7 }" :wrapperCol="{ span: 15 }">
-        <a-select v-decorator="['gender',{rules: [{ required: true, message: 'Please select your gender!' }]}]" placeholder="Select a option and change input text above" @change="this.handleSelectChange">
-          <a-select-option value="male">male</a-select-option>
-          <a-select-option value="female">female</a-select-option>
-        </a-select>
-      </a-form-item>
+        <a-form-item label="Gender" :labelCol="{ span: 7 }" :wrapperCol="{ span: 15 }">
+          <a-select v-decorator="['gender',{rules: [{ required: true, message: 'Please select your gender!' }]}]" placeholder="Select a option and change input text above" @change="this.handleSelectChange">
+            <a-select-option value="male">male</a-select-option>
+            <a-select-option value="female">female</a-select-option>
+          </a-select>
+        </a-form-item>
       </a-col>
       <a-col :md="24" :sm="24">
-      <a-form-item label="Gender" :labelCol="{ span: 7 }" :wrapperCol="{ span: 15 }">
-        <a-cascader :options="areaOptions" @change="onChange" :showSearch="{filter}" placeholder="Please select" />
-      </a-form-item>
+        <a-form-item label="Gender" :labelCol="{ span: 7 }" :wrapperCol="{ span: 15 }">
+          <a-cascader :options="areaOptions" @change="onChange" :showSearch="{filter}" placeholder="Please select" />
+        </a-form-item>
       </a-col>
       <a-form-item :wrapperCol="{ span: 12, offset: 5 }">
         <a-col :md="24" :sm="24">
-        <a-button type="primary" htmlType="submit">Submit</a-button>
+          <a-button type="primary" htmlType="submit">Submit</a-button>
         </a-col>
       </a-form-item>
     </a-form>

@@ -62,7 +62,7 @@
         :columns="columns"
         :dataSource="dataSource"
         :pagination="false"
-        :expandedRowKeys= "expandedRowKeys"
+        :expandedRowKeys="expandedRowKeys"
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         @change="handleTableChange"
         @expand="handleExpand"
@@ -85,7 +85,7 @@
           rowKey="id"
           :pagination="false"
           :loading="loading"
-          >
+        >
         </a-table>
       </a-table>
     </div>

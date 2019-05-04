@@ -5,7 +5,6 @@ import { UserLayout, TabLayout, RouteView, BlankLayout, PageView } from '@/compo
  * @type {[null,null]}
  */
 export const asyncRouterMap = [
-
   {
     path: '/',
     name: 'dashboard',
@@ -14,7 +13,6 @@ export const asyncRouterMap = [
     redirect: '/dashboard/workplace',
     children: [
 
-     
       // //系统监控
       // {
       //   path: '/sysmonitor',
@@ -30,7 +28,7 @@ export const asyncRouterMap = [
       //       meta: { title: '数据日志', permission: [ 'dashboard' ] }
       //     },
       //     {
-      //       path: 'http://localhost:8080/jeecg-boot/druid/',
+      //       path: 'http://localhost:8085/druid/',
       //       name: 'druid',
       //       component: () => import('@/views/jeecg/tablist/JeecgOrderDMainList'),
       //       meta: { title: 'SQL监控', permission: [ 'dashboard' ] }
@@ -43,7 +41,6 @@ export const asyncRouterMap = [
       //     },
       //   ]
       // },
-      //
       //
       // //jeecg demo
       // {
@@ -449,5 +446,4 @@ export const constantRouterMap = [
     path: '/404',
     component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404')
   },
-
 ]

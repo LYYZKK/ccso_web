@@ -10,7 +10,7 @@
               <a-select
                 mode="multiple"
                 placeholder="Please select"
-                :value=nameList
+                :value="nameList"
                 @change="handleChange"
               >
               </a-select>

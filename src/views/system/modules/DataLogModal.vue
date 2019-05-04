@@ -13,13 +13,13 @@
         <a-form @submit="handleSubmit" :form="form" class="form">
           <a-row class="form-row" :gutter="24">
             <a-col :md="12" :sm="8">
-              <a-form-item label="数据库表名"  :label-col="{ span: 6 }" :wrapper-col="{ span: 15 }">
+              <a-form-item label="数据库表名" :label-col="{ span: 6 }" :wrapper-col="{ span: 15 }">
                 <a-input placeholder="请输入数据库表名" v-decorator="[ 'dataTale', {}]" @blur="handleTableBlur" disabled/>
               </a-form-item>
             </a-col>
 
             <a-col :md="12" :sm="8">
-              <a-form-item label="数据ID"  :label-col="{ span: 5 }" :wrapper-col="{ span: 15 }">
+              <a-form-item label="数据ID" :label-col="{ span: 5 }" :wrapper-col="{ span: 15 }">
                 <a-input placeholder="请输入数据ID" v-decorator="[ 'dataId', {}]" @blur="handleIdBlur" disabled/>
               </a-form-item>
             </a-col>
@@ -27,7 +27,7 @@
 
           <a-row class="form-row" :gutter="24">
             <a-col :md="12" :sm="8">
-              <a-form-item label="版本号1"  :label-col="{ span: 6 }" :wrapper-col="{ span: 15 }">
+              <a-form-item label="版本号1" :label-col="{ span: 6 }" :wrapper-col="{ span: 15 }">
                 <a-select placeholder="请选择版本号" v-decorator="[ 'dataVersion1', {}]" @change="handleChange1">
                   <a-select-option v-for="(log,logindex) in DataVersionList" :key="logindex.toString()" :value="log.id">
                     {{ log.dataVersion }}
@@ -36,7 +36,7 @@
               </a-form-item>
             </a-col>
             <a-col :md="12" :sm="8">
-              <a-form-item label="版本号2"  :label-col="{ span: 5 }" :wrapper-col="{ span: 15 }">
+              <a-form-item label="版本号2" :label-col="{ span: 5 }" :wrapper-col="{ span: 15 }">
                 <a-select placeholder="请选择版本号" v-decorator="[ 'dataVersion2', {}]" @change="handleChange2">
                   <a-select-option v-for="(log,logindex) in DataVersionList" :key="logindex.toString()" :value="log.id">
                     {{ log.dataVersion }}

@@ -28,13 +28,33 @@ export async function initDictOptions(dictCode) {
  * @return String
  */
 export function filterDictText(dictOptions, text) {
-  let re = "";
-  dictOptions.forEach(function (option) {
+  let re = ""
+  dictOptions.forEach(option => {
     if (text === option.value) {
-      re = option.text;
+      re = option.text
+      return
     }
-  });
-  return re;
+  })
+
+  return re
+}
+
+/**
+ * 根据字典值获取字典对象
+ * @param dictOptions  字典数组
+ * @param text  字典值
+ * @return String
+ */
+export function filterDictOptionByText(dictOptions, text) {
+  let re = {}
+  dictOptions.forEach(option => {
+    if (text === option.value) {
+      re = option
+      return
+    }
+  })
+
+  return re
 }
 
 /**
@@ -70,18 +90,14 @@ export function filterMultiDictText(dictOptions, text) {
  */
 export async function ajaxFilterDictText(dictCode, key) {
   if (!dictCode) {
-    return '字典Code不能为空!';
+    return '字典Code不能为空!'
   }
-  //console.log(`key : ${key}`);
   if (!key) {
-    return '';
+    return ''
   }
+
   //通过请求读取字典文本
   let res = await getAction(`/sys/dict/getDictText/${dictCode}/${key}`);
-  if (res.success) {
-    // console.log('restult: '+ res.result);
-    return res.result;
-  } else {
-    return '';
-  }
+
+  return res.success ? res.result : ''
 }

@@ -36,7 +36,6 @@
             </a-col>
           </span>
           <a-col :md="6" :sm="24">
-
             <template v-if="superQueryFlag">
               <a-tooltip title="已有高级查询条件生效!">
                 <button :disabled="false" class="ant-btn ant-btn-primary" @click="superQuery">
@@ -163,7 +162,7 @@
         description: '用户管理页面',
         //字典数组缓存
         sexDictOptions: [],
-        importExcelUrl:`${window._CONFIG['domianURL']}/test/jeecgDemo/importExcel`,
+        importExcelUrl:`${window._CONFIG['domainURL']}/test/jeecgDemo/importExcel`,
         // 表头
         columns: [
           {
@@ -239,7 +238,7 @@
       exportXls(){
         let paramsStr = encodeURI(JSON.stringify(this.getQueryParams()));
         console.log('paramsStr: ' + paramsStr)
-        let url = `${window._CONFIG['domianURL']}/test/jeecgDemo/exportXls?paramsStr=${paramsStr}`;
+        let url = `${window._CONFIG['domainURL']}/test/jeecgDemo/exportXls?paramsStr=${paramsStr}`;
         window.location.href = url;
       },
       handleImportExcel(info){

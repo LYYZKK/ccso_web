@@ -192,8 +192,8 @@
         url: {
           addUDepartIds:"/sys/user/addUDepartIds", // 引入为用户添加部门信息需要的url
           editUDepartIds:"/sys/user/editUDepartIds", // 引入为用户更新部门信息需要的url
-          fileUpload: window._CONFIG['domianURL']+"/sys/common/upload",
-          imgerver: window._CONFIG['domianURL']+"/sys/common/view",
+          fileUpload: window._CONFIG['domainURL']+"/sys/common/upload",
+          imgerver: window._CONFIG['domainURL']+"/sys/common/view",
           userWithDepart: "/sys/user/userDepartList", // 引入为指定用户查看部门信息需要的url
         },
       }
@@ -237,11 +237,11 @@
         });
       },
       refresh () {
-          this.selectedDepartKeys=[]
-          this.checkedDepartKeys=[]
-          this.checkedDepartNames=[]
-         this.checkedDepartNameString = ""
-          this.userId=""
+        this.selectedDepartKeys=[]
+        this.checkedDepartKeys=[]
+        this.checkedDepartNames=[]
+        this.checkedDepartNameString = ""
+        this.userId=""
       },
       add () {
         this.refresh()

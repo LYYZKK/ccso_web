@@ -9,44 +9,44 @@
       </div>
       <!--签字-->
       <a-col :md="24" :sm="24">
-      <div class="sign" style="text-align: left;height: inherit">
-        <a-col :span="24">
-          <span>
-            打印人员:
-          </span>
-          <a-input style="width: 30%" v-model="printer"/>
-          <span style="margin-left: 12.5%">打印日期:</span>
-          <a-input style="width: 30%" v-model="printTime"/>
-        </a-col>
-        <a-col :span="24">
-        </a-col>
-        <a-col :span="24" style="margin-top: 20px">
-          <span>打印内容:</span>
-          <a-input style="width: 80%" v-model="printContent"/>
-        </a-col>
-        <a-col :span="24" style="margin-top: 20px">
-          <span>打印目的:</span>
-          <a-input style="width: 80%" v-model="printReason"/>
-        </a-col>
-        <a-col style="margin-top: 20px" :span="24">
-          <span>打印图片:</span>
-          <br/>
-          <a-upload
-            action="/jsonplaceholder.typicode.com/posts/"
-            listType="picture-card"
-            :fileList="fileList"
-            @preview="handlePreview"
-            @change="handleChange">
-            <div v-if="fileList.length < 3">
-              <a-icon type="plus" />
-              <div class="ant-upload-text">Upload</div>
-            </div>
-          </a-upload>
-          <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-            <img alt="example" style="width: 100%" :src="previewImage" />
-          </a-modal>
-        </a-col>
-      </div>
+        <div class="sign" style="text-align: left;height: inherit">
+          <a-col :span="24">
+            <span>
+              打印人员:
+            </span>
+            <a-input style="width: 30%" v-model="printer"/>
+            <span style="margin-left: 12.5%">打印日期:</span>
+            <a-input style="width: 30%" v-model="printTime"/>
+          </a-col>
+          <a-col :span="24">
+          </a-col>
+          <a-col :span="24" style="margin-top: 20px">
+            <span>打印内容:</span>
+            <a-input style="width: 80%" v-model="printContent"/>
+          </a-col>
+          <a-col :span="24" style="margin-top: 20px">
+            <span>打印目的:</span>
+            <a-input style="width: 80%" v-model="printReason"/>
+          </a-col>
+          <a-col style="margin-top: 20px" :span="24">
+            <span>打印图片:</span>
+            <br/>
+            <a-upload
+              action="/jsonplaceholder.typicode.com/posts/"
+              listType="picture-card"
+              :fileList="fileList"
+              @preview="handlePreview"
+              @change="handleChange">
+              <div v-if="fileList.length < 3">
+                <a-icon type="plus" />
+                <div class="ant-upload-text">Upload</div>
+              </div>
+            </a-upload>
+            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+              <img alt="example" style="width: 100%" :src="previewImage" />
+            </a-modal>
+          </a-col>
+        </div>
       </a-col>
     </section>
   </a-card>

@@ -33,7 +33,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="订单日期">
-          <a-date-picker showTime format='YYYY-MM-DD HH:mm:ss' v-decorator="[ 'orderDate',{}]"/>
+          <a-date-picker showTime format="YYYY-MM-DD HH:mm:ss" v-decorator="[ 'orderDate',{}]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"

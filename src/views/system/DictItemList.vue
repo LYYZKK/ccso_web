@@ -36,7 +36,7 @@
               </a-col>
               <a-col :md="7" :sm="24">
                 <span style="float: left;" class="table-page-search-submitButtons">
-                  <a-button type="primary" @click="searchQuery">搜索</a-button>
+                  <a-button type="primary" @click="searchQuery">查询</a-button>
                   <a-button type="primary" @click="searchReset" style="margin-left: 8px">重置</a-button>
                 </span>
               </a-col>
@@ -59,7 +59,6 @@
             :loading="loading"
             @change="handleTableChange"
           >
-
             <span slot="status" slot-scope="text, record">
               <a-tag v-if="record.status === 1" color="green">启用</a-tag>
               <a-tag v-else color="red">禁用</a-tag>
@@ -83,13 +82,17 @@
 
 <script>
   import pick from 'lodash.pick'
-  import {filterObj} from '@/utils/util';
+  import filter from 'lodash.filter'
+
+  import {filterObj} from '@/utils/util'
   import DictItemModal from './modules/DictItemModal'
+  import {constantCfgMixin} from "@/mixins/constant.cfg"
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
+  import {initDictOptions} from '@/components/dict/JDictSelectUtil'
 
   export default {
     name: "DictItemList",
-    mixins: [JeecgListMixin],
+    mixins: [JeecgListMixin, constantCfgMixin],
     components: {DictItemModal},
     data() {
       return {
@@ -106,9 +109,30 @@
           },
           {
             title: '状态',
-            dataIndex: 'status',
             align: "center",
+            dataIndex: 'status',
             scopedSlots: {customRender: 'status'},
+          },
+          {
+            title: '排序值',
+            align: "center",
+            dataIndex: 'sortOrder'
+          },
+          {
+            title: '展示方式',
+            align: "center",
+            dataIndex: 'itemShowType',
+            customRender: (text) => {
+              return text ? filter(this.DICT_SHOW_TYPES, {value: text})[0].render({text}) : ''
+            }
+          },
+          {
+            title: '颜色值',
+            align: "center",
+            dataIndex: 'itemShowColor',
+            customRender: (text) => {
+              return text ? (<a-tag color={text}>{text}</a-tag>) : ''
+            }
           },
           {
             title: '操作',
@@ -123,6 +147,9 @@
           itemText: "",
           delFlag: "1",
           status: [],
+        },
+        queryType: {
+          itemText: 'like'
         },
         title: "操作",
         visible: false,
@@ -159,6 +186,20 @@
         this.dictId = dictId;
         this.edit({});
       },
+      initDictConfig() {
+        //初始化字典 - 字典项展示方式.
+        initDictOptions('dict_item_show_type').then((res) => {
+          if (res.success) {
+            this.dictItemShowTypeDictOptions = res.result
+          }
+        })
+        //初始化字典 - 字典项展示颜色.
+        initDictOptions('dict_item_show_color').then((res) => {
+          if (res.success) {
+            this.dictItemShowColorDictOptions = res.result
+          }
+        })
+      },
       edit(record) {
         if (record.id) {
           this.dictId = record.id;
@@ -177,7 +218,9 @@
       },
 
       getQueryParams() {
-        var param = Object.assign({}, this.queryParam);
+        this.filterQueryParamsByQueryType()
+
+        let param = Object.assign({}, this.queryParamWithQueryType, this.isorter);
         param.dictId = this.dictId;
         param.field = this.getQueryField();
         param.pageNo = this.ipagination.current;

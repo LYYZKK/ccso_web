@@ -35,7 +35,7 @@
           <a-col :md="8" :sm="10" >
             <span style="float: right;" class="table-page-search-submitButtons">
               <a-button type="primary" style="left: -35px" @click="searchQuery" icon="search">查询</a-button>
-              <a-button type="primary"  @click="searchReset" icon="reload" style="margin-left: 8px;left: -35px">重置</a-button>
+              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px;left: -35px">重置</a-button>
             </span>
           </a-col>
 
@@ -44,23 +44,23 @@
     </div>
 
     <!-- table区域-begin -->
-      <a-table
-        ref="table"
-        size="middle"
-        rowKey="id"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination="ipagination"
-        :loading="loading"
-        @change="handleTableChange">
+    <a-table
+      ref="table"
+      size="middle"
+      rowKey="id"
+      :columns="columns"
+      :dataSource="dataSource"
+      :pagination="ipagination"
+      :loading="loading"
+      @change="handleTableChange">
 
-        <p v-show="queryParam.logType==2" slot="expandedRowRender" slot-scope="record" style="margin: 0">
-          请求方法： {{ record.method }}
-          <a-divider dashed/>
-          请求参数： {{ record.requestParam }}
-        </p>
+      <p v-show="queryParam.logType==2" slot="expandedRowRender" slot-scope="record" style="margin: 0">
+        请求方法： {{ record.method }}
+        <a-divider dashed/>
+        请求参数： {{ record.requestParam }}
+      </p>
 
-      </a-table>
+    </a-table>
     <!-- table区域-end -->
   </a-card>
 </template>
@@ -159,8 +159,9 @@
     },
     methods: {
       getQueryParams(){
-        console.log(this.queryParam.createTimeRange)
-        var param = Object.assign({}, this.queryParam,this.isorter);
+        this.filterQueryParamsByQueryType()
+
+        let param = Object.assign({}, this.queryParamWithQueryType, this.isorter);
         param.field = this.getQueryField();
         param.pageNo = this.ipagination.current;
         param.pageSize = this.ipagination.pageSize;

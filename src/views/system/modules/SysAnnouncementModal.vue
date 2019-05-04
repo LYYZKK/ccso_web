@@ -7,10 +7,10 @@
     @ok="handleOk"
     @cancel="handleCancel"
     cancelText="关闭">
-    
+
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-      
+
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -40,14 +40,15 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="优先级">
-          <a-select
+          <j-dict-select-tag v-decorator="['priority', {}]" :triggerChange="true" placeholder="请选择优先级" dictCode="priority"/>
+          <!-- <a-select
             v-decorator="[ 'priority', {}]"
             placeholder="请选择优先级"
             :disabled="disableSubmit">
             <a-select-option value="L">低</a-select-option>
             <a-select-option value="M">中</a-select-option>
             <a-select-option value="H">高</a-select-option>
-          </a-select>
+          </a-select> -->
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -113,18 +114,14 @@
         confirmLoading: false,
         form: this.$form.createForm(this),
         validatorRules:{
-          title:{rules: [{ required: true, message: '请输入标题!' }]},
+          title: {rules: [{ required: true, message: '请输入标题!' }]},
         },
         url: {
           add: "/sys/annountCement/add",
           edit: "/sys/annountCement/edit",
         },
-        userType:false,
-        visible: false,
-        confirmLoading: false,
+        userType:false
       }
-    },
-    created () {
     },
     methods: {
       add () {
@@ -136,7 +133,7 @@
         this.visible = true;
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model,'titile','msgContent','priority','msgType'))
-		      //时间格式化
+          //时间格式化
           this.form.setFieldsValue({startTime:this.model.startTime?moment(this.model.startTime):null})
           this.form.setFieldsValue({endTime:this.model.endTime?moment(this.model.endTime):null})
         });
@@ -166,7 +163,6 @@
             formData.startTime = formData.startTime?formData.startTime.format('YYYY-MM-DD HH:mm:ss'):null;
             formData.endTime = formData.endTime?formData.endTime.format('YYYY-MM-DD HH:mm:ss'):null;
 
-            console.log(formData)
             httpAction(httpurl,formData,method).then((res)=>{
               if(res.success){
                 that.$message.success(res.message);
@@ -195,7 +191,6 @@
         }
       },
       selectUserIds() {
-        console.log(1);
         this.$refs.modalSelectUser.show();
       }
 

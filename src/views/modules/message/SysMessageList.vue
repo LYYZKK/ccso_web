@@ -41,8 +41,13 @@
     <div class="table-operator">
       <a-button @click="handleAdd" v-show="show" type="primary" icon="plus">新增</a-button>
       <a-button type="primary" v-show="show" icon="download" @click="handleExportXls">导出</a-button>
-      <a-upload v-show="show" name="file" :showUploadList="false" :multiple="false" :action="importExcelUrl"
-                @change="handleImportExcel">
+      <a-upload
+        v-show="show"
+        name="file"
+        :showUploadList="false"
+        :multiple="false"
+        :action="importExcelUrl"
+        @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
       <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -62,7 +67,7 @@
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{
-        selectedRowKeys.length }}</a>项
+          selectedRowKeys.length }}</a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
 
@@ -90,7 +95,7 @@
           <a-dropdown>
             <a class="ant-dropdown-link">更多<a-icon type="down"/></a>
             <a-menu slot="overlay">
-               <a-menu-item>
+              <a-menu-item>
                 <a href="javascript:;" @click="handleDetail(record)">详情</a>
               </a-menu-item>
               <a-menu-item>
@@ -216,7 +221,7 @@
     },
     computed: {
       importExcelUrl: function () {
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
+        return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
       }
     },
     methods: {}

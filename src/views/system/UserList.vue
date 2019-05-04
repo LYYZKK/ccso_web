@@ -185,7 +185,11 @@
     data() {
       return {
         description: '这是用户管理页面',
-        queryParam: {},
+        queryType: {
+          username: 'like',
+          email: 'like',
+          phone: 'like'
+        },
         columns: [
           /*{
             title: '#',
@@ -263,7 +267,7 @@
 
         ],
         url: {
-          imgerver: window._CONFIG['domianURL'] + "/sys/common/view",
+          imgerver: window._CONFIG['domainURL'] + "/sys/common/view",
           syncUser: "/process/extActProcess/doSyncUser",
           list: "/sys/user/list",
           delete: "/sys/user/delete",
@@ -275,7 +279,7 @@
     },
     computed: {
       importExcelUrl: function(){
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
+        return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
       }
     },
     methods: {

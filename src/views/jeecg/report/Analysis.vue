@@ -448,7 +448,6 @@
         }
         var params = this.getQueryParams();//查询条件
         getAction(this.url.list,params).then((res)=>{
-          console.log("dsdsd",res.result)
           this.dataSource1 = res.result.data1;
           this.dataSource2 = res.result.data2;
           this.ipagination.total = 5;

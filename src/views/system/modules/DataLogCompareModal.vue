@@ -18,8 +18,8 @@
         :loading="loading"
         :scroll="{ y: 700 }"
         :pagination="false">
-        <span slot="dataVersionTitle1"><a-icon type="smile-o" /> 版本:{{dataVersion1Num}}</span>
-        <span slot="dataVersionTitle2"><a-icon type="smile-o" /> 版本:{{dataVersion2Num}}</span>
+        <span slot="dataVersionTitle1"><a-icon type="smile-o" /> 版本:{{ dataVersion1Num }}</span>
+        <span slot="dataVersionTitle2"><a-icon type="smile-o" /> 版本:{{ dataVersion2Num }}</span>
         <template slot="avatarslot" slot-scope="text, record">
           <div class="anty-img-wrap">
             <img :src="getAvatarView(record)"/>
