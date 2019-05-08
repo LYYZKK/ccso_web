@@ -56,7 +56,8 @@ module.exports = {
     hot: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8085', //mock API接口系统
+        // target: 'http://localhost:8085', //mock API接口系统
+        target: 'http://119.27.179.175:8111/ccso', //mock API接口系统
         ws: false,
         changeOrigin: true,
         pathRewrite: {
