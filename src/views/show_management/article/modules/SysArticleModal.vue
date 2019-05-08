@@ -94,8 +94,6 @@
         this.visible = true;
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model, 'title', 'text', 'articleType', 'articleState', 'accessoryUrl'))
-          // this.form.setFieldsValue({text: this.$refs.richText.getContent()})
-          // console.log('text =', this.$refs.richText.getContent())
           //时间格式化
         });
       },

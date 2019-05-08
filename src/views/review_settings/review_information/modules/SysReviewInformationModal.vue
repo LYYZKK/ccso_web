@@ -15,13 +15,13 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="文件编号">
-          <a-input placeholder="请输入文件编号" v-decorator="['fileNo', {}]"/>
+          <a-input placeholder="请输入文件编号" v-decorator="['fileNo', validatorRules.fileNo]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="文件名称">
-          <a-input placeholder="请输入文件名称" v-decorator="['fileName', {}]"/>
+          <a-input placeholder="请输入文件名称" v-decorator="['fileName', validatorRules.fileName]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -73,8 +73,18 @@
           add: "/sys/sysReviewInformation/add",
           edit: "/sys/sysReviewInformation/edit",
         },
-        formatObj: {XLS: false, XLSX: false, DOC: false, DOCX: false, PDF: false},
+        formatObj: {
+          XLS: false,
+          XLSX: false,
+          DOC: false,
+          DOCX: false,
+          PDF: false
+        },
         formatResult: '',
+        validatorRules: {
+          fileNo: {rules: [{required: true, message: '请输入编号!'}]},
+          fileName: {rules: [{required: true, message: '请输入文件名!'}]},
+        },
       }
     },
     created() {
@@ -84,6 +94,12 @@
         this.edit({});
       },
       edit(record) {
+        if (JSON.stringify(record) !== '{}') {
+          var str = record.fileFormat.split(",")
+          for (var i = 0; i < str.length; i++) {
+            this.formatObj[str[i]] = true
+          }
+        }
         this.form.resetFields();
         this.model = Object.assign({}, record);
         this.visible = true;
@@ -114,7 +130,7 @@
             }
             for (var i in this.formatObj) {
               if (this.formatObj[i] == true) {
-                this.formatResult += i+','
+                this.formatResult += i + ','
               }
             }
 
@@ -131,20 +147,18 @@
               }
             }).finally(() => {
               that.confirmLoading = false;
-              this.formatObj={XLS: false, XLSX: false, DOC: false, DOCX: false, PDF: false};
-              this.formatResult='';
+              this.formatObj = {XLS: false, XLSX: false, DOC: false, DOCX: false, PDF: false};
+              this.formatResult = '';
               that.close();
             })
-
-
           }
         })
       },
       handleCancel() {
+        this.formatObj = {XLS: false, XLSX: false, DOC: false, DOCX: false, PDF: false};
+        this.formatResult = '';
         this.close()
       },
-
-
     }
   }
 </script>

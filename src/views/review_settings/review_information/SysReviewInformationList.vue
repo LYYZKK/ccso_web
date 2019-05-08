@@ -168,6 +168,16 @@
             dataIndex: 'fileSize'
           },
           {
+            title: '修改人',
+            align: "center",
+            dataIndex: 'updateBy'
+          },
+          {
+            title: '修改时间',
+            align: "center",
+            dataIndex: 'updateTime'
+          },
+          {
             title: '操作',
             dataIndex: 'action',
             align: "center",
