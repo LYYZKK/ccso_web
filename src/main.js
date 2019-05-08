@@ -16,6 +16,16 @@ import Print from 'vue-print-nb-jeecg'
 /*import '@babel/polyfill'*/
 import VueApexCharts from 'vue-apexcharts'
 
+
+import  VueQuillEditor from 'vue-quill-editor'
+// require styles 引入样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+Vue.use(VueQuillEditor)
+
+
 import {
   ACCESS_TOKEN,
   DEFAULT_COLOR,

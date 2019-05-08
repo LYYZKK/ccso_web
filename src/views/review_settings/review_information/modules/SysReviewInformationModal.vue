@@ -135,6 +135,7 @@
             }
 
             values.fileFormat = this.formatResult
+            console.log(values)
             let formData = Object.assign(this.model, values);
             //时间格式化
             httpAction(httpurl, formData, method).then((res) => {

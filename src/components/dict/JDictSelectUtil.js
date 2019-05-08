@@ -3,6 +3,7 @@
  * author: scott
  * date: 20190109
  */
+import toString from 'lodash.tostring'
 
 import {ajaxGetDictItems} from '@/api/api'
 import {getAction} from '@/api/manage'
@@ -17,8 +18,7 @@ export async function initDictOptions(dictCode) {
     return '字典Code不能为空!';
   }
   //获取字典数组
-  let res = await ajaxGetDictItems(dictCode);
-  return res;
+  return await ajaxGetDictItems(dictCode);
 }
 
 /**
@@ -30,7 +30,7 @@ export async function initDictOptions(dictCode) {
 export function filterDictText(dictOptions, text) {
   let re = ""
   dictOptions.forEach(option => {
-    if (text === option.value) {
+    if (toString(text) === toString(option.value)) {
       re = option.text
       return
     }
@@ -48,7 +48,7 @@ export function filterDictText(dictOptions, text) {
 export function filterDictOptionByText(dictOptions, text) {
   let re = {}
   dictOptions.forEach(option => {
-    if (text === option.value) {
+    if (toString(text) === toString(option.value)) {
       re = option
       return
     }
@@ -67,18 +67,18 @@ export function filterMultiDictText(dictOptions, text) {
   if(!text){
     return ""
   }
-  let re = "";
+  let re = ""
   let arr = text.split(",")
   dictOptions.forEach(function (option) {
-    for(let i=0;i<arr.length;i++){
+    for(let i = 0; i < arr.length; i++){
       if (arr[i] === option.value) {
-        re += option.text+",";
+        re += option.text + ",";
         break;
       }
     }
   });
-  if(re==""){
-    return "";
+  if(re == ""){
+    return re
   }
   return re.substring(0,re.length-1);
 }
