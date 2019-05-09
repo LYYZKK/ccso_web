@@ -122,21 +122,21 @@
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <sysArticle-modal ref="modalForm" @ok="modalFormOk"></sysArticle-modal>
+    <article-modal ref="modalForm" @ok="modalFormOk"></article-modal>
   </a-card>
 </template>
 
 <script>
-import SysArticleModal from './modules/SysArticleModal'
+import ArticleModal from './modules/ArticleModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 import { constantCfgMixin } from '@/mixins/constant.cfg'
 import { initDictOptions, filterDictOptionByText } from '@/components/dict/JDictSelectUtil'
 
 export default {
-  name: 'SysArticleList',
+  name: 'ArticleList',
   mixins: [JeecgListMixin, constantCfgMixin],
   components: {
-    SysArticleModal
+    ArticleModal
   },
   data() {
     return {
@@ -215,9 +215,9 @@ export default {
         }
       ],
       url: {
-        list: '/sys/article/list',
-        delete: '/sys/article/delete',
-        deleteBatch: '/sys/article/deleteBatch'
+        list: '/show/article/list',
+        delete: '/show/article/delete',
+        deleteBatch: '/show/article/deleteBatch'
       },
       articleTypeDictOptions: [],
       articleStateDictOptions: []

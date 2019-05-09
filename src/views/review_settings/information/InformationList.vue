@@ -100,20 +100,20 @@
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <sysReviewInformation-modal ref="modalForm" @ok="modalFormOk"></sysReviewInformation-modal>
+    <Information-modal ref="modalForm" @ok="modalFormOk"></Information-modal>
   </a-card>
 </template>
 
 <script>
-  import SysReviewInformationModal from './modules/SysReviewInformationModal'
+  import InformationModal from './modules/InformationModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import {constantCfgMixin} from "@/mixins/constant.cfg"
 
   export default {
-    name: "SysReviewInformationList",
+    name: "InformationList",
     mixins: [JeecgListMixin, constantCfgMixin],
     components: {
-      SysReviewInformationModal
+      InformationModal
     },
     data() {
       return {
@@ -163,8 +163,9 @@
             dataIndex: 'fileFormat'
           },
           {
-            title: '文件大小',
+            title: '文件大小（以M/兆为单位）',
             align: "center",
+            width: "251px",
             dataIndex: 'fileSize'
           },
           {
@@ -185,9 +186,9 @@
           }
         ],
         url: {
-          list: "/sys/sysReviewInformation/list",
-          delete: "/sys/sysReviewInformation/delete",
-          deleteBatch: "/sys/sysReviewInformation/deleteBatch",
+          list: "/review/information/list",
+          delete: "/review/information/delete",
+          deleteBatch: "/review/information/deleteBatch",
         },
       }
     },

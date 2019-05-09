@@ -37,7 +37,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="文件大小">
-          <a-input placeholder="请输入文件大小" v-decorator="['fileSize', {}]"/>
+          <a-input placeholder="请输入文件大小（以M/兆为单位）" v-decorator="['fileSize', {}]"/>
         </a-form-item>
 
       </a-form>
@@ -51,7 +51,7 @@
   import moment from "moment"
 
   export default {
-    name: "SysReviewInformationModal",
+    name: "InformationModal",
     data() {
       return {
         title: "操作",
@@ -70,8 +70,8 @@
         form: this.$form.createForm(this),
         validatorRules: {},
         url: {
-          add: "/sys/sysReviewInformation/add",
-          edit: "/sys/sysReviewInformation/edit",
+          add: "/review/information/add",
+          edit: "/review/information/edit",
         },
         formatObj: {
           XLS: false,
@@ -133,9 +133,11 @@
                 this.formatResult += i + ','
               }
             }
-
+            var suffix = this.formatResult.substring(this.formatResult.length-1, this.formatResult.length)
+            if (suffix===',') {
+              this.formatResult = this.formatResult.substring(0, this.formatResult.length-1)
+            }
             values.fileFormat = this.formatResult
-            console.log(values)
             let formData = Object.assign(this.model, values);
             //时间格式化
             httpAction(httpurl, formData, method).then((res) => {
