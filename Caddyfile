@@ -1,0 +1,19 @@
+0.0.0.0:80 {
+  root /root/ui
+  timeouts none
+  gzip
+  log stdout
+  errors stdout
+}
+
+0.0.0.0:80/api {
+  proxy / 119.27.179.175:8111/ccso {
+    transparent
+    websocket
+    keepalive 0
+    timeout 100s
+  }
+  gzip
+  log stdout
+  errors stdout
+}

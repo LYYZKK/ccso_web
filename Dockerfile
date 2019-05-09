@@ -7,7 +7,7 @@ RUN apk add curl bash gnupg caddy --no-cache
 ADD dist/ /root/ui
 
 COPY entrypoint.sh /root
-COPY Caddyfile.docker /root/Caddyfile
+COPY Caddyfile /root/Caddyfile
 
 RUN chmod +x /root/entrypoint.sh
 
