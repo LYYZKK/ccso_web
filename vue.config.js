@@ -56,19 +56,14 @@ module.exports = {
     hot: true,
     proxy: {
       '/api': {
-        // target: 'http://localhost:8085', //mock API接口系统
-        target: 'http://119.27.179.175:8111/ccso', //mock API接口系统
+        // target: 'http://localhost:8085',
+        target: 'http://119.27.179.175:8111/ccso',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
           '/api': ''  //默认所有请求都加了 api 前缀，需要去掉
         }
       },
-      // '/jeecg-boot': {
-      //   target: 'http://localhost:8080', //请求本地 需要jeecg-boot后台项目
-      //   ws: false,
-      //   changeOrigin: true
-      // },
     }
   },
 

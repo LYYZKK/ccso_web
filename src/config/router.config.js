@@ -28,7 +28,7 @@ export const asyncRouterMap = [
       //       meta: { title: '数据日志', permission: [ 'dashboard' ] }
       //     },
       //     {
-      //       path: 'http://localhost:8085/druid/',
+      //       path: 'http://119.27.179.175:8111/ccso/druid/',
       //       name: 'druid',
       //       component: () => import('@/views/jeecg/tablist/JeecgOrderDMainList'),
       //       meta: { title: 'SQL监控', permission: [ 'dashboard' ] }
@@ -87,7 +87,7 @@ export const asyncRouterMap = [
       //       meta: { title: '百度', permission: [ 'dashboard' ] }
       //     },
       //     {
-      //       path: 'http://localhost:8080/jeecg-boot/auto/cgform/list',
+      //       path: 'http://119.27.179.175:8111/ccso/auto/cgform/list',
       //       name: 'cgformtest',
       //       component: () => import('@/components/layouts/IframePageView'),
       //       meta: { title: 'online表单测试', permission: [ 'dashboard' ] }

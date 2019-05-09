@@ -30,8 +30,7 @@
           />
         </a-form-item>
         <a-form-item>
-          <rich-editor ref="richText" :value="model.text" v-model="model.text"></rich-editor>
-          {{ model.text }}
+          <rich-editor ref="richText" v-model="model.text"></rich-editor>
         </a-form-item>
       </a-form>
     </a-spin>
@@ -63,10 +62,8 @@ export default {
         xs: { span: 24 },
         sm: { span: 16 }
       },
-
       confirmLoading: false,
       form: this.$form.createForm(this),
-      validatorRules: {},
       url: {
         add: '/sys/article/add',
         edit: '/sys/article/edit'
