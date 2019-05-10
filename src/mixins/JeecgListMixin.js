@@ -219,7 +219,7 @@ export const JeecgListMixin = {
       // 新增/修改 成功时，重载列表
       this.loadData();
     },
-    handleDetail:function(record){
+    handleDetail(record){
       this.$refs.modalForm.edit(record);
       this.$refs.modalForm.title="详情";
       this.$refs.modalForm.disableSubmit = true;

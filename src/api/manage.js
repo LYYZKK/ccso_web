@@ -11,7 +11,7 @@ const api = {
 export default api
 
 //post
-export function postAction(url,parameter) {
+export function postAction(url, parameter) {
   return axios({
     url: url,
     method:'post' ,
@@ -20,7 +20,7 @@ export function postAction(url,parameter) {
 }
 
 //post method= {post | put}
-export function httpAction(url,parameter,method) {
+export function httpAction(url, parameter, method) {
   return axios({
     url: url,
     method:method ,
@@ -29,7 +29,7 @@ export function httpAction(url,parameter,method) {
 }
 
 //put
-export function putAction(url,parameter) {
+export function putAction(url, parameter) {
   return axios({
     url: url,
     method:'put',
@@ -38,7 +38,7 @@ export function putAction(url,parameter) {
 }
 
 //get
-export function getAction(url,parameter) {
+export function getAction(url, parameter) {
   return axios({
     url: url,
     method: 'get',
@@ -47,7 +47,7 @@ export function getAction(url,parameter) {
 }
 
 //deleteAction
-export function deleteAction(url,parameter) {
+export function deleteAction(url, parameter) {
   return axios({
     url: url,
     method: 'delete',
@@ -103,7 +103,7 @@ export function saveService(parameter) {
  * @param parameter
  * @returns {*}
  */
-export function downFile(url,parameter){
+export function downFile(url, parameter){
   return axios({
     url: url,
     params: parameter,
@@ -111,4 +111,3 @@ export function downFile(url,parameter){
     responseType: 'blob'
   })
 }
-

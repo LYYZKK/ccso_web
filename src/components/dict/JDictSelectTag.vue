@@ -9,39 +9,36 @@
   import {ajaxGetDictItems} from '@/api/api'
 
   export default {
-    name: "JDictSelectTag",
+    name: 'JDictSelectTag',
     props: {
       dictCode: String,
       placeholder: String,
       triggerChange: Boolean,
-      value: String,// 1.接收一个 value prop
+      value: String // 1.接收一个 value prop
     },
     data() {
       return {
-        dictOptions: [],
+        dictOptions: []
       }
     },
     created() {
-      console.log(this.dictCode);
-      //获取字典数据
-      this.initDictData();
+      // 获取字典数据.
+      this.initDictData()
     },
     methods: {
       initDictData() {
-        //根据字典Code, 初始化字典数组
+        // 根据字典Code, 初始化字典数组.
         ajaxGetDictItems(this.dictCode, null).then((res) => {
           if (res.success) {
-//                console.log(res.result);
-            this.dictOptions = res.result;
+            this.dictOptions = res.result
           }
         })
       },
       handleInput(val) {
-        console.log(val);
         if(this.triggerChange){
-          this.$emit('change', val);
-        }else{
-          this.$emit('input', val);
+          this.$emit('change', val)
+        } else {
+          this.$emit('input', val)
         }
       }
     }

@@ -9,7 +9,7 @@
     cancelText="关闭"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form" :rules="rules">
+      <a-form :form="form" :rules="validatorRules">
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="标题">
           <a-input placeholder="请输入文章标题" v-decorator="['title', validatorRules.title]"/>
         </a-form-item>
@@ -75,7 +75,6 @@ export default {
       }
     }
   },
-  created() {},
   methods: {
     add() {
       this.edit({})
