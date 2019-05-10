@@ -94,7 +94,7 @@
       },
       edit(record) {
         if (JSON.stringify(record) !== '{}') {
-          var str = record.fileFormat.split(",")
+          var str = record.format.split(",")
           for (var i = 0; i < str.length; i++) {
             this.formatObj[str[i]] = true
           }
