@@ -7,24 +7,19 @@
         <a-row :gutter="24">
 
           <a-col :md="6" :sm="8">
-            <a-form-item label="文件编号">
-              <a-input placeholder="请输入文件编号" v-model="queryParam.no"></a-input>
+            <a-form-item label="编号">
+              <a-input placeholder="请输入编号" v-model="queryParam.no"></a-input>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="8">
-            <a-form-item label="文件名称">
-              <a-input placeholder="请输入文件名称" v-model="queryParam.name"></a-input>
+            <a-form-item label="分类名称">
+              <a-input placeholder="请输入分类名称" v-model="queryParam.name"></a-input>
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :md="6" :sm="8">
-              <a-form-item label="文件格式">
-                <a-input placeholder="请输入文件格式" v-model="queryParam.format"></a-input>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="8">
-              <a-form-item label="文件大小">
-                <a-input placeholder="请输入文件大小" v-model="queryParam.size"></a-input>
+              <a-form-item label="达标百分比">
+                <a-input placeholder="请输入达标百分比" v-model="queryParam.standardValue"></a-input>
               </a-form-item>
             </a-col>
           </template>
@@ -100,24 +95,24 @@
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <Information-modal ref="modalForm" @ok="modalFormOk"></Information-modal>
+    <category-modal ref="modalForm" @ok="modalFormOk"></category-modal>
   </a-card>
 </template>
 
 <script>
-  import InformationModal from './modules/InformationModal'
+  import CategoryModal from './modules/CategoryModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import {constantCfgMixin} from "@/mixins/constant.cfg"
 
   export default {
-    name: "InformationList",
+    name: "CategoryList",
     mixins: [JeecgListMixin, constantCfgMixin],
     components: {
-      InformationModal
+      CategoryModal
     },
     data() {
       return {
-        description: '评审资料管理管理页面',
+        description: '评审类别管理管理页面',
         // 查询条件中的字段使用的查询条件方式, 支持的类型参考 src/mixins/JeecgListMixin.js 中 queryTypeAlias.
         /*
          e.g:
@@ -132,8 +127,9 @@
         queryType: {
           no: 'like',
           name: 'like',
-          format: 'like',
-          size: 'like',
+          standardValue: 'like',
+          createById: 'like',
+          updateById: 'like',
         },
         // 表头
         columns: [
@@ -148,25 +144,19 @@
             }
           },
           {
-            title: '文件编号',
+            title: '编号',
             align: "center",
             dataIndex: 'no'
           },
           {
-            title: '文件名称',
+            title: '分类名称',
             align: "center",
             dataIndex: 'name'
           },
           {
-            title: '文件格式',
+            title: '达标百分比（%）',
             align: "center",
-            dataIndex: 'format'
-          },
-          {
-            title: '文件大小（以M/兆为单位）',
-            align: "center",
-            width: "251px",
-            dataIndex: 'size'
+            dataIndex: 'standardValue'
           },
           {
             title: '修改人',
@@ -186,9 +176,9 @@
           }
         ],
         url: {
-          list: "/review/information/list",
-          delete: "/review/information/delete",
-          deleteBatch: "/review/information/deleteBatch",
+          list: "/review/category/list",
+          delete: "/review/category/delete",
+          deleteBatch: "/review/category/deleteBatch",
         },
       }
     },

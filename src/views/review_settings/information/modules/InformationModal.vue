@@ -15,13 +15,13 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="文件编号">
-          <a-input placeholder="请输入文件编号" v-decorator="['fileNo', validatorRules.fileNo]"/>
+          <a-input placeholder="请输入文件编号" v-decorator="['no', validatorRules.no]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="文件名称">
-          <a-input placeholder="请输入文件名称" v-decorator="['fileName', validatorRules.fileName]"/>
+          <a-input placeholder="请输入文件名称" v-decorator="['name', validatorRules.name]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -37,7 +37,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="文件大小">
-          <a-input placeholder="请输入文件大小（以M/兆为单位）" v-decorator="['fileSize', {}]"/>
+          <a-input placeholder="请输入文件大小（以M/兆为单位）" v-decorator="['size', {}]"/>
         </a-form-item>
 
       </a-form>
@@ -68,7 +68,6 @@
 
         confirmLoading: false,
         form: this.$form.createForm(this),
-        validatorRules: {},
         url: {
           add: "/review/information/add",
           edit: "/review/information/edit",
@@ -82,8 +81,8 @@
         },
         formatResult: '',
         validatorRules: {
-          fileNo: {rules: [{required: true, message: '请输入编号!'}]},
-          fileName: {rules: [{required: true, message: '请输入文件名!'}]},
+          no: {rules: [{required: true, message: '请输入编号!'}]},
+          name: {rules: [{required: true, message: '请输入文件名!'}]},
         },
       }
     },
@@ -95,7 +94,7 @@
       },
       edit(record) {
         if (JSON.stringify(record) !== '{}') {
-          var str = record.fileFormat.split(",")
+          var str = record.format.split(",")
           for (var i = 0; i < str.length; i++) {
             this.formatObj[str[i]] = true
           }
@@ -104,7 +103,7 @@
         this.model = Object.assign({}, record);
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'fileNo', 'fileName', 'fileFormat', 'fileSize'))
+          this.form.setFieldsValue(pick(this.model, 'no', 'name', 'format', 'size'))
           //时间格式化
         });
 
@@ -137,7 +136,7 @@
             if (suffix===',') {
               this.formatResult = this.formatResult.substring(0, this.formatResult.length-1)
             }
-            values.fileFormat = this.formatResult
+            values.format = this.formatResult
             let formData = Object.assign(this.model, values);
             //时间格式化
             httpAction(httpurl, formData, method).then((res) => {
