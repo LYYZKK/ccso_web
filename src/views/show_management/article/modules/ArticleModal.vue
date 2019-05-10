@@ -43,7 +43,7 @@ import { httpAction } from '@/api/manage'
 import pick from 'lodash.pick'
 
 export default {
-  name: 'SysArticleModal',
+  name: 'ArticleModal',
   components: {
     RichEditor
   },
@@ -65,8 +65,8 @@ export default {
       confirmLoading: false,
       form: this.$form.createForm(this),
       url: {
-        add: '/sys/article/add',
-        edit: '/sys/article/edit'
+        add: '/show/article/add',
+        edit: '/show/article/edit'
       },
       validatorRules: {
         title: { rules: [{ required: true, message: '请输入标题!' }] },
