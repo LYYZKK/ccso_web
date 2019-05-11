@@ -24,6 +24,7 @@
           <a-select
             v-model="model.categoryId"
             showSearch
+            :filterOption="filterOption"
             placeholder="请选择评审类别"
             v-decorator="['categoryId', validatorRules.categoryId]"
           >
@@ -37,8 +38,9 @@
         </a-form-item>
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="评审资料">
           <a-select
-            :value="model.informationId"
+            v-model="model.informationId"
             showSearch
+            :filterOption="filterOption"
             placeholder="请选择评审资料"
             v-decorator="['informationId', validatorRules.informationId]"
           >
@@ -59,11 +61,14 @@
 </template>
 
 <script>
-import { httpAction, getAction } from '@/api/manage'
 import pick from 'lodash.pick'
+
+import { httpAction, getAction } from '@/api/manage'
+import antMixin from '@/mixins/ant-mixin'
 
 export default {
   name: 'EntryModal',
+  mixins: [antMixin],
   data() {
     return {
       title: '操作',

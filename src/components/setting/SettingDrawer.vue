@@ -1,17 +1,17 @@
 <template>
   <div class="setting-drawer">
     <a-drawer
+      title="系统设置"
       width="300"
       placement="right"
       :closable="false"
       @close="onClose"
       :visible="visible"
-      :style="{}"
     >
       <div class="setting-drawer-index-content">
 
         <div :style="{ marginBottom: '24px' }">
-          <h3 class="setting-drawer-index-title">整体风格设置</h3>
+          <h4 class="setting-drawer-index-title">整体风格设置</h4>
 
           <div class="setting-drawer-index-blockChecbox">
             <a-tooltip>
@@ -41,7 +41,7 @@
         </div>
 
         <div :style="{ marginBottom: '24px' }">
-          <h3 class="setting-drawer-index-title">主题色</h3>
+          <h4 class="setting-drawer-index-title">主题色</h4>
 
           <div style="height: 20px">
             <a-tooltip class="setting-drawer-theme-color-colorBlock" v-for="(item, index) in colorList" :key="index">
@@ -58,7 +58,7 @@
         <a-divider />
 
         <!-- <div :style="{ marginBottom: '24px' }">
-          <h3 class="setting-drawer-index-title">导航模式</h3>
+          <h4 class="setting-drawer-index-title">导航模式</h4>
 
           <div class="setting-drawer-index-blockChecbox">
             <a-tooltip>
@@ -125,7 +125,7 @@
         <a-divider /> -->
 
         <div :style="{ marginBottom: '24px' }">
-          <h3 class="setting-drawer-index-title">其他设置</h3>
+          <h4 class="setting-drawer-index-title">其他设置</h4>
           <div>
             <a-list :split="false">
               <a-list-item>
@@ -153,9 +153,10 @@
           </a-alert>
         </div>
       </div>
-      <div class="setting-drawer-index-handle" @click="toggle">
-        <a-icon type="setting" v-if="!visible"/>
-        <a-icon type="close" v-else/>
+      <div class="ant-drawer-close" @click="onClose">
+        <span class="ant-drawer-close-x">
+          <a-icon type="close" />
+        </span>
       </div>
     </a-drawer>
   </div>
@@ -182,7 +183,6 @@
       }
     },
     watch: {
-
     },
     mounted () {
       const vm = this
@@ -201,6 +201,9 @@
       }
     },
     methods: {
+      getVisible() {
+        return this.visible
+      },
       showDrawer() {
         this.visible = true
       },
@@ -300,29 +303,6 @@
       i {
         font-size: 14px;
       }
-    }
-  }
-
-  .setting-drawer-index-handle {
-    position: absolute;
-    top: 240px;
-    background: #1890ff;
-    width: 48px;
-    height: 48px;
-    right: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    pointer-events: auto;
-    z-index: 1001;
-    text-align: center;
-    font-size: 16px;
-    border-radius: 4px 0 0 4px;
-
-    i {
-      color: rgb(255, 255, 255);
-      font-size: 20px;
     }
   }
 </style>

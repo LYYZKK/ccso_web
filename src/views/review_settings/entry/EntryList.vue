@@ -16,7 +16,7 @@
           </a-col>
 
           <a-col :span="6">
-            <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="评审类别">
+            <a-form-item label="评审类别">
               <a-select
                 showSearch
                 placeholder="请选择评审类别"
@@ -32,7 +32,7 @@
             </a-form-item>
           </a-col>
           <a-col :span="6">
-            <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="评审资料">
+            <a-form-item label="评审资料">
               <a-select
                 showSearch
                 placeholder="请选择评审资料"

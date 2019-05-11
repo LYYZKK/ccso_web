@@ -1,9 +1,9 @@
 <template>
   <div class="user-wrapper" :class="theme">
-    <span class="action">
-      <a-icon type="question-circle-o"></a-icon>
+    <span class="action setting-drawer" @click="toggleSettingDraw">
+      <a-icon type="setting"/>
     </span>
-    <header-notice class="action"/>
+
     <a-dropdown>
       <span class="action action-full ant-dropdown-link user-dropdown-menu">
         <a-avatar class="avatar" size="small" :src="getAvatar()"/>
@@ -41,18 +41,24 @@
         <span v-if="isDesktop()">&nbsp;退出登录</span>
       </a>
     </span>
+
+    <setting-drawer ref="settingDrawer"></setting-drawer>
   </div>
 </template>
 
 <script>
-  import HeaderNotice from './HeaderNotice'
   import { mapActions, mapGetters } from 'vuex'
+
+  import HeaderNotice from './HeaderNotice'
+  import SettingDrawer from '@/components/setting/SettingDrawer'
+
   import { mixinDevice } from '@/utils/mixin.js'
   export default {
     name: "UserMenu",
     mixins: [mixinDevice],
     components: {
-      HeaderNotice
+      HeaderNotice,
+      SettingDrawer
     },
     props: {
       theme: {
@@ -64,6 +70,9 @@
     methods: {
       ...mapActions(["Logout"]),
       ...mapGetters(["nickname", "avatar"]),
+      toggleSettingDraw() {
+        this.$refs.settingDrawer.toggle()
+      },
       getAvatar(){
         console.log('url = '+ window._CONFIG['imgDomainURL']+"/"+this.avatar())
         return window._CONFIG['imgDomainURL']+"/"+this.avatar()
