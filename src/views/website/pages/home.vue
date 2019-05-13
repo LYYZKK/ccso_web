@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import img1 from '../../../static/images/bg01.jpg'
-import img2 from '../../../static/images/bg02.jpg'
-import img3 from '../../../static/images/bg03.jpg'
-import img4 from '../../../static/images/bg04.jpg'
-import img5 from '../../../static/images/bg05.jpg'
-import img6 from '../../../static/images/bg06.jpg'
+import img1 from '../../../../static/images/bg01.jpg'
+import img2 from '../../../../static/images/bg02.jpg'
+import img3 from '../../../../static/images/bg03.jpg'
+import img4 from '../../../../static/images/bg04.jpg'
+import img5 from '../../../../static/images/bg05.jpg'
+import img6 from '../../../../static/images/bg06.jpg'
 export default {
   data() {
     //这里存放数据
@@ -26,32 +26,32 @@ export default {
         {
           name:'新闻资讯',
           img:img1,
-          path:'/news'
+          path:'/website/news'
         },
         {
           name:'标准指引',
           img:img2,
-          path:'/guide'
+          path:'/website/guide'
         },
         {
           name:'标准培训',
           img:img3,
-          path:'/train'
+          path:'/website/train'
         },
         {
           name:'企业名录',
           img:img4,
-          path:'/enterpriseDirectory'
+          path:'/website/enterpriseDirectory'
         },
         {
           name:'专家名录',
           img:img5,
-          path:'/expertDirectories'
+          path:'/website/expertDirectories'
         },
         {
           name:'评审登录',
           img:img6,
-          path:'/expertDirectories'
+          path:'/website/expertDirectories'
         },
 
       ],

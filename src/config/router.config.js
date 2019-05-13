@@ -8,9 +8,12 @@ export const asyncRouterMap = [
   {
     path: '/',
     name: 'dashboard',
-    component: TabLayout,
+    // component: TabLayout,
+    // component: () => import('@/views/website/index'),
+
     meta: { title: '首页' },
-    redirect: '/dashboard/workplace',
+    // redirect: '/dashboard/workplace',
+    redirect: '/website',
     children: [
       // dashboard
       {
@@ -23,9 +26,16 @@ export const asyncRouterMap = [
           {
             path: '/dashboard/analysis',
             name: 'Analysis',
-            component: () => import('@/views/dashboard/Analysis'),
+            component: () => import('@/views/website/index'),
+            // component: () => import('@/views/dashboard/Analysis'),
             meta: { title: '分析页', permission: [ 'dashboard' ] }
           },
+          // {
+          //   path: '/dashboard/abc',
+          //   name: 'abc',
+          //   component: () => import('@/views/website/index'),
+          //   meta: { title: '官网', permission: [ 'dashboard' ] }
+          // },
           {
             path: '/dashboard/monitor',
             name: 'Monitor',
@@ -122,6 +132,12 @@ export const asyncRouterMap = [
       }
     ]
   },
+  // {
+  //   path: '/website',
+  //   name: 'website',
+  //   component: () => import('@/views/website/index'),
+  //   meta: { title: '官网',keepAlive: true, permission: [ 'dashboard' ] }
+  // },
   {
     path: '*', redirect: '/404', hidden: true
   }
@@ -131,7 +147,51 @@ export const asyncRouterMap = [
  * 基础路由
  * @type { *[] }
  */
+import home from '@/views/website/pages/home'
+import news from '@/views/website/pages/news'
+import guide from '@/views/website/pages/guide'
+import train from '@/views/website/pages/train'
+import expertDirectories from '@/views/website/pages/expertDirectories'
+import enterpriseDirectory from '@/views/website/pages/enterpriseDirectory'
 export const constantRouterMap = [
+  {
+    path: '/website',
+    component: () => import('@/views/website/index'),
+    redirect: '/website/home',
+    hidden: false,
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        component: home
+      },
+      {
+        path: 'news',
+        name: 'news',
+        component: news
+      },
+      {
+        path: 'guide',
+        name: 'guide',
+        component: guide
+      },
+      {
+        path: 'train',
+        name: 'train',
+        component: train
+      },
+      {
+        path: 'expertDirectories',
+        name: 'expertDirectories',
+        component: expertDirectories
+      },
+      {
+        path: 'enterpriseDirectory',
+        name: 'enterpriseDirectory',
+        component: enterpriseDirectory
+      },
+    ]
+  },
   {
     path: '/user',
     component: UserLayout,
