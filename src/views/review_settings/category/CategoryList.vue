@@ -19,7 +19,23 @@
           <template v-if="toggleSearchStatus">
             <a-col :md="6" :sm="8">
               <a-form-item label="达标百分比">
-                <a-input placeholder="请输入达标百分比" v-model="queryParam.standardValue"></a-input>
+                <a-input-number
+                  placeholder="请输入"
+                  :min="0"
+                  :max="100"
+                  :precision="0"
+                  :formatter="value => `${value}%`"
+                  :parser="value => value.replace('%', '')"
+                  v-model="queryParam.standardValue_begin" />
+                ~
+                <a-input-number
+                  placeholder="请输入"
+                  :min="0"
+                  :max="100"
+                  :precision="0"
+                  :formatter="value => `${value}%`"
+                  :parser="value => value.replace('%', '')"
+                  v-model="queryParam.standardValue_end"/>
               </a-form-item>
             </a-col>
           </template>
@@ -58,7 +74,7 @@
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{
-        selectedRowKeys.length }}</a>项
+          selectedRowKeys.length }}</a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
 
@@ -127,7 +143,8 @@
         queryType: {
           no: 'like',
           name: 'like',
-          standardValue: 'like',
+          standardValue_begin: 'eq',
+          standardValue_end: 'eq',
           createById: 'like',
           updateById: 'like',
         },
@@ -184,10 +201,9 @@
     },
     computed: {
       importExcelUrl: function () {
-        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
+        return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
       }
-    },
-    methods: {}
+    }
   }
 </script>
 <style lang="less" scoped>

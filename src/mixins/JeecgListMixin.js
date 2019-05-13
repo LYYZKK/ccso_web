@@ -146,6 +146,7 @@ export const JeecgListMixin = {
     },
     searchReset() {
       this.queryParam = {}
+      this.queryParamWithQueryType = {}
       this.loadData(1);
     },
     batchDel() {

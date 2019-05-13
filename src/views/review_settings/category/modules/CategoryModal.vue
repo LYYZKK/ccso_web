@@ -7,10 +7,10 @@
     @ok="handleOk"
     @cancel="handleCancel"
     cancelText="关闭">
-    
+
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-      
+
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -27,7 +27,15 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="达标百分比" >
-          <a-input-number size="big" v-decorator="['standardValue', validatorRules.standardValue]" />
+          <a-input-number
+            placeholder="请输入"
+            size="big"
+            :min="0"
+            :max="100"
+            :precision="0"
+            :formatter="value => `${value}%`"
+            :parser="value => value.replace('%', '')"
+            v-decorator="['standardValue', validatorRules.standardValue]" />
         </a-form-item>
       </a-form>
     </a-spin>
@@ -37,12 +45,9 @@
 <script>
   import { httpAction } from '@/api/manage'
   import pick from 'lodash.pick'
-  import moment from "moment"
-  import InputNumber from "ant-design-vue/es/vc-input-number/src";
 
   export default {
     name: "CategoryModal",
-    components: {InputNumber},
     data () {
       return {
         title:"操作",
@@ -82,7 +87,7 @@
         this.visible = true;
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model,'no','name','standardValue','createById','updateById'))
-		  //时间格式化
+          //时间格式化
         });
       },
       close () {
@@ -106,7 +111,7 @@
             }
             let formData = Object.assign(this.model, values);
             //时间格式化
-            
+
             console.log(formData)
             httpAction(httpurl,formData,method).then((res)=>{
               if(res.success){
