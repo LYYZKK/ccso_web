@@ -37,7 +37,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="文件大小">
-          <a-input placeholder="请输入文件大小（以M/兆为单位）" v-decorator="['size', {}]"/>
+          <a-input-number v-decorator="['size', validatorRules.size]"/>
         </a-form-item>
 
       </a-form>
@@ -83,6 +83,7 @@
         validatorRules: {
           no: {rules: [{required: true, message: '请输入编号!'}]},
           name: {rules: [{required: true, message: '请输入文件名!'}]},
+          size: {rules: [{required: true, message: '请输入文件大小!'}]},
         },
       }
     },

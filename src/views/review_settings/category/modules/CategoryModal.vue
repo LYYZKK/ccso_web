@@ -26,8 +26,8 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="达标百分比">
-          <a-input placeholder="请输入达标百分比（%）" v-decorator="['standardValue', validatorRules.standardValue]" />
+          label="达标百分比" >
+          <a-input-number size="big" v-decorator="['standardValue', validatorRules.standardValue]" />
         </a-form-item>
       </a-form>
     </a-spin>
@@ -38,9 +38,11 @@
   import { httpAction } from '@/api/manage'
   import pick from 'lodash.pick'
   import moment from "moment"
+  import InputNumber from "ant-design-vue/es/vc-input-number/src";
 
   export default {
     name: "CategoryModal",
+    components: {InputNumber},
     data () {
       return {
         title:"操作",
