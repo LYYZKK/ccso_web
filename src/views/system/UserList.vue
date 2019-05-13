@@ -14,11 +14,13 @@
 
           <a-col :md="6" :sm="8">
             <a-form-item label="性别">
-              <a-select v-model="queryParam.sex" placeholder="请选择性别查询">
-                <a-select-option value="">请选择性别查询</a-select-option>
-                <a-select-option value="1">男性</a-select-option>
-                <a-select-option value="2">女性</a-select-option>
-              </a-select>
+              <j-dict-select-tag
+                v-model="queryParam.sex"
+                :triggerChange="true"
+                placeholder="请选择"
+                emptyOptionText="全部"
+                dictCode="sex"
+              />
             </a-form-item>
           </a-col>
 
@@ -37,11 +39,13 @@
 
             <a-col :md="6" :sm="8">
               <a-form-item label="状态">
-                <a-select v-model="queryParam.status" placeholder="请选择用户状态查询">
-                  <a-select-option value="">请选择用户状态</a-select-option>
-                  <a-select-option value="1">正常</a-select-option>
-                  <a-select-option value="2">解冻</a-select-option>
-                </a-select>
+                <j-dict-select-tag
+                  v-model="queryParam.status"
+                  :triggerChange="true"
+                  placeholder="请选择"
+                  emptyOptionText="全部"
+                  dictCode="user_status"
+                />
               </a-form-item>
             </a-col>
           </template>
@@ -164,20 +168,21 @@
     <user-modal ref="modalForm" @ok="modalFormOk"></user-modal>
 
     <password-modal ref="passwordmodal" @ok="passwordModalOk"></password-modal>
-
   </a-card>
 </template>
 
 <script>
   import UserModal from './modules/UserModal'
   import PasswordModal from './modules/PasswordModal'
-  import {putAction} from '@/api/manage';
+  import {putAction} from '@/api/manage'
   import {frozenBatch} from '@/api/api'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
+  import { constantCfgMixin } from '@/mixins/constant.cfg'
+  import { initDictOptions, filterDictOptionByText } from '@/components/dict/JDictSelectUtil'
 
   export default {
     name: "UserList",
-    mixins: [JeecgListMixin],
+    mixins: [JeecgListMixin, constantCfgMixin],
     components: {
       UserModal,
       PasswordModal
@@ -190,6 +195,8 @@
           email: 'like',
           phone: 'like'
         },
+        sexDictOptions: [],
+        userStatusDictOptions: [],
         columns: [
           /*{
             title: '#',
@@ -225,7 +232,10 @@
             title: '性别',
             align: "center",
             width: 80,
-            dataIndex: 'sex_dictText'
+            dataIndex: 'sex',
+            customRender: text => {
+              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.sexDictOptions, text))
+            }
           },
           {
             title: '生日',
@@ -248,7 +258,10 @@
             title: '状态',
             align: "center",
             width: 80,
-            dataIndex: 'status_dictText'
+            dataIndex: 'status',
+            customRender: text => {
+              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.userStatusDictOptions, text))
+            }
           },
          /* {
             title: '创建时间',
@@ -283,6 +296,21 @@
       }
     },
     methods: {
+      initDictConfig() {
+        // 初始化字典 - 性别
+        initDictOptions('sex').then(res => {
+          if (res.success) {
+            this.sexDictOptions = res.result
+          }
+        })
+
+        // 初始化字典 - 用户状态
+        initDictOptions('user_status').then(res => {
+          if (res.success) {
+            this.userStatusDictOptions = res.result
+          }
+        })
+      },
       getAvatarView: function (avatar) {
         return this.url.imgerver + "/" + avatar;
       },
@@ -351,7 +379,6 @@
         //TODO 密码修改完成 不需要刷新页面，可以把datasource中的数据更新一下
       }
     }
-
   }
 </script>
 <style scoped>

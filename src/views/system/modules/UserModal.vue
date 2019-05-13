@@ -89,10 +89,13 @@
         </a-form-item>
 
         <a-form-item label="性别" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select v-decorator="[ 'sex', {}]" placeholder="请选择性别">
-            <a-select-option :value="1">男</a-select-option>
-            <a-select-option :value="2">女</a-select-option>
-          </a-select>
+          <j-dict-select-tag
+            v-decorator="[ 'sex', {}]"
+            :triggerChange="true"
+            placeholder="请选择性别"
+            emptyOptionText="请选择性别"
+            dictCode="sex"
+          />
         </a-form-item>
 
         <a-form-item label="邮箱" :labelCol="labelCol" :wrapperCol="wrapperCol">
