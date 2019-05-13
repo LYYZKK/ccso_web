@@ -27,11 +27,11 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="文件格式">
-          <a-checkbox v-model="formatObj.XLS"/>&nbsp;XLS
-          <a-checkbox v-model="formatObj.XLSX"/>&nbsp;XLSX
-          <a-checkbox v-model="formatObj.DOC"/>&nbsp;DOC
-          <a-checkbox v-model="formatObj.DOCX"/>&nbsp;DOCX
-          <a-checkbox v-model="formatObj.PDF"/>&nbsp;PDF
+          <a-checkbox v-model="formatObj.XLS">XLS</a-checkbox>
+          <a-checkbox v-model="formatObj.XLSX">XLSX</a-checkbox>
+          <a-checkbox v-model="formatObj.DOC">DOC</a-checkbox>
+          <a-checkbox v-model="formatObj.DOCX">DOCX</a-checkbox>
+          <a-checkbox v-model="formatObj.PDF">PDF</a-checkbox>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
