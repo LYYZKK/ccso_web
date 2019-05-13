@@ -6,7 +6,7 @@
   export default {
     name: 'JCheckbox',
     props: {
-      value:{
+      value: {
         type: String,
         required: false
       },

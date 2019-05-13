@@ -10,21 +10,17 @@
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="8">
-            <a-form-item label="文章内容">
-              <a-input placeholder="请输入文章内容" v-model="queryParam.text"></a-input>
+            <a-form-item label="文章类型">
+              <j-dict-select-tag
+                v-decorator="['articleType', {}]"
+                :triggerChange="true"
+                placeholder="请选择文章类型"
+                emptyOptionText="全部"
+                dictCode="article_type"
+              />
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
-            <a-col :md="6" :sm="8">
-              <a-form-item label="文章类型">
-                <j-dict-select-tag
-                  v-decorator="['articleType', {}]"
-                  :triggerChange="true"
-                  placeholder="请选择文章类型"
-                  dictCode="article_type"
-                />
-              </a-form-item>
-            </a-col>
             <a-col :md="6" :sm="8">
               <a-form-item label="文章状态">
                 <j-dict-select-tag

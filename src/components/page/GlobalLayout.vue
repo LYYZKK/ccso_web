@@ -245,7 +245,6 @@
           max-width: unset;
         }
       }
-
     }
 
     .sidemenu {

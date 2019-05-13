@@ -1,6 +1,6 @@
 <template>
   <a-select :placeholder="placeholder" :value="value" @change="handleInput">
-    <a-select-option value="">请选择</a-select-option>
+    <a-select-option v-if="hasEmptyOption" value="">{{ emptyOptionText }}</a-select-option>
     <a-select-option v-for="(item, key) in dictOptions" :key="key" :value="item.value">{{ item.text }}</a-select-option>
   </a-select>
 </template>
@@ -11,10 +11,31 @@
   export default {
     name: 'JDictSelectTag',
     props: {
-      dictCode: String,
-      placeholder: String,
+      dictCode:{
+        type: String,
+        required: true,
+      },
+      placeholder:{
+        type: String,
+        required: false,
+        default: ''
+      },
       triggerChange: Boolean,
-      value: String // 1.接收一个 value prop
+      value: {
+        type: String,
+        required: false,
+        default: ''
+      },
+      hasEmptyOption: {
+        type: Boolean,
+        required: false,
+        default: true
+      },
+      emptyOptionText: {
+        type: String,
+        required: false,
+        default: '请选择'
+      }
     },
     data() {
       return {
