@@ -148,24 +148,24 @@ export const JeecgListMixin = {
       this.queryParam = {}
       this.loadData(1);
     },
-    batchDel: function () {
+    batchDel() {
       if(!this.url.deleteBatch){
         this.$message.error("请设置url.deleteBatch属性!")
         return
       }
       if (this.selectedRowKeys.length <= 0) {
         this.$message.warning('请选择一条记录！');
-        return;
+        return
       } else {
         var ids = "";
         for (var a = 0; a < this.selectedRowKeys.length; a++) {
-          ids += this.selectedRowKeys[a] + ",";
+          ids += this.selectedRowKeys[a] + ","
         }
-        var that = this;
+        var that = this
         this.$confirm({
           title: "确认删除",
           content: "是否删除选中数据?",
-          onOk: function () {
+          onOk: () => {
             deleteAction(that.url.deleteBatch, {ids: ids}).then((res) => {
               if (res.success) {
                 that.$message.success(res.message);
@@ -179,7 +179,7 @@ export const JeecgListMixin = {
         });
       }
     },
-    handleDelete: function (id) {
+    handleDelete(id) {
       if(!this.url.delete){
         this.$message.error("请设置url.delete属性!")
         return
@@ -194,11 +194,11 @@ export const JeecgListMixin = {
         }
       });
     },
-    handleEdit: function (record) {
+    handleEdit(record) {
       this.$refs.modalForm.edit(record);
       this.$refs.modalForm.title = "编辑";
     },
-    handleAdd: function () {
+    handleAdd() {
       this.$refs.modalForm.add();
       this.$refs.modalForm.title = "新增";
     },
