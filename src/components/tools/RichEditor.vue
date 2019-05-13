@@ -78,15 +78,8 @@
           branding: false
         },
         content: this.value,
-        visible: true,
+        visible: true
       }
-    },
-    methods: {
-      // getContent() {
-      //   return tinymce.getContent()
-      // }
-    },
-    created() {
     },
     mounted() {
       tinymce.init({})

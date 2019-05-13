@@ -30,7 +30,7 @@
           />
         </a-form-item>
         <a-form-item>
-          <rich-editor ref="richText" v-model="model.text"></rich-editor>
+          <rich-editor ref="richText" v-if="refreshRichText" v-model="model.text"></rich-editor>
         </a-form-item>
       </a-form>
     </a-spin>
@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      content: null,
+      refreshRichText: false,
       editorOption: {},
       title: '操作',
       visible: false,
@@ -83,7 +83,9 @@ export default {
       this.form.resetFields()
       this.model = Object.assign({}, record)
       this.visible = true
+      this.refreshRichText = false
       this.$nextTick(() => {
+        this.refreshRichText = true
         this.form.setFieldsValue(pick(this.model, 'title', 'text', 'articleType', 'articleState', 'accessoryUrl'))
         //时间格式化
       })
