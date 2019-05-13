@@ -7,7 +7,8 @@ import { UserLayout, TabLayout, RouteView } from '@/components/layouts'
 export const asyncRouterMap = [
   {
     path: '/',
-    name: 'dashboard',
+    // name: 'dashboard',
+    name: '_dashboard',
     // component: TabLayout,
     // component: () => import('@/views/website/index'),
 
