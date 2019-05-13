@@ -73,8 +73,9 @@
     <!-- table区域-begin -->
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{
-          selectedRowKeys.length }}</a>项
+        <i class="anticon anticon-info-circle ant-alert-icon"></i>
+        已选择
+        <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
 
@@ -91,8 +92,9 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
+          <a @click="jumpCategoryEntryList(record.id)">评审条目管理</a>
+          <a-divider type="vertical"/>
           <a @click="handleEdit(record)">编辑</a>
-
           <a-divider type="vertical"/>
           <a-dropdown>
             <a class="ant-dropdown-link">更多 <a-icon type="down"/></a>
@@ -202,6 +204,16 @@
     computed: {
       importExcelUrl: function () {
         return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
+      }
+    },
+    methods: {
+      jumpCategoryEntryList(id){
+        // review_settings-entry
+        this.$router.push({
+          name: 'review_settings-entry',
+          path: '/review_settings/entry',
+          params:{ categoryId: id }
+        })
       }
     }
   }

@@ -164,6 +164,9 @@ export default {
         informationId: 'like',
         updateById: 'like'
       },
+      queryParam: {
+        categoryId: this.$route.params.categoryId || ''
+      },
       categoryData: [],
       informationData: [],
       // 表头
