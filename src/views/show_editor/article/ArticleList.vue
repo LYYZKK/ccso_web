@@ -27,6 +27,7 @@
                   v-decorator="['articleState', {}]"
                   :triggerChange="true"
                   placeholder="请选择文章状态"
+                  emptyOptionText="全部"
                   dictCode="article_state"
                 />
               </a-form-item>
