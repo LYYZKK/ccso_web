@@ -75,8 +75,9 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
+          <a @click="jumpCategoryEntryList(record.id)">评审条目管理</a>
+          <a-divider type="vertical"/>
           <a @click="handleEdit(record)">编辑</a>
-
           <a-divider type="vertical"/>
           <a-dropdown>
             <a class="ant-dropdown-link">更多 <a-icon type="down"/></a>
@@ -187,7 +188,16 @@
         return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
       }
     },
-    methods: {}
+    methods: {
+      jumpCategoryEntryList(id){
+        // review_settings-entry
+        this.$router.push({
+          name: 'review_settings-entry',
+          path: '/review_settings/entry',
+          params:{ categoryId: id }
+        })
+      }
+    }
   }
 </script>
 <style lang="less" scoped>

@@ -1,83 +1,5 @@
 <template>
   <a-card :bordered="false">
-    <!-- 查询区域 -->
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="24">
-          <a-col :span="6">
-            <a-form-item label="编号">
-              <a-input placeholder="请输入编号" v-model="queryParam.no"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="6">
-            <a-form-item label="评审需求">
-              <a-input placeholder="请输入评审需求" v-model="queryParam.requirements"></a-input>
-            </a-form-item>
-          </a-col>
-
-          <a-col :span="6">
-            <a-form-item label="评审类别">
-              <a-select
-                showSearch
-                placeholder="请选择评审类别"
-                v-model="queryParam.categoryId"
-              >
-                <a-select-option value>全部</a-select-option>
-                <a-select-option
-                  v-for="(_type, key) in categoryData"
-                  :key="key"
-                  :value="_type.id"
-                >{{ _type.name }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="6">
-            <a-form-item label="评审资料">
-              <a-select
-                showSearch
-                placeholder="请选择评审资料"
-                v-model="queryParam.informationId"
-              >
-                <a-select-option value>全部</a-select-option>
-                <a-select-option
-                  v-for="(_type, key) in informationData"
-                  :key="key"
-                  :value="_type.id"
-                >{{ _type.name }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-              <a-button
-                type="primary"
-                @click="searchReset"
-                icon="reload"
-                style="margin-left: 8px"
-              >重置</a-button>
-            </span>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-
-    <!-- 操作按钮区域 -->
-    <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay">
-          <a-menu-item key="1" @click="batchDel">
-            <a-icon type="delete"/>删除
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px">
-          批量操作
-          <a-icon type="down"/>
-        </a-button>
-      </a-dropdown>
-    </div>
-
     <!-- table区域-begin -->
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
@@ -134,10 +56,10 @@ import { getAction } from '@/api/manage'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 import { constantCfgMixin } from '@/mixins/constant.cfg'
 
-import EntryModal from './modules/EntryModal'
+import EntryModal from '@/views/review_settings/entry/modules/EntryModal'
 
 export default {
-  name: 'EntryList',
+  name: 'CategoryEntryList',
   mixins: [JeecgListMixin, constantCfgMixin],
   components: {
     EntryModal
@@ -163,9 +85,6 @@ export default {
         categoryId: 'like',
         informationId: 'like',
         updateById: 'like'
-      },
-      queryParam: {
-        categoryId: this.$route.params.categoryId || ''
       },
       categoryData: [],
       informationData: [],

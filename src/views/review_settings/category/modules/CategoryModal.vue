@@ -29,6 +29,9 @@
           label="达标百分比" >
           <a-input-number size="big" v-decorator="['standardValue', validatorRules.standardValue]" />
         </a-form-item>
+        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="描述">
+          <a-textarea placeholder="请输入描述" v-decorator="['remark', {}]" style="height: 100px"/>
+        </a-form-item>
       </a-form>
     </a-spin>
   </a-modal>
