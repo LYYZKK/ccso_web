@@ -1,8 +1,8 @@
 <template>
   <div style="background-color: #ececec; padding: 20px;">
     <a-row :gutter="16" class="card">
-      <a-col v-for="(item,index) in template" :key="index" v-has="'template:download'">
-        <a-card :title=item :bordered="false">
+      <a-col v-for="(item,index) in template" :key="index" v-has="item.permissionSid">
+        <a-card :title=item.name :bordered="false">
           <a-button type="primary">点击下载</a-button>
         </a-card>
       </a-col>
@@ -13,7 +13,13 @@
 export default {
   data(){
     return{
-      template:['绩效数据模板','评审申请模板','现场访谈模板','现场确认模板','现场试算模板']
+      template:[
+        { name: '绩效数据模板', permissionSid: 'template:achievements' },
+        { name: '评审申请模板', permissionSid: 'template:review' },
+        { name: '现场访谈模板', permissionSid: 'template:interviews' },
+        { name: '现场确认模板', permissionSid: 'template:insure' },
+        { name: '现场试算模板', permissionSid: 'template:calculation' },
+      ]
     }
   }
 }
