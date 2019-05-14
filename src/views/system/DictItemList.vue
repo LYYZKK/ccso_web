@@ -23,6 +23,11 @@
                   <a-input style="width: 120px;" placeholder="请输入名称" v-model="queryParam.itemText"></a-input>
                 </a-form-item>
               </a-col>
+              <a-col :md="8" :sm="12">
+                <a-form-item label="编码">
+                  <a-input style="width: 120px;" placeholder="请输入编码" v-model="queryParam.itemCode"></a-input>
+                </a-form-item>
+              </a-col>
               <a-col :md="9" :sm="24">
                 <a-form-item label="状态" style="width: 170px" :labelCol="labelCol" :wrapperCol="wrapperCol">
                   <a-select
@@ -103,6 +108,11 @@
             dataIndex: 'itemText',
           },
           {
+            title: '编码',
+            align: "center",
+            dataIndex: 'itemCode',
+          },
+          {
             title: '数据值',
             align: "center",
             dataIndex: 'itemValue',
@@ -142,18 +152,16 @@
           }
         ],
         queryParam: {
-          dictId: "",
-          dictName: "",
-          itemText: "",
           delFlag: "1",
           status: [],
         },
         queryType: {
-          itemText: 'like'
+          itemText: 'like',
+          itemCode: 'like'
         },
         title: "操作",
         visible: false,
-        screenWidth: 800,
+        screenWidth: 900,
         model: {},
         dictId: "",
         status: 1,

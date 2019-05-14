@@ -21,6 +21,13 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
+          label="编码">
+          <a-input placeholder="请输入编码" v-decorator="['itemCode', {}]"/>
+        </a-form-item>
+
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
           label="数据值">
           <a-input placeholder="请输入数据值" v-decorator="['itemValue', validatorRules.itemValue]"/>
         </a-form-item>
