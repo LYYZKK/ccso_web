@@ -92,8 +92,8 @@ export default {
       url: {
         add: '/review/entry/add',
         edit: '/review/entry/edit',
-        informationUrl: '/review/information/queryIdAndNameAll?pageSize=-1',
-        categoryUrl: '/review/category/queryIdAndNameAll?pageSize=-1'
+        informationUrl: '/review/information/queryIdAndNameAll',
+        categoryUrl: '/review/category/queryIdAndNameAll'
       },
       validatorRules: {
         no: { rules: [{ required: true, message: '请输入编号!' }] },
