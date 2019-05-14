@@ -19,7 +19,6 @@
             <a-form-item label="评审类别">
               <a-select
                 showSearch
-                placeholder="请选择评审类别"
                 v-model="queryParam.categoryId"
               >
                 <a-select-option value>全部</a-select-option>
@@ -35,7 +34,7 @@
             <a-form-item label="评审资料">
               <a-select
                 showSearch
-                placeholder="请选择评审资料"
+                placeholder="全部"
                 v-model="queryParam.informationId"
               >
                 <a-select-option value>全部</a-select-option>

@@ -1,6 +1,6 @@
 <template>
   <a-select :placeholder="placeholder" :value="value" @change="handleInput">
-    <a-select-option v-if="hasEmptyOption" value="">{{ emptyOptionText }}</a-select-option>
+    <a-select-option v-if="hasEmptyOption" value>{{ emptyOptionText }}</a-select-option>
     <a-select-option v-for="(item, key) in dictOptions" :key="key" :value="item.value">{{ item.text }}</a-select-option>
   </a-select>
 </template>
