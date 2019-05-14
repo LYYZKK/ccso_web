@@ -15,10 +15,10 @@ import {getAction} from '@/api/manage'
  */
 export async function initDictOptions(dictCode) {
   if (!dictCode) {
-    return '字典Code不能为空!';
+    return '字典Code不能为空!'
   }
   //获取字典数组
-  return await ajaxGetDictItems(dictCode);
+  return await ajaxGetDictItems(dictCode)
 }
 
 /**
@@ -64,23 +64,22 @@ export function filterDictOptionByText(dictOptions, text) {
  * @return String
  */
 export function filterMultiDictText(dictOptions, text) {
-  if(!text){
+  if(!text) {
     return ""
   }
-  let re = ""
-  let arr = text.split(",")
+  let re = "", arr = text.split(",")
   dictOptions.forEach(function (option) {
     for(let i = 0; i < arr.length; i++){
       if (arr[i] === option.value) {
-        re += option.text + ",";
-        break;
+        re += option.text + ","
+        break
       }
     }
-  });
-  if(re == ""){
+  })
+  if(re == "") {
     return re
   }
-  return re.substring(0,re.length-1);
+  return re.substring(0, re.length - 1)
 }
 
 /**
@@ -97,7 +96,28 @@ export async function ajaxFilterDictText(dictCode, key) {
   }
 
   //通过请求读取字典文本
-  let res = await getAction(`/sys/dict/getDictText/${dictCode}/${key}`);
+  let res = await getAction(`/sys/dict/getDictText/${dictCode}/${key}`)
 
   return res.success ? res.result : ''
+}
+
+/**
+ * 根据字典编码和字典项编码查询字典项.
+ *
+ * @param dictCode 数据字典编码
+ * @param itemCode 数据字典项编码
+ * @returns 数据字典项.
+ */
+export async function getDictItemByDictCodeAndItemCode(dictCode, itemCode) {
+  if (!dictCode) {
+    return '字典Code不能为空!'
+  }
+  if (!itemCode) {
+    return '字典项Code不能为空!'
+  }
+
+  //通过请求读取字典文本
+  let res = await getAction(`/sys/dictItem/query/${dictCode}/${itemCode}`)
+
+  return res.success ? res.result : {}
 }
