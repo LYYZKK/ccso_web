@@ -1,7 +1,7 @@
 <template>
   <div style="background-color: #ececec; padding: 20px;">
     <a-row :gutter="16" class="card">
-      <a-col v-for="(item,index) in template" :key="index" v-has="'user:add'">
+      <a-col v-for="(item,index) in template" :key="index" v-has="'template:download'">
         <a-card :title=item :bordered="false">
           <a-button type="primary">点击下载</a-button>
         </a-card>
@@ -21,12 +21,10 @@ export default {
 <style lang="scss" scoped>
   .card{
     display:flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-content: center;
     flex-wrap: wrap;
-
     &>div{
-      min-width: 200px;
       margin: 20px;
     }
   }
