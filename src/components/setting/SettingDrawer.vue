@@ -4,7 +4,7 @@
       title="系统设置"
       width="300"
       placement="right"
-      :closable="false"
+      :closable="true"
       @close="onClose"
       :visible="visible"
     >
@@ -144,11 +144,6 @@
           </div>
         </div>
         <a-divider />
-      </div>
-      <div class="ant-drawer-close" @click="onClose">
-        <span class="ant-drawer-close-x">
-          <a-icon type="close" />
-        </span>
       </div>
     </a-drawer>
   </div>
