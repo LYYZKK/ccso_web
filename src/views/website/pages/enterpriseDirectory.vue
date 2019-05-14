@@ -2,7 +2,7 @@
   <div class="">
     <div class="main">
       <div class="line">
-        <div><div>您的位置：<span @click="$router.replace('/home')" style="cursor:pointer;">首页</span> > 企业名录</div></div>
+        <div><div>您的位置：<span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span> > 企业名录</div></div>
         <div class="search">
           <input type="text" placeholder="请输入姓名/编号" />
           <img
@@ -116,7 +116,8 @@ export default {
   methods: {}
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import '../common.scss';
 .enterprise{
   margin: 20px 0;
 }

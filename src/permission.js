@@ -10,6 +10,14 @@ import { generateIndexRouter } from "@/utils/util"
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = [
+  '/',
+  '/website',
+  '/website/home',
+  '/website/news',
+  '/website/guide',
+  '/website/train',
+  '/website/expertDirectories',
+  '/website/enterpriseDirectory',
   '/user/login',
   '/user/register',
   '/user/register-result'
@@ -62,10 +70,14 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
+    if (to.path === '/') {
+      next({ path: '/website'})
+    }
     if (whiteList.indexOf(to.path) !== -1) {
       // 在免登录白名单，直接进入
       next()
     } else {
+      console.log(123123)
       next({ path: '/user/login', query: { redirect: to.fullPath } })
       NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
     }

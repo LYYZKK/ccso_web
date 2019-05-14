@@ -4,7 +4,7 @@
       <div class="line">
         <div>
           您的位置：<span
-            @click="$router.replace('/home')"
+            @click="$router.push('/website/home')"
             style="cursor:pointer;"
             >首页</span
           >
@@ -75,3 +75,6 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+@import '../common.scss';
+</style>

@@ -1,29 +1,30 @@
 <template>
   <div>
-    <div class="top" @click="goto('/home')">
-      <img src="../../static/images/top.jpg" alt="" />
+    <div class="top" @click="goto('/website/home')">
+      <img src="../../../../static/images/top.jpg" alt="" />
     </div>
     <div class="navBar">
-      <div @click="goto('/home')" :class="{on:'/home'===$route.path}">
+      <div @click="goto('/website/home')" :class="{on:'/website/home'===$route.path}">
         <span>网站首页</span>
       </div>
-      <div @click="goto('/news')" :class="{on:'/news'===$route.path}">
+      <div @click="goto('/website/news')" :class="{on:'/website/news'===$route.path}">
         <span>新闻资讯</span>
       </div>
-      <div @click="goto('/guide')" :class="{on:'/guide'===$route.path}">
+      <div @click="goto('/website/guide')" :class="{on:'/website/guide'===$route.path}">
         <span>标准指引</span>
       </div>
-      <div @click="goto('/train')" :class="{on:'/train'===$route.path}">
+      <div @click="goto('/website/train')" :class="{on:'/website/train'===$route.path}">
         <span>标准培训</span>
       </div>
-      <div @click="goto('/enterpriseDirectory')" :class="{on:'/enterpriseDirectory'===$route.path}">
+      <div @click="goto('/website/enterpriseDirectory')" :class="{on:'/website/enterpriseDirectory'===$route.path}">
         <span>企业名录</span>
       </div>
-      <div @click="goto('/expertDirectories')" :class="{on:'/expertDirectories'===$route.path}">
+      <div @click="goto('/website/expertDirectories')" :class="{on:'/website/expertDirectories'===$route.path}">
         <span>专家名录</span>
       </div>
       <div>
-        <a href="http://chinaccso.org.cn:8090/login.jsp">评审登陆</a>
+        <!-- <a href="http://chinaccso.org.cn:8090/login.jsp">评审登陆</a> -->
+        <router-link to="/user/login" >评审登陆</router-link>
       </div>
     </div>
 
@@ -69,12 +70,19 @@ export default {
   },
   methods: {
     goto(path){
-      this.$router.replace(path);
+      this.$router.push({path})
     },
   },
 };
 </script>
-<style>
+<style scoped>
+a{
+  text-decoration: none;
+  color: #fff;
+}
+/* .router-link-active {
+  color: #000;
+} */
 .top {
   text-align: center;
   cursor: pointer;
