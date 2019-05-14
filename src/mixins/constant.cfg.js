@@ -18,6 +18,21 @@ export const constantCfgMixin = {
       ],
       DICT_SHOW_RENDER: ({text, show_type, show_color}) => {
         return filter(this.DICT_SHOW_TYPES, {value: show_type || 'text'})[0].render({text, show_color})
+      },
+      UPLOAD_CHANGE_HANDLER: (input, fieldName) => {
+        if (input.file.status === 'uploading') {
+          this.uploadLoading = true
+          return
+        }
+        if (input.file.status === 'done') {
+          var response = input.file.response;
+          this.uploadLoading = false;
+          if (response.success) {
+            this.model[fieldName] = response.message;
+          } else {
+            this.$message.warning(response.message);
+          }
+        }
       }
     }
   }

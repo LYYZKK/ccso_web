@@ -1,0 +1,218 @@
+<template>
+  <a-modal
+    :title="title"
+    :width="800"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
+    @ok="handleOk"
+    @cancel="handleCancel"
+    cancelText="关闭">
+
+    <a-spin :spinning="confirmLoading">
+      <a-form :form="form">
+
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="企业名称">
+          <a-input placeholder="请输入企业名称" v-decorator="['name', validatorRules.name]"/>
+        </a-form-item>
+        <a-form-item label="LOGO" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-upload
+            listType="picture-card"
+            :showUploadList="false"
+            :action="uploadAction"
+            :data="{'isup':1}"
+            :headers="headers"
+            :beforeUpload="beforeUpload"
+            @change="handleChange"
+          >
+            <img v-if="model.logo" :src="getLogoView()" alt="头像" style="height:104px;max-width:300px"/>
+            <div v-else>
+              <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
+              <div class="ant-upload-text">上传</div>
+            </div>
+          </a-upload>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="营业执照编号">
+          <a-input placeholder="请输入营业执照编号" v-decorator="['businessLicenseNo', validatorRules.businessLicenseNo]"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="营业执照文件">
+          <a-input placeholder="请输入营业执照文件"
+                   v-decorator="['businessLicenseFile', validatorRules.businessLicenseFile]"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="注册资本">
+          <j-dict-select-tag
+            v-decorator="['registeredCapital', validatorRules.registeredCapital]"
+            :triggerChange="true"
+            placeholder="请选择注册资本"
+            dictCode="registered_capital"
+          />
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="网站链接">
+          <a-input placeholder="请输入网站链接" v-decorator="['sitesLinks', validatorRules.sitesLinks]"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="网站简介">
+          <a-textarea placeholder="请输入网站简介" v-decorator="['briefIntroduction', {}]"/>
+        </a-form-item>
+
+      </a-form>
+    </a-spin>
+  </a-modal>
+</template>
+
+<script>
+  import pick from 'lodash.pick'
+  import Vue from 'vue'
+
+  import antMixin from '@/mixins/ant-mixin'
+  import {httpAction} from '@/api/manage'
+  import { ACCESS_TOKEN } from "@/store/mutation-types"
+
+  export default {
+    name: 'EnterpriseModal',
+    mixins: [antMixin],
+    data() {
+      return {
+        title: '操作',
+        visible: false,
+        model: {},
+        labelCol: {
+          xs: {span: 24},
+          sm: {span: 5},
+        },
+        wrapperCol: {
+          xs: {span: 24},
+          sm: {span: 16},
+        },
+        confirmLoading: false,
+        form: this.$form.createForm(this),
+        validatorRules: {
+          name: {rules: [{required: true, message: '请输入标题!'}]},
+          logo: {rules: [{required: true, message: '请选择状态!'}]},
+          businessLicenseNo: {rules: [{required: true, message: '请输入营业执照编号!'}]},
+          businessLicenseFile: {rules: [{required: true, message: '请选择营业执照文件!'}]},
+          principal: {rules: [{required: true, message: '请输入负责人!'}]},
+          principalPhoneNum: {rules: [{required: true, message: '请输入负责人手机号码!'}]},
+          sitesLinks: {rules: [{required: true, message: '请输入网站链接!'}]},
+          registeredCapital: {rules: [{required: true, message: '请选择类型!'}]}
+        },
+        url: {
+          add: '/sys/enterprise/add',
+          edit: '/sys/enterprise/edit',
+          fileUpload: window._CONFIG['domainURL'] + "/sys/common/upload",
+          imgerver: window._CONFIG['domainURL'] + "/sys/common/view",
+        },
+        uploadLoading:false,
+      }
+    },
+    created() {
+      const token = Vue.ls.get(ACCESS_TOKEN);
+      this.headers = {"X-Access-Token": token}
+    },
+    computed: {
+      uploadAction: function () {
+        return this.url.fileUpload;
+      }
+    },
+    methods: {
+      getLogoView(){
+        return this.url.imgerver +"/"+ this.model.logo;
+      },
+      handleChange(info) {
+        if (info.file.status === 'uploading') {
+          this.uploadLoading = true
+          return
+        }
+        if (info.file.status === 'done') {
+          var response = info.file.response;
+          this.uploadLoading = false;
+          console.log(response);
+          if (response.success) {
+            this.model.logo = response.message;
+          } else {
+            this.$message.warning(response.message);
+          }
+        }
+      },
+      beforeUpload: function (file) {
+        var fileType = file.type;
+        if (fileType.indexOf('image') < 0) {
+          this.$message.warning('请上传图片');
+          return false;
+        }
+        //TODO 验证文件大小
+      },
+
+      add() {
+        this.edit({})
+      },
+      edit(record) {
+        this.form.resetFields()
+        this.model = Object.assign({}, record)
+        this.visible = true
+        this.$nextTick(() => {
+          this.form.setFieldsValue(pick(this.model, 'name', 'logo', 'enterpriseType', 'businessLicenseNo', 'businessLicenseFile', 'registeredCapital', 'sitesLinks', 'briefIntroduction'))
+          //时间格式化
+        })
+      },
+      close() {
+        this.$emit('close')
+        this.visible = false
+      },
+      handleOk() {
+        const that = this
+        // 触发表单验证
+        this.form.validateFields((err, values) => {
+          if (!err) {
+            that.confirmLoading = true
+            let httpurl = '', method = ''
+            if (!this.model.id) {
+              httpurl += this.url.add
+              method = 'post'
+            } else {
+              httpurl += this.url.edit
+              method = 'put'
+            }
+            let formData = Object.assign(this.model, values)
+            //时间格式化
+            console.log('send request with formData =', formData)
+            httpAction(httpurl, formData, method).then((res) => {
+              if (res.success) {
+                that.$message.success(res.message)
+                that.$emit('ok')
+              } else {
+                that.$message.warning(res.message)
+              }
+            }).finally(() => {
+              that.confirmLoading = false
+              that.close()
+            })
+          }
+        })
+      },
+      handleCancel() {
+        this.close()
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>
