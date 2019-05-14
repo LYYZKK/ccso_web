@@ -4,11 +4,9 @@
       <div class="line">
         <div><div>您的位置：<span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span> > 企业名录</div></div>
         <div class="search">
-          <input type="text" placeholder="请输入姓名/编号" />
-          <img
-            src="http://chinaccso.org.cn:8090/images/ss_03.png"
-            alt=""
-            style="cursor:pointer;"
+          <a-input-search
+            placeholder="请输入姓名/编号"
+            style="width: 200px"
           />
         </div>
       </div>
@@ -114,7 +112,7 @@ export default {
     return {};
   },
   methods: {}
-};
+}
 </script>
 <style lang="scss" scoped>
 @import '../common.scss';

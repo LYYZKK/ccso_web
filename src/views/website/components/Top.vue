@@ -80,9 +80,6 @@ a{
   text-decoration: none;
   color: #fff;
 }
-/* .router-link-active {
-  color: #000;
-} */
 .top {
   text-align: center;
   cursor: pointer;
@@ -97,12 +94,11 @@ a{
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
-  background-color: #037dc8;
+  background-color: #168bf7;
   color: #fff;
 }
-@media (max-width:500px) {
-  .navBar{
-    /* margin-top: 0; */
+@media (max-width: 500px) {
+  .navBar {
     display: none
   }
 }
@@ -112,9 +108,6 @@ a{
   cursor: pointer;
 }
 .on {
-  color: red;
+  color: #ef585a;
 }
 </style>
-
-
-

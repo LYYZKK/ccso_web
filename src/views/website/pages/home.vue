@@ -1,11 +1,9 @@
 <template>
-  <div class="">
-    <div class="main">
-      <div class="links">
-        <div v-for="(item, index) in links" :key="index" @click="goto(item.path)">
-          <span>{{ item.name }}</span>
-          <img :src="item.img" alt="" />
-        </div>
+  <div class="main">
+    <div class="links">
+      <div v-for="(item, index) in links" :key="index" @click="goto(item.path)">
+        <span>{{ item.name }}</span>
+        <img :src="item.img" alt="" />
       </div>
     </div>
   </div>
@@ -81,7 +79,7 @@ export default {
       left: 50%;
       top: 50%;
       transform: translate(-50%, -20%);
-      color: rgb(25, 107, 167);
+      color: #0c70e2;
       font-size: 20px;
       font-weight: 900;
     }

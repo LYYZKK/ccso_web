@@ -23,11 +23,12 @@ const err = (error) => {
         break
       case 500:
         //notification.error({ message: '系统提示', description:'Token失效，请重新登录!',duration: 4})
-        if(token && data.message=="Token失效，请重新登录"){
+        if (token && data.message == 'Token失效，请重新登录') {
           // update-begin- --- author:scott ------ date:20190225 ---- for:Token失效采用弹框模式，不直接跳转----
           // store.dispatch('Logout').then(() => {
           //     window.location.reload()
           // })
+          
           Modal.error({
             title: '登录已过期',
             content: '很抱歉，登录已过期，请重新登录',

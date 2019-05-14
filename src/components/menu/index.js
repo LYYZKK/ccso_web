@@ -93,7 +93,6 @@ export default {
           ]
         )
       }
-
     },
     renderSubMenu: function (h, menu, pIndex, index) {
       const this2_ = this;
