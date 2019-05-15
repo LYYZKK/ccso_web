@@ -126,7 +126,7 @@
 <script>
 import ArticleModal from './modules/ArticleModal'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-import { constantCfgMixin } from '@/mixins/constant.cfg'
+import constantCfgMixin from '@/mixins/constant.cfg'
 import { initDictOptions, filterDictOptionByText } from '@/components/dict/JDictSelectUtil'
 
 export default {

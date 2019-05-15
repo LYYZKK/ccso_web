@@ -131,7 +131,7 @@ import filter from 'lodash.filter'
 
 import { getAction } from '@/api/manage'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-import { constantCfgMixin } from '@/mixins/constant.cfg'
+import constantCfgMixin from '@/mixins/constant.cfg'
 
 import EntryModal from './modules/EntryModal'
 

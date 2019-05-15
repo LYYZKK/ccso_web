@@ -36,59 +36,60 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
-  import HeaderNotice from './HeaderNotice'
-  import SettingDrawer from '@/components/setting/SettingDrawer'
+import HeaderNotice from './HeaderNotice'
+import SettingDrawer from '@/components/setting/SettingDrawer'
 
-  import { mixinDevice } from '@/utils/mixin.js'
-  export default {
-    name: "UserMenu",
-    mixins: [mixinDevice],
-    components: {
-      HeaderNotice,
-      SettingDrawer
+import { mixinDevice } from '@/utils/mixin.js'
+
+export default {
+  name: 'UserMenu',
+  mixins: [mixinDevice],
+  components: {
+    HeaderNotice,
+    SettingDrawer
+  },
+  props: {
+    theme: {
+      type: String,
+      required: false,
+      default: 'dark'
+    }
+  },
+  methods: {
+    ...mapActions(['Logout']),
+    ...mapGetters(['nickname', 'avatar']),
+    toggleSettingDraw () {
+      this.$refs.settingDrawer.toggle()
     },
-    props: {
-      theme: {
-        type: String,
-        required: false,
-        default: 'dark'
-      }
+    getAvatar () {
+      console.log('url = ' + window._CONFIG['imgDomainURL'] + '/' + this.avatar())
+      return window._CONFIG['imgDomainURL'] + '/' + this.avatar()
     },
-    methods: {
-      ...mapActions(["Logout"]),
-      ...mapGetters(["nickname", "avatar"]),
-      toggleSettingDraw() {
-        this.$refs.settingDrawer.toggle()
-      },
-      getAvatar(){
-        console.log('url = '+ window._CONFIG['imgDomainURL']+"/"+this.avatar())
-        return window._CONFIG['imgDomainURL']+"/"+this.avatar()
-      },
-      handleLogout() {
-        const that = this
+    handleLogout () {
+      const that = this
 
-        this.$confirm({
-          title: '提示',
-          content: '真的要注销登录吗 ?',
-          onOk() {
-            return that.Logout({}).then(() => {
-                window.location.href="/";
-              //window.location.reload()
-            }).catch(err => {
-              that.$message.error({
-                title: '错误',
-                description: err.message
-              })
+      this.$confirm({
+        title: '提示',
+        content: '真的要注销登录吗 ?',
+        onOk () {
+          return that.Logout({}).then(() => {
+            window.location.href = '/user/login'
+            //window.location.reload()
+          }).catch(err => {
+            that.$message.error({
+              title: '错误',
+              description: err.message
             })
-          },
-          onCancel() {
-          },
-        });
-      },
+          })
+        },
+        onCancel () {
+        }
+      })
     }
   }
+}
 </script>
 
 <style scoped>

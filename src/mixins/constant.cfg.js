@@ -1,7 +1,7 @@
 import filter from 'lodash.filter'
 
 export default {
-  data(){
+  data() {
     return {
       DICT_SHOW_COLORS: [
         {value: 'pink', description: '粉红色'},
