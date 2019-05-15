@@ -91,7 +91,7 @@
 
   import {filterObj} from '@/utils/util'
   import DictItemModal from './modules/DictItemModal'
-  import {constantCfgMixin} from "@/mixins/constant.cfg"
+  import constantCfgMixin from "@/mixins/constant.cfg"
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import {initDictOptions} from '@/components/dict/JDictSelectUtil'
 
@@ -141,13 +141,14 @@
             align: "center",
             dataIndex: 'itemShowColor',
             customRender: (text) => {
-              return text ? (<a-tag color={text}>{text}</a-tag>) : ''
+              return text ? (<a-tag color = {text} > {text} < /a-tag>) : ''
             }
           },
           {
             title: '操作',
             dataIndex: 'action',
             align: "center",
+            width: 200,
             scopedSlots: {customRender: 'action'},
           }
         ],
@@ -161,7 +162,7 @@
         },
         title: "操作",
         visible: false,
-        screenWidth: 900,
+        screenWidth: 950,
         model: {},
         dictId: "",
         status: 1,

@@ -108,16 +108,16 @@ export async function ajaxFilterDictText(dictCode, key) {
  * @param itemCode 数据字典项编码
  * @returns 数据字典项.
  */
-export async function getDictItemByDictCodeAndItemCode(dictCode, itemCode) {
-  if (!dictCode) {
+export async function getDictItemByDictCodeAndItemCode({dict_code, dict_item_code}) {
+  if (!dict_code) {
     return '字典Code不能为空!'
   }
-  if (!itemCode) {
+  if (!dict_item_code) {
     return '字典项Code不能为空!'
   }
 
   //通过请求读取字典文本
-  let res = await getAction(`/sys/dictItem/query/${dictCode}/${itemCode}`)
+  let res = await getAction(`/sys/dictItem/query/${dict_code}/${dict_item_code}`)
 
   return res.success ? res.result : {}
 }

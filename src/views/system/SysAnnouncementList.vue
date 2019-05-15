@@ -105,10 +105,10 @@
 <script>
   import SysAnnouncementModal from './modules/SysAnnouncementModal'
   import {doReleaseData, doReovkeData} from '@/api/api'
-  import {constantCfgMixin} from "@/mixins/constant.cfg"
+  import constantCfgMixin from "@/mixins/constant.cfg"
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
 
-  import {initDictOptions, filterDictOptionByText} from '@/components/dict/JDictSelectUtil'
+  import {filterDictOptionByText, initDictOptions} from '@/components/dict/JDictSelectUtil'
 
   export default {
     name: "SysAnnouncementList",
