@@ -294,9 +294,8 @@
     & > h3 {
       font-size: 16px;
       margin-bottom: 20px;
+      margin-top: 20px;
     }
-
-
 
     .getCaptcha {
       display: block;

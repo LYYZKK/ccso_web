@@ -1,8 +1,8 @@
 <template>
-  <div style="background-color: #ececec; padding: 20px;">
+  <div class="card-container">
     <a-row :gutter="16" class="card">
-      <a-col v-for="(item,index) in template" :key="index" v-has="item.permissionSid">
-        <a-card :title=item.name :bordered="false">
+      <a-col v-for="(item,index) in template" :key="index">
+        <a-card :title=item.name :bordered="false" v-has="item.permissionSid">
           <a-button type="primary">点击下载</a-button>
         </a-card>
       </a-col>
@@ -25,13 +25,18 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .card{
-    display:flex;
-    justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
+  .card-container {
+    background-color: #ececec;
+    padding: 10px;
+
+    .card{
+      display:flex;
+      justify-content: center;
+      align-content: center;
+      flex-wrap: wrap;
     &>div{
-      margin: 20px;
+       margin: 20px;
+     }
     }
   }
 </style>

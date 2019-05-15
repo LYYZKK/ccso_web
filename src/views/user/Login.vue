@@ -73,15 +73,12 @@
         </a-button>
       </a-form-item>
 
-      <!-- <div class="user-login-other">
-        <span>其他登陆方式</span>
-        <a><a-icon class="item-icon" type="alipay-circle"></a-icon></a>
-        <a><a-icon class="item-icon" type="taobao-circle"></a-icon></a>
-        <a><a-icon class="item-icon" type="weibo-circle"></a-icon></a>
+      <div class="user-login-other">
         <router-link class="register" :to="{ name: 'register' }">
           注册账户
         </router-link>
-      </div>-->
+        <span class="no-account">还没有账户？</span>
+      </div>
     </a-form>
 
     <two-step-captcha
@@ -138,7 +135,7 @@
 //        })
       // update-end- --- author:scott ------ date:20190225 ---- for:暂时注释，未实现登录验证码功能
      // this.requiredTwoStepCaptcha = true
-      
+
     },
     methods: {
       ...mapActions([ "Login", "Logout" ]),
@@ -293,8 +290,9 @@
 
     .user-login-other {
       text-align: left;
-      margin-top: 24px;
+      margin-top: 15px;
       line-height: 22px;
+      margin-bottom: 24px;
 
       .item-icon {
         font-size: 24px;
@@ -311,6 +309,11 @@
 
       .register {
         float: right;
+      }
+
+      .no-account {
+        float: right;
+        margin-right: 5px;
       }
     }
   }

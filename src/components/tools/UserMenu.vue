@@ -76,7 +76,6 @@ export default {
         onOk () {
           return that.Logout({}).then(() => {
             window.location.href = '/user/login'
-            //window.location.reload()
           }).catch(err => {
             that.$message.error({
               title: '错误',
