@@ -26,7 +26,7 @@
                   :precision="0"
                   :formatter="value => `${value}%`"
                   :parser="value => value.replace('%', '')"
-                  v-model="queryParam.standardValue_begin" />
+                  v-model="queryParam.standardValue_begin"/>
                 ~
                 <a-input-number
                   placeholder="请输入"
@@ -92,7 +92,7 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a @click="jumpCategoryEntryList(record.id)">评审条目管理</a>
+          <a @click="jumpEntryList(record.id)">评审条目管理</a>
           <a-divider type="vertical"/>
           <a @click="handleEdit(record)">编辑</a>
           <a-divider type="vertical"/>
@@ -120,7 +120,7 @@
 <script>
   import CategoryModal from './modules/CategoryModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-  import {constantCfgMixin} from "@/mixins/constant.cfg"
+  import constantCfgMixin from "@/mixins/constant.cfg"
 
   export default {
     name: "CategoryList",
@@ -207,12 +207,11 @@
       }
     },
     methods: {
-      jumpCategoryEntryList(id){
-        // review_settings-entry
+      jumpEntryList(id) {
         this.$router.push({
           name: 'review_settings-entry',
           path: '/review_settings/entry',
-          params:{ categoryId: id }
+          params: {categoryId: id}
         })
       }
     }

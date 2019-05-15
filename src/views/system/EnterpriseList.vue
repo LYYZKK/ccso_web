@@ -64,6 +64,15 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
+          <a @click="jumpPersonnelList(record.id)">下属人员</a>
+
+          <a-divider type="vertical"/>
+          <a @click="jumpUserList(record.id)">账户管理</a>
+
+          <a-divider type="vertical"/>
+          <a>前台展示</a>
+
+          <a-divider type="vertical"/>
           <a @click="handleEdit(record)">编辑</a>
 
           <a-divider type="vertical"/>
@@ -92,9 +101,14 @@
 <script>
   import EnterpriseModal from './modules/EnterpriseModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-  import {constantCfgMixin} from '@/mixins/constant.cfg'
+  import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
-  import {initDictOptions, filterDictOptionByText} from '@/components/dict/JDictSelectUtil'
+  import {
+    filterDictOptionByText,
+    getDictItemByDictCodeAndItemCode,
+    initDictOptions
+  } from '@/components/dict/JDictSelectUtil'
+  import ConstConfig from '@/config/constant.config'
 
   export default {
     name: 'EnterpriseList',
@@ -119,12 +133,15 @@
         queryType: {
           name: 'like',
           logo: 'like',
-          enterpriseType: 'like',
+          enterpriseType: 'eq',
           businessLicenseNo: 'like',
           businessLicenseFile: 'like',
           registeredCapital: 'like',
           sitesLinks: 'like',
           briefIntroduction: 'like',
+        },
+        queryParam: {
+          enterpriseType: ''
         },
         // 表头
         columns: [
@@ -164,13 +181,14 @@
           {
             title: '修改时间',
             align: 'center',
-            dataIndex: 'updateTime'
+            dataIndex: 'updateTime',
           },
           {
             title: '操作',
             dataIndex: 'action',
             align: 'center',
             scopedSlots: {customRender: 'action'},
+            width: 400
           }
         ],
         url: {
@@ -180,6 +198,7 @@
         },
         enterpriseTypeDictOptions: [],
         registeredCapitalDictOptions: [],
+        surfaceShowDictOptions: [],
       }
     },
     methods: {
@@ -195,6 +214,32 @@
           if (res.success) {
             this.registeredCapitalDictOptions = res.result
           }
+        })
+        // 初始化字典 - 前台是否显示
+        initDictOptions('surface_show').then(res => {
+          if (res.success) {
+            this.surfaceShowDictOptions = res.result
+          }
+        })
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_cooperate}).then(res => {
+          if (res.success) {
+            this.queryParam.enterpriseType = res.result.itemValue
+          }
+        })
+      },
+
+      jumpPersonnelList(id) {
+        this.$router.push({
+          name: 'isystem-personnel',
+          path: '/isystem/personnel',
+          params: {enterpriseId: id}
+        })
+      },
+      jumpUserList(id) {
+        this.$router.push({
+          name: 'isystem-user',
+          path: '/isystem/user',
+          params: {enterpriseId: id}
         })
       }
     }

@@ -1,6 +1,6 @@
 import filter from 'lodash.filter'
 
-export const constantCfgMixin = {
+export default {
   data(){
     return {
       DICT_SHOW_COLORS: [

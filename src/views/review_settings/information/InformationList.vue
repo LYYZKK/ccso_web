@@ -107,7 +107,7 @@
 <script>
   import InformationModal from './modules/InformationModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-  import {constantCfgMixin} from "@/mixins/constant.cfg"
+  import constantCfgMixin from "@/mixins/constant.cfg"
 
   export default {
     name: "InformationList",

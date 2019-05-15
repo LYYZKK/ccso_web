@@ -68,6 +68,9 @@
             <a @click="generateAccount(record)">生成账号</a>
             <a-divider type="vertical"/>
           </span>
+          <a @click="handleEdit(record)">前台显示</a>
+
+          <a-divider type="vertical"/>
           <a @click="handleEdit(record)">编辑</a>
 
           <a-divider type="vertical"/>
@@ -97,9 +100,9 @@
 <script>
   import PersonnelModal from './modules/PersonnelModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
-  import {constantCfgMixin} from '@/mixins/constant.cfg'
+  import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
-  import {initDictOptions, filterDictOptionByText} from '@/components/dict/JDictSelectUtil'
+  import {filterDictOptionByText, initDictOptions} from '@/components/dict/JDictSelectUtil'
   import {httpAction} from '@/api/manage'
 
   export default {
@@ -139,6 +142,10 @@
           enterpriseId: 'like',
           roleId: 'like',
         },
+        queryParam: {
+          enterpriseId: this.$route.params.enterpriseId || ''
+        },
+
         // 表头
         columns: [
           {
@@ -184,7 +191,7 @@
             align: 'center',
             dataIndex: 'email',
             customRender: (text, record) => {
-              return record.sysUserId==-1?'':text
+              return record.sysUserId == -1 ? '' : text
             }
           },
           {
@@ -214,6 +221,9 @@
         confirmLoading: false,
       }
     },
+    created() {
+
+    },
     methods: {
       initDictConfig() {
         // 初始化字典 - 证书类型
@@ -227,8 +237,8 @@
       generateAccount(record) {
         this.confirmLoading = true
         httpAction(this.url.generateAccountUrl, record, 'post').then(res => {
-          console.log("code："+res.code+"---resMessage："+ res.message)
-          if (res.code===200) {
+          console.log("code：" + res.code + "---resMessage：" + res.message)
+          if (res.code === 200) {
             this.$message.success(res.message)
           } else {
             this.$message.error(res.message)

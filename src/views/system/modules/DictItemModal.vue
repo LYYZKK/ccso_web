@@ -57,7 +57,9 @@
             v-decorator="['itemShowType']"
           >
             <a-select-option value="">请选择</a-select-option>
-            <a-select-option v-for="(_type, key) in DICT_SHOW_TYPES" :key="key" :value="_type.value">{{ _type.description }}</a-select-option>
+            <a-select-option v-for="(_type, key) in DICT_SHOW_TYPES" :key="key" :value="_type.value">{{
+              _type.description }}
+            </a-select-option>
           </a-select>
         </a-form-item>
 
@@ -92,7 +94,7 @@
 <script>
   import pick from 'lodash.pick'
 
-  import {constantCfgMixin} from "@/mixins/constant.cfg"
+  import constantCfgMixin from "@/mixins/constant.cfg"
   import {addDictItem, editDictItem} from '@/api/api'
 
   export default {
@@ -140,7 +142,7 @@
         this.model.status = this.status;
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'itemText', 'itemValue', 'description', 'sortOrder', 'itemShowType', 'itemShowColor'))
+          this.form.setFieldsValue(pick(this.model, 'itemText', 'itemCode', 'itemValue', 'description', 'sortOrder', 'itemShowType', 'itemShowColor'))
         });
       },
       onChose(checked) {
