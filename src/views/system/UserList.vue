@@ -178,7 +178,7 @@
   import {frozenBatch} from '@/api/api'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
-  import { initDictOptions, filterDictOptionByText } from '@/components/dict/JDictSelectUtil'
+  import {filterDictOptionByText, initDictOptions} from '@/components/dict/JDictSelectUtil'
 
   export default {
     name: "UserList",
@@ -194,6 +194,9 @@
           username: 'like',
           email: 'like',
           phone: 'like'
+        },
+        queryParam: {
+          enterpriseId: this.$route.params.enterpriseId || ''
         },
         sexDictOptions: [],
         userStatusDictOptions: [],
