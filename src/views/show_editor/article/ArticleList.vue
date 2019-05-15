@@ -63,7 +63,8 @@
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel">
-            <a-icon type="delete"/>删除
+            <a-icon type="delete"/>
+            删除
           </a-menu-item>
         </a-menu>
         <a-button style="margin-left: 8px">
@@ -78,8 +79,7 @@
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择
         <a style="font-weight: 600">
-          {{
-            selectedRowKeys.length }}
+          {{ selectedRowKeys.length }}
         </a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
@@ -135,7 +135,7 @@ export default {
   components: {
     ArticleModal
   },
-  data() {
+  data () {
     return {
       description: '文章管理管理页面',
       // 查询条件中的字段使用的查询条件方式, 支持的类型参考 src/mixins/JeecgListMixin.js 中 queryTypeAlias.
@@ -221,12 +221,12 @@ export default {
     }
   },
   computed: {
-    importExcelUrl: function() {
+    importExcelUrl: function () {
       return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`
     }
   },
   methods: {
-    initDictConfig() {
+    initDictConfig () {
       // 初始化字典 - 文章类型
       initDictOptions('article_type').then(res => {
         if (res.success) {
@@ -244,39 +244,39 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-/** Button按钮间距 */
-.ant-btn {
-  margin-left: 3px;
-}
+  /** Button按钮间距 */
+  .ant-btn {
+    margin-left: 3px;
+  }
 
-.ant-card-body .table-operator {
-  margin-bottom: 18px;
-}
+  .ant-card-body .table-operator {
+    margin-bottom: 18px;
+  }
 
-.ant-table-tbody .ant-table-row td {
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
+  .ant-table-tbody .ant-table-row td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
 
-.anty-row-operator button {
-  margin: 0 5px;
-}
+  .anty-row-operator button {
+    margin: 0 5px;
+  }
 
-.ant-btn-danger {
-  background-color: #ffffff;
-}
+  .ant-btn-danger {
+    background-color: #ffffff;
+  }
 
-.ant-modal-cust-warp {
-  height: 100%;
-}
+  .ant-modal-cust-warp {
+    height: 100%;
+  }
 
-.ant-modal-cust-warp .ant-modal-body {
-  height: calc(100% - 110px) !important;
-  overflow-y: auto;
-}
+  .ant-modal-cust-warp .ant-modal-body {
+    height: calc(100% - 110px) !important;
+    overflow-y: auto;
+  }
 
-.ant-modal-cust-warp .ant-modal-content {
-  height: 90% !important;
-  overflow-y: hidden;
-}
+  .ant-modal-cust-warp .ant-modal-content {
+    height: 90% !important;
+    overflow-y: hidden;
+  }
 </style>

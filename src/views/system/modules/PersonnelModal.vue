@@ -198,13 +198,13 @@
   import Vue from 'vue'
 
   import antMixin from '@/mixins/ant-mixin'
-  import {UPLOAD_CHANGE_HANDLER} from '@/mixins/constant.cfg'
+  import constantCfgMixin from '@/mixins/constant.cfg'
   import {httpAction, getAction} from '@/api/manage'
   import {ACCESS_TOKEN} from "@/store/mutation-types"
 
   export default {
     name: 'PersonnelModal',
-    mixins: [antMixin],
+    mixins: [antMixin, constantCfgMixin],
     data() {
       return {
         title: '操作',
@@ -339,18 +339,18 @@
       },
 
       handleChange_1(input) {
-        UPLOAD_CHANGE_HANDLER(input, 'personalPhoto')
+        this.UPLOAD_CHANGE_HANDLER(input, 'personalPhoto')
       },
 
       handleChange_2(input) {
-        UPLOAD_CHANGE_HANDLER(input, 'frontIdCardPhoto')
+        this.UPLOAD_CHANGE_HANDLER(input, 'frontIdCardPhoto')
       },
 
       handleChange_3(input) {
-        UPLOAD_CHANGE_HANDLER(input, 'reverseIdCardPhoto')
+        this.UPLOAD_CHANGE_HANDLER(input, 'reverseIdCardPhoto')
       },
       handleChange_4(input) {
-        UPLOAD_CHANGE_HANDLER(input, 'certificatePhoto')
+        this.UPLOAD_CHANGE_HANDLER(input, 'certificatePhoto')
       },
 
     }

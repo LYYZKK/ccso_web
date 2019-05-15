@@ -65,7 +65,5 @@ module.exports = {
         }
       },
     }
-  },
-
-  lintOnSave: true
+  }
 }
