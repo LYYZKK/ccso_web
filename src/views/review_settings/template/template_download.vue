@@ -27,16 +27,16 @@ export default {
 <style lang="scss" scoped>
   .card-container {
     background-color: #ececec;
-    padding: 10px;
+    padding: 15px;
 
-    .card{
+    .card {
       display:flex;
       justify-content: center;
       align-content: center;
       flex-wrap: wrap;
-    &>div{
-       margin: 20px;
-     }
+      &>div{
+         margin: 20px;
+      }
     }
   }
 </style>

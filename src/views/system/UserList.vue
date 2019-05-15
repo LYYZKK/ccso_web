@@ -68,11 +68,6 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator" style="border-top: 5px">
       <a-button @click="handleAdd" v-has="'user:add'" type="primary" icon="plus">添加用户</a-button>
-      <a-button @click="handleSyncUser" type="primary" icon="plus">重新同步流程用户</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :action="importExcelUrl" @change="handleImportExcel">
-        <a-button type="primary" icon="import">导入</a-button>
-      </a-upload>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay" @click="handleMenuClick">
           <a-menu-item key="1">
@@ -281,7 +276,6 @@
         ],
         url: {
           imgerver: window._CONFIG['domainURL'] + "/sys/common/view",
-          syncUser: "/process/extActProcess/doSyncUser",
           list: "/sys/user/list",
           delete: "/sys/user/delete",
           deleteBatch: "/sys/user/deleteBatch",
@@ -364,16 +358,6 @@
       },
       handleChangePassword(username) {
         this.$refs.passwordmodal.show(username);
-      },
-      handleSyncUser() {
-        var that = this;
-        putAction(that.url.syncUser, {}).then((res) => {
-          if (res.success) {
-            that.$message.success(res.message);
-          } else {
-            that.$message.warning(res.message);
-          }
-        })
       },
       passwordModalOk() {
         //TODO 密码修改完成 不需要刷新页面，可以把datasource中的数据更新一下
