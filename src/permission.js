@@ -20,7 +20,8 @@ const whiteList = [
   '/website/enterpriseDirectory',
   '/user/login',
   '/user/register',
-  '/user/register-result'
+  '/user/register-result',
+  '/user/forgot-password'
 ] // no redirect whitelist
 
 router.beforeEach((to, from, next) => {

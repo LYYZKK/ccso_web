@@ -279,7 +279,6 @@
       generateAccount(record) {
         this.confirmLoading = true
         httpAction(this.url.generateAccountUrl, record, 'post').then(res => {
-          console.log("code：" + res.code + "---resMessage：" + res.message)
           if (res.code === 200) {
             this.$message.success(res.message)
           } else {
@@ -295,7 +294,6 @@
         this.updateParam.id = id
         this.updateParam.surfaceShow = surfaceShowValue
         httpAction(this.url.edit, this.updateParam, 'put').then(res => {
-          console.log("updateSurfaceShow Response：" + res)
           if (res.code === 200) {
             this.$message.success(res.message)
           } else {

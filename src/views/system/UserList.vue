@@ -93,7 +93,8 @@
     <!-- table区域-begin -->
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i>已选择&nbsp;<a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项&nbsp;&nbsp;
+        <i class="anticon anticon-info-circle ant-alert-icon"></i>已选择&nbsp;<a style="font-weight: 600">{{
+        selectedRowKeys.length }}</a>项&nbsp;&nbsp;
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
 
@@ -116,29 +117,16 @@
         </template>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
-
-          <a-divider type="vertical"/>
-
           <a-dropdown>
             <a class="ant-dropdown-link">
               更多 <a-icon type="down"/>
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
-                <a href="javascript:;" @click="handleDetail(record)">详情</a>
-              </a-menu-item>
-
-              <a-menu-item>
-                <a href="javascript:;" @click="handleChangePassword(record.username)">密码</a>
-              </a-menu-item>
-
-              <a-menu-item>
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
                   <a>删除</a>
                 </a-popconfirm>
               </a-menu-item>
-
               <a-menu-item v-if="record.status==1">
                 <a-popconfirm title="确定冻结吗?" @confirm="() => handleFrozen(record.id,2)">
                   <a>冻结</a>
@@ -148,6 +136,11 @@
               <a-menu-item v-if="record.status==2">
                 <a-popconfirm title="确定解冻吗?" @confirm="() => handleFrozen(record.id,1)">
                   <a>解冻</a>
+                </a-popconfirm>
+              </a-menu-item>
+              <a-menu-item>
+                <a-popconfirm title="确定重置密码吗?" @confirm="() => handleDelete(record.id)">
+                  <a>重置密码</a>
                 </a-popconfirm>
               </a-menu-item>
 
@@ -207,7 +200,7 @@
             }
           },*/
           {
-            title: '用户账号',
+            title: '登陆账号',
             align: "center",
             dataIndex: 'username',
             width: 120
@@ -248,11 +241,6 @@
             dataIndex: 'phone'
           },
           {
-            title: '邮箱',
-            align: "center",
-            dataIndex: 'email'
-          },
-          {
             title: '状态',
             align: "center",
             width: 80,
@@ -261,13 +249,13 @@
               return this.DICT_SHOW_RENDER(filterDictOptionByText(this.userStatusDictOptions, text))
             }
           },
-         /* {
-            title: '创建时间',
-            align: "center",
-            width: 150,
-            dataIndex: 'createTime',
-            sorter: true
-          },*/
+          /* {
+             title: '创建时间',
+             align: "center",
+             width: 150,
+             dataIndex: 'createTime',
+             sorter: true
+           },*/
           {
             title: '操作',
             dataIndex: 'action',
@@ -287,25 +275,13 @@
       }
     },
     computed: {
-      importExcelUrl: function(){
+      importExcelUrl: function () {
         return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
       }
     },
     methods: {
       initDictConfig() {
-        // 初始化字典 - 性别
-        initDictOptions('sex').then(res => {
-          if (res.success) {
-            this.sexDictOptions = res.result
-          }
-        })
 
-        // 初始化字典 - 用户状态
-        initDictOptions('user_status').then(res => {
-          if (res.success) {
-            this.userStatusDictOptions = res.result
-          }
-        })
       },
       batchFrozen: function (status) {
         if (this.selectedRowKeys.length <= 0) {
@@ -368,6 +344,7 @@
   .ant-btn {
     margin-left: 3px
   }
+
   .ant-card-body {
     margin-bottom: 18px;
   }
