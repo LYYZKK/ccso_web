@@ -68,7 +68,12 @@
             <a @click="generateAccount(record)">生成账号</a>
             <a-divider type="vertical"/>
           </span>
-          <a @click="handleEdit(record)">前台显示</a>
+          <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)" v-if="record.surfaceShow === surfaceShowTrueDictValue">
+            <a><font color="#dc143c">取消展示</font></a>
+          </a-popconfirm>
+          <a-popconfirm title="确定前台展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowTrueDictValue)" v-else>
+            <a>前台展示</a>
+          </a-popconfirm>
 
           <a-divider type="vertical"/>
           <a @click="handleEdit(record)">编辑</a>
@@ -102,8 +107,13 @@
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
-  import {filterDictOptionByText, initDictOptions} from '@/components/dict/JDictSelectUtil'
+  import {
+    filterDictOptionByText,
+    getDictItemByDictCodeAndItemCode,
+    initDictOptions
+  } from '@/components/dict/JDictSelectUtil'
   import {httpAction} from '@/api/manage'
+  import ConstConfig from '@/config/constant.config'
 
   export default {
     name: 'PersonnelList',
@@ -142,10 +152,13 @@
           enterpriseId: 'like',
           roleId: 'like',
         },
+        updateParam: {
+          id: '',
+          surfaceShow: ''
+        },
         queryParam: {
           enterpriseId: this.$route.params.enterpriseId || ''
         },
-
         // 表头
         columns: [
           {
@@ -216,8 +229,12 @@
           delete: '/sys/personnel/delete',
           deleteBatch: '/sys/personnel/deleteBatch',
           generateAccountUrl: "/sys/personnel/generateAccount",
+          edit: '/sys/personnel/edit',
         },
         certificateTypeDictOptions: [],
+        surfaceShowDictOptions: [],
+        surfaceShowTrueDictValue: '',
+        surfaceShowFlaseDictValue: '',
         confirmLoading: false,
       }
     },
@@ -225,11 +242,36 @@
 
     },
     methods: {
+
       initDictConfig() {
         // 初始化字典 - 证书类型
         initDictOptions('certificate_type').then(res => {
           if (res.success) {
             this.certificateTypeDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 前台是否显示
+        initDictOptions('is_true').then(res => {
+          if (res.success) {
+            this.surfaceShowDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 是否
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_cooperate}).then(res => {
+          if (res.success) {
+            this.queryParam.enterpriseType = res.itemValue
+          }
+        })
+        // 初始化字典 - 前台显示值
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT._true}).then(res => {
+          if (res != null) {
+            this.surfaceShowTrueDictValue = res.itemValue
+          }
+        })
+        // 初始化字典 - 前台不显示值
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT._false}).then(res => {
+          if (res != null) {
+            this.surfaceShowFlaseDictValue = res.itemValue
           }
         })
       },
@@ -247,7 +289,25 @@
           this.confirmLoading = false
           window.location.reload();
         })
-      }
+      },
+      updateSurfaceShow(id, surfaceShowValue) {
+        this.confirmLoading = true
+        this.updateParam.id = id
+        this.updateParam.surfaceShow = surfaceShowValue
+        httpAction(this.url.edit, this.updateParam, 'put').then(res => {
+          console.log("updateSurfaceShow Response：" + res)
+          if (res.code === 200) {
+            this.$message.success(res.message)
+          } else {
+            this.$message.error(res.message)
+          }
+          this.confirmLoading = false
+          this.record.surfaceShow = surfaceShowValue
+        }).finally(() => {
+          this.confirmLoading = false
+          window.location.reload();
+        })
+      },
     }
   }
 </script>
