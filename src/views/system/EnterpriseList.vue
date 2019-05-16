@@ -1,67 +1,67 @@
 <template>
   <a-card :bordered="false">
+    <a-spin :spinning="confirmLoading">
+      <!-- 查询区域 -->
+      <div class="table-page-search-wrapper">
+        <a-form layout="inline">
+          <a-row :gutter="24">
 
-    <!-- 查询区域 -->
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="24">
-
-          <a-col :md="6" :sm="8">
-            <a-form-item label="企业名称">
-              <a-input placeholder="请输入企业名称" v-model="queryParam.name"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="营业执照编号">
-              <a-input placeholder="请输入营业执照编号" v-model="queryParam.businessLicenseNo"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
+            <a-col :md="6" :sm="8">
+              <a-form-item label="企业名称">
+                <a-input placeholder="请输入企业名称" v-model="queryParam.name"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="营业执照编号">
+                <a-input placeholder="请输入营业执照编号" v-model="queryParam.businessLicenseNo"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
             </span>
-          </a-col>
+            </a-col>
 
-        </a-row>
-      </a-form>
-    </div>
-
-    <!-- 操作按钮区域 -->
-    <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay">
-          <a-menu-item key="1" @click="batchDel">
-            <a-icon type="delete"/>
-            删除
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px"> 批量操作
-          <a-icon type="down"/>
-        </a-button>
-      </a-dropdown>
-    </div>
-
-    <!-- table区域-begin -->
-    <div>
-      <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{
-        selectedRowKeys.length }}</a>项
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+          </a-row>
+        </a-form>
       </div>
 
-      <a-table
-        ref="table"
-        size="middle"
-        bordered
-        rowKey="id"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination="ipagination"
-        :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-        @change="handleTableChange">
+      <!-- 操作按钮区域 -->
+      <div class="table-operator">
+        <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
+        <a-dropdown v-if="selectedRowKeys.length > 0">
+          <a-menu slot="overlay">
+            <a-menu-item key="1" @click="batchDel">
+              <a-icon type="delete"/>
+              删除
+            </a-menu-item>
+          </a-menu>
+          <a-button style="margin-left: 8px"> 批量操作
+            <a-icon type="down"/>
+          </a-button>
+        </a-dropdown>
+      </div>
+
+      <!-- table区域-begin -->
+      <div>
+        <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
+          <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{
+          selectedRowKeys.length }}</a>项
+          <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+        </div>
+
+        <a-table
+          ref="table"
+          size="middle"
+          bordered
+          rowKey="id"
+          :columns="columns"
+          :dataSource="dataSource"
+          :pagination="ipagination"
+          :loading="loading"
+          :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+          @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
           <a @click="jumpPersonnelList(record.id)">下属人员</a>
@@ -70,7 +70,12 @@
           <a @click="jumpUserList(record.id)">账户管理</a>
 
           <a-divider type="vertical"/>
-          <a>前台展示</a>
+          <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)" v-if="record.surfaceShow === surfaceShowTrueDictValue">
+            <a><font color="#dc143c">取消展示</font></a>
+          </a-popconfirm>
+          <a-popconfirm title="确定前台展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowTrueDictValue)" v-else>
+            <a>前台展示</a>
+          </a-popconfirm>
 
           <a-divider type="vertical"/>
           <a @click="handleEdit(record)">编辑</a>
@@ -88,12 +93,13 @@
           </a-dropdown>
         </span>
 
-      </a-table>
-    </div>
-    <!-- table区域-end -->
+        </a-table>
+      </div>
+      <!-- table区域-end -->
 
-    <!-- 表单区域 -->
-    <enterprise-modal ref="modalForm" @ok="modalFormOk"></enterprise-modal>
+      <!-- 表单区域 -->
+      <enterprise-modal ref="modalForm" @ok="modalFormOk"></enterprise-modal>
+    </a-spin>
   </a-card>
 
 </template>
@@ -108,7 +114,9 @@
     getDictItemByDictCodeAndItemCode,
     initDictOptions
   } from '@/components/dict/JDictSelectUtil'
+
   import ConstConfig from '@/config/constant.config'
+  import {httpAction} from '@/api/manage'
 
   export default {
     name: 'EnterpriseList',
@@ -130,6 +138,9 @@
           age_end: 'lt'
         }
         */
+        queryParam: {
+          enterpriseType: ''
+        },
         queryType: {
           name: 'like',
           logo: 'like',
@@ -140,8 +151,9 @@
           sitesLinks: 'like',
           briefIntroduction: 'like',
         },
-        queryParam: {
-          enterpriseType: ''
+        updateParam: {
+          id: '',
+          surfaceShow: ''
         },
         // 表头
         columns: [
@@ -195,10 +207,14 @@
           list: '/sys/enterprise/list',
           delete: '/sys/enterprise/delete',
           deleteBatch: '/sys/enterprise/deleteBatch',
+          edit: '/sys/enterprise/edit',
         },
         enterpriseTypeDictOptions: [],
         registeredCapitalDictOptions: [],
         surfaceShowDictOptions: [],
+        surfaceShowTrueDictValue: '',
+        surfaceShowFlaseDictValue: '',
+        confirmLoading: false,
       }
     },
     methods: {
@@ -216,18 +232,47 @@
           }
         })
         // 初始化字典 - 前台是否显示
-        initDictOptions('surface_show').then(res => {
+        initDictOptions('is_true').then(res => {
           if (res.success) {
             this.surfaceShowDictOptions = res.result
           }
         })
+        // 初始化字典 - 企业类型
         getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_cooperate}).then(res => {
-          if (res.success) {
-            this.queryParam.enterpriseType = res.result.itemValue
+          if (res != null) {
+            this.queryParam.enterpriseType = res.itemValue
+          }
+        })
+        // 初始化字典 - 前台显示值
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT._true}).then(res => {
+          if (res != null) {
+            this.surfaceShowTrueDictValue = res.itemValue
+          }
+        })
+        // 初始化字典 - 前台不显示值
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT._false}).then(res => {
+          if (res != null) {
+            this.surfaceShowFlaseDictValue = res.itemValue
           }
         })
       },
-
+      updateSurfaceShow(id, surfaceShowValue) {
+        this.confirmLoading = true
+        this.updateParam.id = id
+        this.updateParam.surfaceShow = surfaceShowValue
+        httpAction(this.url.edit, this.updateParam, 'put').then(res => {
+          if (res.code === 200) {
+            this.$message.success(res.message)
+          } else {
+            this.$message.error(res.message)
+          }
+          this.confirmLoading = false
+          this.record.surfaceShow = surfaceShowValue
+        }).finally(() => {
+          this.confirmLoading = false
+          window.location.reload();
+        })
+      },
       jumpPersonnelList(id) {
         this.$router.push({
           name: 'isystem-personnel',
