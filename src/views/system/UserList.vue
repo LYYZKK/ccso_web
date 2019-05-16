@@ -111,7 +111,7 @@
 
         <template slot="avatarslot" slot-scope="text, record">
           <div class="anty-img-wrap">
-            <img :src="getAvatarView(record.avatar)"/>
+            <img :src="IMAGE_REVIEW_URL_RENDER(record.avatar)"/>
           </div>
         </template>
 
@@ -275,7 +275,6 @@
 
         ],
         url: {
-          imgerver: window._CONFIG['domainURL'] + "/sys/common/view",
           list: "/sys/user/list",
           delete: "/sys/user/delete",
           deleteBatch: "/sys/user/deleteBatch",
@@ -305,10 +304,6 @@
           }
         })
       },
-      getAvatarView: function (avatar) {
-        return this.url.imgerver + "/" + avatar;
-      },
-
       batchFrozen: function (status) {
         if (this.selectedRowKeys.length <= 0) {
           this.$message.warning('请选择一条记录！');

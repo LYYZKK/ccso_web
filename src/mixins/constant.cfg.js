@@ -1,4 +1,7 @@
 import filter from 'lodash.filter'
+import Vue from 'vue'
+
+import { ACCESS_TOKEN } from "@/store/mutation-types"
 
 export default {
   data() {
@@ -33,6 +36,21 @@ export default {
             this.$message.warning(response.message);
           }
         }
+      },
+      FILE_UPLOAD_HEADERS: {
+        'X-Access-Token': Vue.ls.get(ACCESS_TOKEN)
+      },
+      FILE_UPLOAD_URL: `${window._CONFIG['domainURL']}/sys/common/upload`,
+      FILE_UPLOAD_ACTION: () => {
+        return this.FILE_UPLOAD_URL
+      },
+      FILE_REVIEW_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/view`,
+      IMAGE_REVIEW_URL_RENDER: (filePathSuffix) => {
+        return `${this.this.FILE_REVIEW_BASE_URL}/${filePathSuffix}`
+      },
+      FILE_DOWNLOAD_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/view`,
+      FILE_DOWNLOAD_URL_RENDER: (filePathSuffix) => {
+        return `${this.this.FILE_DOWNLOAD_BASE_URL}?filePath=${filePathSuffix}`
       }
     }
   }

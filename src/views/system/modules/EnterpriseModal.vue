@@ -21,13 +21,13 @@
           <a-upload
             listType="picture-card"
             :showUploadList="false"
-            :action="uploadAction"
+            :action="FILE_UPLOAD_ACTION"
             :data="{'isup':1}"
-            :headers="headers"
+            :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange"
           >
-            <img v-if="model.logo" :src="getLogoView()" alt="头像" style="height:104px;max-width:300px"/>
+            <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像" style="height:104px;max-width:300px"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
               <div class="ant-upload-text">上传</div>
@@ -78,15 +78,15 @@
 
 <script>
   import pick from 'lodash.pick'
-  import Vue from 'vue'
 
   import antMixin from '@/mixins/ant-mixin'
+  import constantCfgMixin from '@/mixins/constant.cfg'
   import {httpAction} from '@/api/manage'
   import { ACCESS_TOKEN } from "@/store/mutation-types"
 
   export default {
     name: 'EnterpriseModal',
-    mixins: [antMixin],
+    mixins: [antMixin, constantCfgMixin],
     data() {
       return {
         title: '操作',
@@ -115,25 +115,11 @@
         url: {
           add: '/sys/enterprise/add',
           edit: '/sys/enterprise/edit',
-          fileUpload: window._CONFIG['domainURL'] + "/sys/common/upload",
-          imgerver: window._CONFIG['domainURL'] + "/sys/common/view",
         },
         uploadLoading:false,
       }
     },
-    created() {
-      const token = Vue.ls.get(ACCESS_TOKEN);
-      this.headers = {"X-Access-Token": token}
-    },
-    computed: {
-      uploadAction: function () {
-        return this.url.fileUpload;
-      }
-    },
     methods: {
-      getLogoView(){
-        return this.url.imgerver +"/"+ this.model.logo;
-      },
       handleChange(info) {
         if (info.file.status === 'uploading') {
           this.uploadLoading = true

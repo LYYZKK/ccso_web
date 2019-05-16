@@ -21,13 +21,13 @@
           <a-upload
             listType="picture-card"
             :showUploadList="false"
-            :action="uploadAction"
-            :headers="headers"
+            :action="FILE_UPLOAD_ACTION"
+            :headers="FILE_UPLOAD_HEADERS"
             ref="personalPhotoUpload"
             :beforeUpload="beforeUpload"
             @change="handleChange_1"
           >
-            <img v-if="model.personalPhoto" :src="getThumbnailView(1)" alt="个人照片" style="height:104px;max-width:300px"/>
+            <img v-if="model.personalPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.personalPhoto)" alt="个人照片" style="height:104px;max-width:300px"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
               <div class="ant-upload-text">上传</div>
@@ -44,13 +44,13 @@
           <a-upload
             listType="picture-card"
             :showUploadList="false"
-            :action="uploadAction"
+            :action="FILE_UPLOAD_ACTION"
             :data="{'isup':1}"
-            :headers="headers"
+            :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange_2"
           >
-            <img v-if="model.frontIdCardPhoto" :src="getThumbnailView(2)" alt="证件照正面"
+            <img v-if="model.frontIdCardPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.frontIdCardPhoto)" alt="证件照正面"
                  style="height:104px;max-width:300px"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
@@ -62,13 +62,13 @@
           <a-upload
             listType="picture-card"
             :showUploadList="false"
-            :action="uploadAction"
+            :action="FILE_UPLOAD_ACTION"
             :data="{'isup':1}"
-            :headers="headers"
+            :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange_3"
           >
-            <img v-if="model.reverseIdCardPhoto" :src="getThumbnailView(3)" alt="证件照反面"
+            <img v-if="model.reverseIdCardPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.reverseIdCardPhoto)" alt="证件照反面"
                  style="height:104px;max-width:300px"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
@@ -132,13 +132,13 @@
           <a-upload
             listType="picture-card"
             :showUploadList="false"
-            :action="uploadAction"
+            :action="FILE_UPLOAD_ACTION"
             :data="{'isup':1}"
-            :headers="headers"
+            :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange_4"
           >
-            <img v-if="model.certificatePhoto" :src="getThumbnailView(4)" alt="证书照片"
+            <img v-if="model.certificatePhoto" :src="IMAGE_REVIEW_URL_RENDER(model.certificatePhoto)" alt="证书照片"
                  style="height:104px;max-width:300px"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
@@ -195,7 +195,6 @@
 <script>
   import pick from 'lodash.pick'
   import moment from 'moment'
-  import Vue from 'vue'
 
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
@@ -226,21 +225,10 @@
           enterpriseUrl: '/sys/enterprise/queryIdAndNameAll',
           roleUrl: "/sys/role/queryIdAndNameAll",
           edit: '/sys/personnel/edit',
-          fileUpload: window._CONFIG['domainURL'] + "/sys/common/upload",
-          imgerver: window._CONFIG['domainURL'] + "/sys/common/view",
         },
         uploadLoading: false,
         enterpriseData: [],
         roleData: [],
-      }
-    },
-    created() {
-      const token = Vue.ls.get(ACCESS_TOKEN);
-      this.headers = {"X-Access-Token": token}
-    },
-    computed: {
-      uploadAction: function () {
-        return this.url.fileUpload;
       }
     },
     mounted() {
@@ -259,18 +247,6 @@
             this.roleData = res.result
           }
         })
-      },
-
-      getThumbnailView(judge) {
-        if (judge === 1) {
-          return this.url.imgerver + "/" + this.model.personalPhoto;
-        } else if (judge === 2) {
-          return this.url.imgerver + "/" + this.model.frontIdCardPhoto;
-        } else if (judge === 3) {
-          return this.url.imgerver + "/" + this.model.reverseIdCardPhoto;
-        } else if (judge === 4) {
-          return this.url.imgerver + "/" + this.model.certificatePhoto;
-        }
       },
 
       beforeUpload: function (file) {

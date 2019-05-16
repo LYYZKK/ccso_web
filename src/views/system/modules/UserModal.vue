@@ -73,7 +73,7 @@
             :beforeUpload="beforeUpload"
             @change="handleChange"
           >
-            <img v-if="model.avatar" :src="getAvatarView()" alt="头像" style="height:104px;max-width:300px"/>
+            <img v-if="model.avatar" :src="IMAGE_REVIEW_URL_RENDER(model.avatar)" alt="头像" style="height:104px;max-width:300px"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'" />
               <div class="ant-upload-text">上传</div>
@@ -128,8 +128,11 @@
   import { ACCESS_TOKEN } from "@/store/mutation-types"
   import { getAction, httpAction } from '@/api/manage'
   import {addUser,editUser,queryUserRole,queryall,checkUsername } from '@/api/api'
+  import constantCfgMixin from '@/mixins/constant.cfg'
+
   export default {
     name: "RoleModal",
+    mixins: [constantCfgMixin],
     components: {
       departWindow,
     },
@@ -196,7 +199,6 @@
           addUDepartIds:"/sys/user/addUDepartIds", // 引入为用户添加部门信息需要的url
           editUDepartIds:"/sys/user/editUDepartIds", // 引入为用户更新部门信息需要的url
           fileUpload: window._CONFIG['domainURL']+"/sys/common/upload",
-          imgerver: window._CONFIG['domainURL']+"/sys/common/view",
           userWithDepart: "/sys/user/userDepartList", // 引入为指定用户查看部门信息需要的url
         },
       }
@@ -427,9 +429,6 @@
             this.$message.warning(response.message);
           }
         }
-      },
-      getAvatarView(){
-        return this.url.imgerver +"/"+ this.model.avatar;
       },
       // 搜索用户对应的部门API
       onSearch(){

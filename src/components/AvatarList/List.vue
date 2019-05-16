@@ -1,19 +1,19 @@
 <!--
-<template>
+<template_download>
   <div :class="[prefixCls]">
     <ul>
       <slot></slot>
-      <template v-for="item in filterEmpty($slots.default).slice(0, 3)"></template>
+      <template_download v-for="item in filterEmpty($slots.default).slice(0, 3)"></template_download>
 
 
-      <template v-if="maxLength > 0 && filterEmpty($slots.default).length > maxLength">
+      <template_download v-if="maxLength > 0 && filterEmpty($slots.default).length > maxLength">
         <avatar-item :size="size">
           <avatar :size="size !== 'mini' && size || 20" :style="excessItemsStyle">{{ `+${maxLength}` }}</avatar>
         </avatar-item>
-      </template>
+      </template_download>
     </ul>
   </div>
-</template>
+</template_download>
 -->
 
 <script>

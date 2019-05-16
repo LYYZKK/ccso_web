@@ -62,9 +62,9 @@
 
           <div class="setting-drawer-index-blockChecbox">
             <a-tooltip>
-              <template slot="title">
+              <template_download slot="title">
                 侧边栏导航
-              </template>
+              </template_download>
               <div class="setting-drawer-index-item" @click="handleLayout('sidemenu')">
                 <img src="https://gw.alipayobjects.com/zos/rmsportal/JopDzEhOqwOjeNTXkoje.svg" alt="sidemenu">
                 <div class="setting-drawer-index-selectIcon" v-if="layoutMode === 'sidemenu'">
@@ -74,9 +74,9 @@
             </a-tooltip>
 
             <a-tooltip>
-              <template slot="title">
+              <template_download slot="title">
                 顶部栏导航
-              </template>
+              </template_download>
               <div class="setting-drawer-index-item" @click="handleLayout('topmenu')">
                 <img src="https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg" alt="topmenu">
                 <div class="setting-drawer-index-selectIcon" v-if="layoutMode !== 'sidemenu'">
@@ -89,9 +89,9 @@
             <a-list :split="false">
               <a-list-item>
                 <a-tooltip slot="actions">
-                  <template slot="title">
+                  <template_download slot="title">
                     该设定仅 [顶部栏导航] 时有效
-                  </template>
+                  </template_download>
                   <a-select size="small" style="width: 80px;" :defaultValue="contentWidth" @change="handleContentWidthChange">
                     <a-select-option value="Fixed">固定</a-select-option>
                     <a-select-option value="Fluid" v-if="layoutMode !== 'sidemenu'">流式</a-select-option>

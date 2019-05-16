@@ -10,22 +10,22 @@
 
 <script>
 export default {
-  name: "Bottom",
-  data() {
+  name: 'Bottom',
+  data () {
     //这里存放数据
-    return {};
+    return {}
   },
   methods: {}
-};
+}
 </script>
 <style>
-.bottom{
-  text-align: center;
-  font-size: 14px;
-  color: #737373;
-  background: linear-gradient(to bottom,#ddd,#fff);
-  padding:20px 0 20px 0;
-  font-size: 12px;
-  color: #ccc;
-}
+  .bottom {
+    text-align: center;
+    font-size: 14px;
+    color: #737373;
+    background: linear-gradient(to bottom, #ddd, #fff);
+    padding: 20px 0;
+    font-size: 12px;
+    color: #737373;
+  }
 </style>

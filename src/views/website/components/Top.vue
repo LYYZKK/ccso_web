@@ -108,6 +108,6 @@ a{
   cursor: pointer;
 }
 .on {
-  color: #ef585a;
+  color: #f53235;
 }
 </style>

@@ -625,12 +625,16 @@
       display: block;
       margin-bottom: 24px;
       white-space: nowrap;
-    }
+      float: left;
+      overflow: hidden;
 
+      .ant-btn {
+        margin-left: 8px;
+      }
+    }
   }
 
   .content {
-
     .table-operator {
       margin-bottom: 18px;
 
