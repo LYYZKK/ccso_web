@@ -51,6 +51,9 @@ export default {
       FILE_DOWNLOAD_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/view`,
       FILE_DOWNLOAD_URL_RENDER: (filePathSuffix) => {
         return `${this.this.FILE_DOWNLOAD_BASE_URL}?filePath=${filePathSuffix}`
+      },
+      BEFORE_FILE_UPLOAD_ACTION: (file) => {
+
       }
     }
   }

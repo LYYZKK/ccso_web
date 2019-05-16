@@ -82,7 +82,6 @@
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import {httpAction} from '@/api/manage'
-  import { ACCESS_TOKEN } from "@/store/mutation-types"
 
   export default {
     name: 'EnterpriseModal',
@@ -110,7 +109,7 @@
           principal: {rules: [{required: true, message: '请输入负责人!'}]},
           principalPhoneNum: {rules: [{required: true, message: '请输入负责人手机号码!'}]},
           sitesLinks: {rules: [{required: true, message: '请输入网站链接!'}]},
-          registeredCapital: {rules: [{required: true, message: '请选择类型!'}]}
+          registeredCapital: {rules: [{required: true, message: '请选择注册资本!'}]}
         },
         url: {
           add: '/sys/enterprise/add',

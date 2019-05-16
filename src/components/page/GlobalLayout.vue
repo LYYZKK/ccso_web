@@ -628,19 +628,18 @@
       float: left;
       overflow: hidden;
 
-      .ant-btn {
+      :not(:first-child) {
         margin-left: 8px;
       }
     }
   }
 
-  .content {
-    .table-operator {
-      margin-bottom: 18px;
+  .table-operator {
+    margin-bottom: 18px;
 
-      button {
-        margin-right: 8px;
-      }
+    .ant-btn {
+      margin-right: 8px;
+      margin-left: 8px;
     }
   }
 </style>

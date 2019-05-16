@@ -40,10 +40,10 @@
             </a-col>
           </template>
           <a-col :md="6" :sm="8">
-            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+            <span class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-              <a @click="handleToggleSearch" style="margin-left: 8px">
+              <a-button type="primary" @click="searchReset" icon="reload">重置</a-button>
+              <a @click="handleToggleSearch">
                 {{ toggleSearchStatus ? '收起' : '展开' }}
                 <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
               </a>
@@ -64,7 +64,7 @@
             删除
           </a-menu-item>
         </a-menu>
-        <a-button style="margin-left: 8px"> 批量操作
+        <a-button> 批量操作
           <a-icon type="down"/>
         </a-button>
       </a-dropdown>

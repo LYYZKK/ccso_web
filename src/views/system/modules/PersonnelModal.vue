@@ -222,9 +222,9 @@
         validatorRules: {},
         url: {
           add: '/sys/personnel/add',
+          edit: '/sys/personnel/edit',
           enterpriseUrl: '/sys/enterprise/queryIdAndNameAll',
           roleUrl: "/sys/role/queryIdAndNameAll",
-          edit: '/sys/personnel/edit',
         },
         uploadLoading: false,
         enterpriseData: [],
@@ -317,18 +317,15 @@
       handleChange_1(input) {
         this.UPLOAD_CHANGE_HANDLER(input, 'personalPhoto')
       },
-
       handleChange_2(input) {
         this.UPLOAD_CHANGE_HANDLER(input, 'frontIdCardPhoto')
       },
-
       handleChange_3(input) {
         this.UPLOAD_CHANGE_HANDLER(input, 'reverseIdCardPhoto')
       },
       handleChange_4(input) {
         this.UPLOAD_CHANGE_HANDLER(input, 'certificatePhoto')
       },
-
     }
   }
 </script>
