@@ -165,7 +165,7 @@
           </a-select>
         </a-form-item>
 
-        <a-form-item
+        <!--<a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="人员角色">
@@ -173,7 +173,7 @@
             v-model="model.roleId"
             showSearch
             :filterOption="filterOption"
-            placeholder="请选择所属企业"
+            placeholder="请选择人员角色"
             v-decorator="['roleId', {}]"
           >
             <a-select-option value="">请选择</a-select-option>
@@ -184,7 +184,17 @@
             >{{ _type.roleName }}
             </a-select-option>
           </a-select>
-
+        </a-form-item>-->
+        <a-form-item label="角色分配" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-select
+            mode="multiple"
+            style="width: 100%"
+            placeholder="请选择用户角色"
+            v-model="selectedRole">
+            <a-select-option v-for="(role,roleindex) in roleList" :key="roleindex.toString()" :value="role.id">
+              {{ role.roleName }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
 
       </a-form>
@@ -201,6 +211,7 @@
   import constantCfgMixin from '@/mixins/constant.cfg'
   import {httpAction, getAction} from '@/api/manage'
   import {ACCESS_TOKEN} from "@/store/mutation-types"
+  import {queryall} from '@/api/api'
 
   export default {
     name: 'PersonnelModal',
@@ -232,6 +243,8 @@
         uploadLoading: false,
         enterpriseData: [],
         roleData: [],
+        selectedRole: [],
+        roleList: [],
       }
     },
     created() {
@@ -259,6 +272,13 @@
             this.roleData = res.result
           }
         })
+        queryall().then((res) => {
+          if (res.success) {
+            this.roleList = res.result;
+          } else {
+            console.log(res.message);
+          }
+        });
       },
 
       getThumbnailView(judge) {
@@ -317,6 +337,7 @@
             let formData = Object.assign(this.model, values)
             //时间格式化
             formData.birthDate = formData.birthDate ? formData.birthDate.format() : null;
+            formData.roleId = this.selectedRole.length>0?this.selectedRole.join(","):''
             formData.certificateDate = formData.certificateDate ? formData.certificateDate.format() : null;
 
             console.log('send request with formData =', formData)
@@ -334,6 +355,7 @@
           }
         })
       },
+
       handleCancel() {
         this.close()
       },

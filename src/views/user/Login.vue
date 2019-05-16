@@ -1,24 +1,24 @@
 <template>
   <div class="main">
     <a-form class="user-layout-login" ref="formLogin" :autoFormCreate="(form)=>{this.form = form}" id="formLogin">
-      <a-form-item style="margin-top: 15%;"
-                   fieldDecoratorId="username"
-                   :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入帐户名或邮箱' }, { validator: this.handleUsernameOrEmail }], validateTrigger: 'change'}">
-        <a-input size="large" type="text" placeholder="请输入帐户名 / jeecg">
+      <a-form-item
+        fieldDecoratorId="username"
+        :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入账户邮箱' }], validateTrigger: 'change'}">
+        <a-input size="large" type="text" placeholder="请输入帐户邮箱" style="margin-top: 15%;">
           <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </a-input>
       </a-form-item>
       <a-form-item
         fieldDecoratorId="password"
         :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}">
-        <a-input size="large" type="password" autocomplete="false" placeholder="密码 / 123456">
+        <a-input size="large" type="password" autocomplete="false" placeholder="密码">
           <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </a-input>
       </a-form-item>
 
       <a-form-item>
         <a-checkbox v-model="formLogin.rememberMe">自动登陆</a-checkbox>
-        <router-link :to="{ name: 'recover', params: { user: 'aaa'} }" class="forge-password" style="float: right;">
+        <router-link :to="{ name: 'forgotPassword' }" class="forge-password" style="float: right;">
           忘记密码
         </router-link>
       </a-form-item>
@@ -42,18 +42,10 @@
         <span class="no-account">还没有账户？</span>
       </div>
     </a-form>
-
-    <two-step-captcha
-      v-if="requiredTwoStepCaptcha"
-      :visible="stepCaptchaVisible"
-      @success="stepCaptchaSuccess"
-      @cancel="stepCaptchaCancel"></two-step-captcha>
   </div>
 </template>
 
 <script>
-  //import md5 from "md5"
-  import api from '@/api'
   import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
   import {mapActions} from "vuex"
   import {timeFix} from "@/utils/util"
@@ -67,10 +59,6 @@
     data() {
       return {
         loginBtn: false,
-        // login type: 0 email, 1 username, 2 telephone
-        loginType: 0,
-        requiredTwoStepCaptcha: false,
-        stepCaptchaVisible: false,
         form: null,
         state: {
           time: 60,
@@ -87,29 +75,9 @@
     },
     created() {
       Vue.ls.remove(ACCESS_TOKEN)
-      // update-begin- --- author:scott ------ date:20190225 ---- for:暂时注释，未实现登录验证码功能
-//      this.$http.get('/auth/2step-code')
-//        .then(res => {
-//          this.requiredTwoStepCaptcha = res.result.stepCode
-//        }).catch(err => {
-//          console.log('2step-code:', err)
-//        })
-      // update-end- --- author:scott ------ date:20190225 ---- for:暂时注释，未实现登录验证码功能
-      // this.requiredTwoStepCaptcha = true
-
     },
     methods: {
       ...mapActions(["Login", "Logout"]),
-      // handler
-      handleUsernameOrEmail(rule, value, callback) {
-        const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
-        if (regex.test(value)) {
-          this.loginType = 0
-        } else {
-          this.loginType = 1
-        }
-        callback()
-      },
       handleSubmit() {
         let that = this
         let flag = false
@@ -122,71 +90,16 @@
         that.form.validateFields(['username', 'password'], {force: true}, (err, values) => {
           if (!err) {
             flag = true
-            loginParams[!that.loginType ? 'email' : 'username'] = values.username
+            loginParams.username = values.username
             loginParams.password = values.password
           }
         })
-
         if (!flag) return
-
         that.loginBtn = true
-
         that.Login(loginParams).then(() => {
-          if (that.requiredTwoStepCaptcha) {
-            that.stepCaptchaVisible = true
-          } else {
-            that.loginSuccess()
-          }
+          that.loginSuccess()
         }).catch((err) => {
           that.requestFailed(err);
-        })
-
-      },
-      getCaptcha(e) {
-        e.preventDefault()
-        let that = this
-
-        this.form.validateFields(['mobile'], {force: true},
-          (err) => {
-            if (!err) {
-              this.state.smsSendBtn = true;
-
-              let interval = window.setInterval(() => {
-                if (that.state.time-- <= 0) {
-                  that.state.time = 60;
-                  that.state.smsSendBtn = false;
-                  window.clearInterval(interval);
-                }
-              }, 1000);
-
-              const hide = this.$message.loading('验证码发送中..', 0);
-              this.$http.post(api.SendSms, {mobile: that.formLogin.mobile})
-                .then(res => {
-                  setTimeout(hide, 2500);
-                  this.$notification['success']({
-                    message: '提示',
-                    description: '验证码获取成功，您的验证码为：' + res.result.captcha,
-                    duration: 8
-                  })
-                })
-                .catch(err => {
-                  setTimeout(hide, 1);
-                  clearInterval(interval);
-                  that.state.time = 60;
-                  that.state.smsSendBtn = false;
-                  this.requestFailed(err);
-                });
-            }
-          }
-        );
-      },
-      stepCaptchaSuccess() {
-        this.loginSuccess()
-      },
-      stepCaptchaCancel() {
-        this.Logout().then(() => {
-          this.loginBtn = false
-          this.stepCaptchaVisible = false
         })
       },
       loginSuccess() {
