@@ -53,7 +53,7 @@
           username: ''
         },
         url: {
-          retrievePasswordUrl: '/sys/retrievePassword',
+          retrievePasswordUrl: '/sys/user/retrievePassword',
         },
         confirmLoading: false
       }

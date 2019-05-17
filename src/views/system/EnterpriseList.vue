@@ -270,7 +270,7 @@
           this.record.surfaceShow = surfaceShowValue
         }).finally(() => {
           this.confirmLoading = false
-          window.location.reload();
+          this.loadData();
         })
       },
       jumpPersonnelList(id) {

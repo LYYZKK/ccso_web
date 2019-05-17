@@ -1,46 +1,20 @@
 <template>
   <a-card :bordered="false">
+    <a-spin :spinning="confirmLoading">
+      <!-- 查询区域 -->
+      <div class="table-page-search-wrapper">
+        <a-form layout="inline">
+          <a-row :gutter="24">
 
-    <!-- 查询区域 -->
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="24">
-
-          <a-col :md="6" :sm="12">
-            <a-form-item label="账号">
-              <a-input placeholder="请输入账号查询" v-model="queryParam.username"></a-input>
-            </a-form-item>
-          </a-col>
-
-          <a-col :md="6" :sm="8">
-            <a-form-item label="性别">
-              <j-dict-select-tag
-                v-model="queryParam.sex"
-                :triggerChange="true"
-                placeholder="请选择"
-                emptyOptionText="全部"
-                dictCode="sex"
-              />
-            </a-form-item>
-          </a-col>
-
-          <template v-if="toggleSearchStatus">
-            <a-col :md="6" :sm="8">
-              <a-form-item label="邮箱">
-                <a-input placeholder="请输入邮箱查询" v-model="queryParam.email"></a-input>
+            <a-col :md="6" :sm="12">
+              <a-form-item label="账号">
+                <a-input placeholder="请输入账号查询" v-model="queryParam.username"></a-input>
               </a-form-item>
             </a-col>
-
-            <a-col :md="6" :sm="8">
-              <a-form-item label="手机号码">
-                <a-input placeholder="请输入手机号码查询" v-model="queryParam.phone"></a-input>
-              </a-form-item>
-            </a-col>
-
             <a-col :md="6" :sm="8">
               <a-form-item label="状态">
                 <j-dict-select-tag
-                  v-model="queryParam.status"
+                    v-model="queryParam.status"
                   :triggerChange="true"
                   placeholder="请选择"
                   emptyOptionText="全部"
@@ -48,73 +22,57 @@
                 />
               </a-form-item>
             </a-col>
-          </template>
 
-          <a-col :md="6" :sm="8">
+            <a-col :md="6" :sm="8">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-              <a @click="handleToggleSearch" style="margin-left: 8px">
-                {{ toggleSearchStatus ? '收起' : '展开' }}
-                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
-              </a>
             </span>
-          </a-col>
-
-        </a-row>
-      </a-form>
-    </div>
-
-    <!-- 操作按钮区域 -->
-    <div class="table-operator" style="border-top: 5px">
-      <a-button @click="handleAdd" v-has="'user:add'" type="primary" icon="plus">添加用户</a-button>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay" @click="handleMenuClick">
-          <a-menu-item key="1">
-            <a-icon type="delete" @click="batchDel"/>
-            删除
-          </a-menu-item>
-          <a-menu-item key="2">
-            <a-icon type="lock" @click="batchFrozen('2')"/>
-            冻结
-          </a-menu-item>
-          <a-menu-item key="3">
-            <a-icon type="unlock" @click="batchFrozen('1')"/>
-            解冻
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px">
-          批量操作
-          <a-icon type="down"/>
-        </a-button>
-      </a-dropdown>
-    </div>
-
-    <!-- table区域-begin -->
-    <div>
-      <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i>已选择&nbsp;<a style="font-weight: 600">{{
-        selectedRowKeys.length }}</a>项&nbsp;&nbsp;
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+            </a-col>
+          </a-row>
+        </a-form>
       </div>
 
-      <a-table
-        ref="table"
-        bordered
-        size="middle"
-        rowKey="id"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination="ipagination"
-        :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-        @change="handleTableChange">
+      <!-- 操作按钮区域 -->
+      <div class="table-operator" style="border-top: 5px">
+        <a-button @click="handleAdd" type="primary" icon="plus">添加用户</a-button>
+        <a-dropdown v-if="selectedRowKeys.length > 0">
+          <a-menu slot="overlay" @click="handleMenuClick">
+            <a-menu-item key="2">
+              <a-icon type="lock" @click="batchFrozen('2')"/>
+              冻结
+            </a-menu-item>
+            <a-menu-item key="3">
+              <a-icon type="unlock" @click="batchFrozen('1')"/>
+              解冻
+            </a-menu-item>
+          </a-menu>
+          <a-button style="margin-left: 8px">
+            批量操作
+            <a-icon type="down"/>
+          </a-button>
+        </a-dropdown>
+      </div>
 
-        <template slot="avatarslot" slot-scope="text, record">
-          <div class="anty-img-wrap">
-            <img :src="IMAGE_REVIEW_URL_RENDER(record.avatar)"/>
-          </div>
-        </template>
+      <!-- table区域-begin -->
+      <div>
+        <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
+          <i class="anticon anticon-info-circle ant-alert-icon"></i>已选择&nbsp;<a style="font-weight: 600">{{
+          selectedRowKeys.length }}</a>项&nbsp;&nbsp;
+          <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+        </div>
+
+        <a-table
+          ref="table"
+          bordered
+          size="middle"
+          rowKey="id"
+          :columns="columns"
+          :dataSource="dataSource"
+          :pagination="ipagination"
+          :loading="loading"
+          :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+          @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
           <a-dropdown>
@@ -122,11 +80,6 @@
               更多 <a-icon type="down"/>
             </a>
             <a-menu slot="overlay">
-              <a-menu-item>
-                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                  <a>删除</a>
-                </a-popconfirm>
-              </a-menu-item>
               <a-menu-item v-if="record.status==1">
                 <a-popconfirm title="确定冻结吗?" @confirm="() => handleFrozen(record.id,2)">
                   <a>冻结</a>
@@ -139,7 +92,7 @@
                 </a-popconfirm>
               </a-menu-item>
               <a-menu-item>
-                <a-popconfirm title="确定重置密码吗?" @confirm="() => handleDelete(record.id)">
+                <a-popconfirm title="确定重置密码吗?" @confirm="() => resetPassword(record.username)">
                   <a>重置密码</a>
                 </a-popconfirm>
               </a-menu-item>
@@ -147,26 +100,21 @@
             </a-menu>
           </a-dropdown>
         </span>
-
-
-      </a-table>
-    </div>
-    <!-- table区域-end -->
-
-    <user-modal ref="modalForm" @ok="modalFormOk"></user-modal>
-
-    <password-modal ref="passwordmodal" @ok="passwordModalOk"></password-modal>
+        </a-table>
+      </div>
+    </a-spin>
   </a-card>
 </template>
 
 <script>
   import UserModal from './modules/UserModal'
   import PasswordModal from './modules/PasswordModal'
-  import {putAction} from '@/api/manage'
   import {frozenBatch} from '@/api/api'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import {filterDictOptionByText, initDictOptions} from '@/components/dict/JDictSelectUtil'
+  import {httpAction} from '@/api/manage'
+  import {mapActions} from 'vuex'
 
   export default {
     name: "UserList",
@@ -179,9 +127,11 @@
       return {
         description: '这是用户管理页面',
         queryType: {
-          username: 'like',
-          email: 'like',
-          phone: 'like'
+          username: 'eq',
+          status:'eq'
+        },
+        formData: {
+          username: ''
         },
         queryParam: {
           enterpriseId: this.$route.params.enterpriseId || ''
@@ -189,16 +139,16 @@
         sexDictOptions: [],
         userStatusDictOptions: [],
         columns: [
-          /*{
+          {
             title: '#',
             dataIndex: '',
-            key:'rowIndex',
-            width:60,
-            align:"center",
-            customRender:function (t,r,index) {
-              return parseInt(index)+1;
+            key: 'rowIndex',
+            width: 60,
+            align: "center",
+            customRender: function (t, r, index) {
+              return parseInt(index) + 1;
             }
-          },*/
+          },
           {
             title: '登陆账号',
             align: "center",
@@ -209,36 +159,53 @@
             title: '真实姓名',
             align: "center",
             width: 100,
-            dataIndex: 'realname',
+            dataIndex: 'realName',
+            customRender: (text, record) => {
+              const realNames = []
+              record.sysPersonnels.forEach((v) => {
+                realNames.push(v.name)
+              })
+              return realNames
+            }
           },
-          {
-            title: '头像',
-            align: "center",
-            width: 120,
-            dataIndex: 'avatar',
-            scopedSlots: {customRender: "avatarslot"}
-          },
-
           {
             title: '性别',
             align: "center",
             width: 80,
             dataIndex: 'sex',
-            customRender: text => {
-              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.sexDictOptions, text))
+            customRender: (text, record) => {
+              const sexs = []
+              record.sysPersonnels.forEach((v) => {
+                sexs.push(this.DICT_SHOW_RENDER(filterDictOptionByText(this.sexDictOptions, v.sex)))
+              })
+              return sexs
             }
           },
           {
-            title: '生日',
-            align: "center",
-            width: 180,
-            dataIndex: 'birthday'
-          },
-          {
-            title: '手机号码',
+            title: '角色',
             align: "center",
             width: 100,
-            dataIndex: 'phone'
+            dataIndex: 'roles',
+            customRender: (text, record) => {
+              const roleNames = []
+              record.sysRoles.forEach((v) => {
+                roleNames.push(v.roleName)
+              })
+              return roleNames.join(', ')
+            }
+          },
+          {
+            title: '企业名称',
+            align: "center",
+            width: 100,
+            dataIndex: 'sysEnterprises',
+            customRender: (text, record) => {
+              const enterpriseName = []
+              record.sysEnterprises.forEach((v) => {
+                enterpriseName.push(v.name)
+              })
+              return enterpriseName
+            }
           },
           {
             title: '状态',
@@ -249,13 +216,21 @@
               return this.DICT_SHOW_RENDER(filterDictOptionByText(this.userStatusDictOptions, text))
             }
           },
-          /* {
-             title: '创建时间',
-             align: "center",
-             width: 150,
-             dataIndex: 'createTime',
-             sorter: true
-           },*/
+          {
+            title: '修改人',
+            align: "center",
+            width: 150,
+            dataIndex: 'updateBy',
+            sorter: true
+          },
+          {
+            title: '修改时间',
+            align: "center",
+            width: 150,
+            dataIndex: 'updateTime',
+            sorter: true
+          },
+
           {
             title: '操作',
             dataIndex: 'action',
@@ -271,17 +246,27 @@
           deleteBatch: "/sys/user/deleteBatch",
           exportXlsUrl: "sys/user/exportXls",
           importExcelUrl: "sys/user/importExcel",
+          retrievePasswordUrl: '/sys/user/retrievePassword',
         },
+        confirmLoading: false,
       }
     },
-    computed: {
-      importExcelUrl: function () {
-        return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
-      }
-    },
+    computed: {},
     methods: {
+      ...mapActions(['Logout']),
       initDictConfig() {
-
+        // 初始化字典 - 用户状态
+        initDictOptions('user_status').then(res => {
+          if (res.success) {
+            this.userStatusDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 性别
+        initDictOptions('sex').then(res => {
+          if (res.success) {
+            this.sexDictOptions = res.result
+          }
+        })
       },
       batchFrozen: function (status) {
         if (this.selectedRowKeys.length <= 0) {
@@ -311,9 +296,8 @@
         }
       },
       handleMenuClick(e) {
-        if (e.key == 1) {
-          this.batchDel();
-        } else if (e.key == 2) {
+        this.confirmLoading = true
+        if (e.key == 2) {
           this.batchFrozen(2);
         } else if (e.key == 3) {
           this.batchFrozen(1);
@@ -330,24 +314,41 @@
           }
         });
       },
-      handleChangePassword(username) {
-        this.$refs.passwordmodal.show(username);
+      // 重置密码
+      resetPassword(username) {
+        this.confirmLoading = true;
+        this.formData.username = username
+        httpAction(this.url.retrievePasswordUrl, this.formData, 'post').then((res) => {
+          if (res.success) {
+            this.$message.success(res.message)
+            let userInfo = JSON.parse(localStorage.getItem("pro__Login_Username"))
+            if (userInfo.value === username) {
+              this.handleLogout()
+            }
+          } else {
+            this.$message.error(res.message)
+          }
+          this.confirmLoading = false
+        }).finally(() => {
+          this.confirmLoading = false
+        })
       },
-      passwordModalOk() {
-        //TODO 密码修改完成 不需要刷新页面，可以把datasource中的数据更新一下
+      handleLogout() {
+        const that = this
+        return that.Logout({}).then(() => {
+          window.location.href = '/user/login'
+        }).catch(err => {
+          that.$message.error({
+            title: '错误',
+            description: err.message
+          })
+        })
       }
     }
   }
 </script>
 <style scoped>
   /** Button按钮间距 */
-  .ant-btn {
-    margin-left: 3px
-  }
-
-  .ant-card-body {
-    margin-bottom: 18px;
-  }
 
   .table-operator button {
     margin-bottom: 18px;
@@ -363,14 +364,6 @@
     margin: 0 5px
   }
 
-  .ant-btn-danger {
-    background-color: #ffffff
-  }
-
-  .ant-modal-cust-warp {
-    height: 100%
-  }
-
   .ant-modal-cust-warp .ant-modal-body {
     height: calc(100% - 110px) !important;
     overflow-y: auto
@@ -379,11 +372,6 @@
   .ant-modal-cust-warp .ant-modal-content {
     height: 90% !important;
     overflow-y: hidden
-  }
-
-  .anty-img-wrap {
-    height: 25px;
-    position: relative;
   }
 
   .anty-img-wrap > img {
