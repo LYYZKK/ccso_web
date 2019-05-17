@@ -1,6 +1,6 @@
 <template>
   <a-select :placeholder="placeholder" :value="value" @change="handleInput">
-    <a-select-option v-if="hasEmptyOption" value>{{ emptyOptionText }}</a-select-option>
+    <a-select-option v-if="hasEmptyOption" value="">{{ emptyOptionText }}</a-select-option>
     <a-select-option v-for="(item, key) in dictOptions" :key="key" :value="item.value">{{ item.text }}</a-select-option>
   </a-select>
 </template>
@@ -21,11 +21,7 @@
         default: ''
       },
       triggerChange: Boolean,
-      value: {
-        type: String,
-        required: false,
-        default: ''
-      },
+      value: String, // 1.接收一个 value prop
       hasEmptyOption: {
         type: Boolean,
         required: false,
@@ -56,9 +52,12 @@
         })
       },
       handleInput(val) {
+        console.log('into handleInput with val =', val)
         if(this.triggerChange){
+          console.log('into if')
           this.$emit('change', val)
         } else {
+          console.log('into else')
           this.$emit('input', val)
         }
       }

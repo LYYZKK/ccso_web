@@ -46,11 +46,11 @@ export default {
       },
       FILE_REVIEW_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/view`,
       IMAGE_REVIEW_URL_RENDER: (filePathSuffix) => {
-        return `${this.this.FILE_REVIEW_BASE_URL}/${filePathSuffix}`
+        return `${this.FILE_REVIEW_BASE_URL}/${filePathSuffix}`
       },
       FILE_DOWNLOAD_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/view`,
       FILE_DOWNLOAD_URL_RENDER: (filePathSuffix) => {
-        return `${this.this.FILE_DOWNLOAD_BASE_URL}?filePath=${filePathSuffix}`
+        return `${this.FILE_DOWNLOAD_BASE_URL}?filePath=${filePathSuffix}`
       },
       BEFORE_FILE_UPLOAD_ACTION: (file) => {
 

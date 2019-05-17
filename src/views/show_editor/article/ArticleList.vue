@@ -11,25 +11,33 @@
           </a-col>
           <a-col :md="6" :sm="8">
             <a-form-item label="文章类型">
-              <j-dict-select-tag
-                v-decorator="['articleType', {}]"
-                :triggerChange="true"
-                placeholder="请选择文章类型"
-                emptyOptionText="全部"
-                dictCode="article_type"
-              />
+              <a-select
+                showSearch
+                v-model="queryParam.articleType"
+              >
+                <a-select-option value>全部</a-select-option>
+                <a-select-option
+                  v-for="(item, key) in articleTypeDictOptions"
+                  :key="key"
+                  :value="item.value"
+                >{{ item.text }}</a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :md="6" :sm="8">
               <a-form-item label="文章状态">
-                <j-dict-select-tag
-                  v-decorator="['articleState', {}]"
-                  :triggerChange="true"
-                  placeholder="请选择文章状态"
-                  emptyOptionText="全部"
-                  dictCode="article_state"
-                />
+                <a-select
+                  showSearch
+                  v-model="queryParam.articleState"
+                >
+                  <a-select-option value>全部</a-select-option>
+                  <a-select-option
+                    v-for="(item, key) in articleStateDictOptions"
+                    :key="key"
+                    :value="item.value"
+                  >{{ item.text }}</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="8">
