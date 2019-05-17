@@ -150,7 +150,7 @@
           certificateDate: 'like',
           certificatePhoto: 'like',
           enterpriseId: 'like',
-          roleId: 'like',
+          roleIds: 'like',
         },
         updateParam: {
           id: '',
@@ -179,7 +179,7 @@
           {
             title: '角色',
             align: 'center',
-            dataIndex: 'roleId'
+            dataIndex: 'roleIds'
           },
           {
             title: '证书类型',
@@ -286,7 +286,7 @@
           }
         }).finally(() => {
           this.confirmLoading = false
-          window.location.reload();
+          this.loadData();
         })
       },
       updateSurfaceShow(id, surfaceShowValue) {
@@ -303,7 +303,7 @@
           this.record.surfaceShow = surfaceShowValue
         }).finally(() => {
           this.confirmLoading = false
-          window.location.reload();
+          this.loadData();
         })
       },
     }

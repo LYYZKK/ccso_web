@@ -164,27 +164,6 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-
-        <!--<a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="人员角色">
-          <a-select
-            v-model="model.roleId"
-            showSearch
-            :filterOption="filterOption"
-            placeholder="请选择人员角色"
-            v-decorator="['roleId', {}]"
-          >
-            <a-select-option value="">请选择</a-select-option>
-            <a-select-option
-              v-for="(_type, key) in roleData"
-              :key="key"
-              :value="_type.id"
-            >{{ _type.roleName }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>-->
         <a-form-item label="角色分配" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-select
             mode="multiple"
@@ -209,7 +188,6 @@
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import {httpAction, getAction} from '@/api/manage'
-  import {ACCESS_TOKEN} from "@/store/mutation-types"
   import {queryall} from '@/api/api'
 
   export default {
@@ -277,7 +255,6 @@
         }
         //TODO 验证文件大小
       },
-
       add() {
         this.edit({})
       },
@@ -286,7 +263,7 @@
         this.model = Object.assign({}, record)
         this.visible = true
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'name', 'personalPhoto', 'idCard', 'frontIdCardPhoto', 'reverseIdCardPhoto', 'sex', 'email', 'phoneNum', 'certificateType', 'certificateNo', 'certificatePhoto', 'enterpriseId', 'roleId'))
+          this.form.setFieldsValue(pick(this.model, 'name', 'personalPhoto', 'idCard', 'frontIdCardPhoto', 'reverseIdCardPhoto', 'sex', 'email', 'phoneNum', 'certificateType', 'certificateNo', 'certificatePhoto', 'enterpriseId', 'roleIds'))
           //时间格式化
           this.form.setFieldsValue({birthDate: this.model.birthDate ? moment(this.model.birthDate) : null})
           this.form.setFieldsValue({certificateDate: this.model.certificateDate ? moment(this.model.certificateDate) : null})
@@ -313,7 +290,7 @@
             let formData = Object.assign(this.model, values)
             //时间格式化
             formData.birthDate = formData.birthDate ? formData.birthDate.format() : null;
-            formData.roleId = this.selectedRole.length>0?this.selectedRole.join(","):''
+            formData.roleIds = this.selectedRole.length>0?this.selectedRole.join(","):''
             formData.certificateDate = formData.certificateDate ? formData.certificateDate.format() : null;
 
             console.log('send request with formData =', formData)
