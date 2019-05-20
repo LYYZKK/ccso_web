@@ -14,7 +14,7 @@
             <a-col :md="6" :sm="8">
               <a-form-item label="状态">
                 <j-dict-select-tag
-                    v-model="queryParam.status"
+                  v-model="queryParam.status"
                   :triggerChange="true"
                   placeholder="请选择"
                   emptyOptionText="全部"
@@ -102,6 +102,8 @@
         </span>
         </a-table>
       </div>
+      <!-- 表单区域 -->
+      <personnel-modal ref="modalForm" @ok="modalFormOk"></personnel-modal>
     </a-spin>
   </a-card>
 </template>
@@ -242,10 +244,6 @@
         ],
         url: {
           list: "/sys/user/list",
-          delete: "/sys/user/delete",
-          deleteBatch: "/sys/user/deleteBatch",
-          exportXlsUrl: "sys/user/exportXls",
-          importExcelUrl: "sys/user/importExcel",
           retrievePasswordUrl: '/sys/user/retrievePassword',
         },
         confirmLoading: false,

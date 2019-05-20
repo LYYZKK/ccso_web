@@ -200,7 +200,7 @@ export const JeecgListMixin = {
       this.$refs.modalForm.title = "编辑";
     },
     handleAdd() {
-      this.$refs.modalForm.add();
+      this.$refs.modalForm.add()
       this.$refs.modalForm.title = "新增";
     },
     handleTableChange(pagination, filters, sorter) {
