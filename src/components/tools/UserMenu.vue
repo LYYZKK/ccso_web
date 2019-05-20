@@ -1,9 +1,11 @@
 <template>
   <div class="user-wrapper" :class="theme">
-    <span class="action setting-drawer" @click="toggleSettingDraw">
-      <a-icon type="setting"/>
+    <span class="action">
+      <a class="logout_title" target="_blank" href="http://jeecg-boot.mydoc.io">
+        <a-icon type="question-circle-o"></a-icon>
+      </a>
     </span>
-
+    <header-notice class="action"/>
     <a-dropdown>
       <span class="action action-full ant-dropdown-link user-dropdown-menu">
         <a-avatar class="avatar" size="small" :src="getAvatar()"/>
@@ -16,10 +18,21 @@
             <span>个人中心</span>
           </router-link>
         </a-menu-item>
-        <a-menu-item key="1" @click="handleEdit()">
+        <a-menu-item key="2" @click="updatePassword">
           <a-icon type="setting"/>
-          <span>修改密码</span>
+          <span>密码修改</span>
         </a-menu-item>
+        <!-- <a-menu-item key="2" disabled>
+           <a-icon type="setting"/>
+           <span>测试</span>
+         </a-menu-item>
+         <a-menu-divider/>
+         <a-menu-item key="3">
+           <a href="javascript:;" @click="handleLogout">
+             <a-icon type="logout"/>
+             <span>退出登录</span>
+           </a>
+         </a-menu-item>-->
       </a-menu>
     </a-dropdown>
     <span class="action">
@@ -28,26 +41,22 @@
         <span v-if="isDesktop()">&nbsp;退出登录</span>
       </a>
     </span>
-
-    <setting-drawer ref="settingDrawer"></setting-drawer>
+    <user-password ref="userPassword"></user-password>
   </div>
 </template>
 
 <script>
-  import {mapActions, mapGetters} from 'vuex'
-  import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import HeaderNotice from './HeaderNotice'
-  import SettingDrawer from '@/components/setting/SettingDrawer'
-  import UpdatePasswordModal from '@/views/account/settings/UpdatePasswordModal'
-  import {mixinDevice} from '@/utils/mixin.js'
+  import UserPassword from './UserPassword'
+  import { mapActions, mapGetters } from 'vuex'
+  import { mixinDevice } from '@/utils/mixin.js'
 
   export default {
-    name: 'UserMenu',
-    mixins: [mixinDevice,JeecgListMixin],
+    name: "UserMenu",
+    mixins: [mixinDevice],
     components: {
       HeaderNotice,
-      SettingDrawer,
-      UpdatePasswordModal
+      UserPassword
     },
     props: {
       theme: {
@@ -57,14 +66,11 @@
       }
     },
     methods: {
-      ...mapActions(['Logout']),
-      ...mapGetters(['nickname', 'avatar']),
-      toggleSettingDraw() {
-        this.$refs.settingDrawer.toggle()
-      },
-      getAvatar() {
-        console.log('url = ' + window._CONFIG['imgDomainURL'] + '/' + this.avatar())
-        return window._CONFIG['imgDomainURL'] + '/' + this.avatar()
+      ...mapActions(["Logout"]),
+      ...mapGetters(["nickname", "avatar","userInfo"]),
+      getAvatar(){
+        console.log('url = '+ window._CONFIG['imgDomainURL']+"/"+this.avatar())
+        return window._CONFIG['imgDomainURL']+"/"+this.avatar()
       },
       handleLogout() {
         const that = this
@@ -74,7 +80,8 @@
           content: '真的要注销登录吗 ?',
           onOk() {
             return that.Logout({}).then(() => {
-              window.location.href = '/user/login'
+              window.location.href="/";
+              //window.location.reload()
             }).catch(err => {
               that.$message.error({
                 title: '错误',
@@ -83,9 +90,13 @@
             })
           },
           onCancel() {
-          }
-        })
-      }
+          },
+        });
+      },
+      updatePassword(){
+        let username = this.userInfo().username
+        this.$refs.userPassword.show(username)
+      },
     }
   }
 </script>

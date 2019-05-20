@@ -68,7 +68,8 @@
             <a @click="generateAccount(record)">生成账号</a>
             <a-divider type="vertical"/>
           </span>
-          <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)" v-if="record.surfaceShow === surfaceShowTrueDictValue|| record.surfaceShow!==''">
+          <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)"
+                        v-if="record.surfaceShow === surfaceShowTrueDictValue && record.surfaceShow!==''">
             <a><font color="#dc143c">取消展示</font></a>
           </a-popconfirm>
           <a-popconfirm title="确定前台展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowTrueDictValue)" v-else>
@@ -179,68 +180,105 @@
           {
             title: '角色',
             align: 'center',
-            dataIndex: 'roleIds'
+            dataIndex: 'roleIds',
+            textWrap: 'word-break',
           },
           {
             title: '证书类型',
-            align: 'center',
-            dataIndex: 'certificateType',
-            customRender: text => {
-              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.certificateTypeDictOptions, text))
-            }
-          },
+            align:
+              'center',
+            dataIndex:
+              'certificateType',
+            customRender:
+              text => {
+                return this.DICT_SHOW_RENDER(filterDictOptionByText(this.certificateTypeDictOptions, text))
+              }
+          }
+          ,
           {
             title: '证书日期',
-            align: 'center',
-            dataIndex: 'certificateDate'
-          },
+            align:
+              'center',
+            dataIndex:
+              'certificateDate'
+          }
+          ,
           {
             title: '企业名称',
-            align: 'center',
-            dataIndex: 'enterpriseId'
-          },
+            align:
+              'center',
+            dataIndex:
+              'enterpriseId'
+          }
+          ,
           {
             title: '登录账号',
-            align: 'center',
-            dataIndex: 'email',
-            customRender: (text, record) => {
-              return record.sysUserId == -1 ? '' : text
-            }
-          },
+            align:
+              'center',
+            dataIndex:
+              'email',
+            customRender:
+              (text, record) => {
+                return record.sysUserId == -1 ? '' : text
+              }
+          }
+          ,
           {
             title: '修改人',
-            align: 'center',
-            dataIndex: 'updateBy'
-          },
+            align:
+              'center',
+            dataIndex:
+              'updateBy'
+          }
+          ,
           {
             title: '修改时间',
-            align: 'center',
-            dataIndex: 'updateTime'
-          },
+            align:
+              'center',
+            dataIndex:
+              'updateTime'
+          }
+          ,
           {
             title: '操作',
-            dataIndex: 'action',
-            align: 'center',
-            scopedSlots: {customRender: 'action'},
+            dataIndex:
+              'action',
+            align:
+              'center',
+            scopedSlots:
+              {
+                customRender: 'action'
+              }
+            ,
           }
         ],
         url: {
           list: '/sys/personnel/list',
-          delete: '/sys/personnel/delete',
-          deleteBatch: '/sys/personnel/deleteBatch',
-          generateAccountUrl: "/sys/personnel/generateAccount",
-          edit: '/sys/personnel/edit',
-        },
+          delete:
+            '/sys/personnel/delete',
+          deleteBatch:
+            '/sys/personnel/deleteBatch',
+          generateAccountUrl:
+            "/sys/personnel/generateAccount",
+          edit:
+            '/sys/personnel/edit',
+        }
+        ,
         certificateTypeDictOptions: [],
-        surfaceShowDictOptions: [],
-        surfaceShowTrueDictValue: '',
-        surfaceShowFlaseDictValue: '',
-        confirmLoading: false,
+        surfaceShowDictOptions:
+          [],
+        surfaceShowTrueDictValue:
+          '',
+        surfaceShowFlaseDictValue:
+          '',
+        confirmLoading:
+          false,
       }
     },
     created() {
 
-    },
+    }
+    ,
     methods: {
 
       initDictConfig() {
@@ -274,7 +312,8 @@
             this.surfaceShowFlaseDictValue = res.itemValue
           }
         })
-      },
+      }
+      ,
       /* 生成账号 */
       generateAccount(record) {
         this.confirmLoading = true
@@ -288,7 +327,8 @@
           this.confirmLoading = false
           this.loadData();
         })
-      },
+      }
+      ,
       updateSurfaceShow(id, surfaceShowValue) {
         this.confirmLoading = true
         this.updateParam.id = id
@@ -305,7 +345,8 @@
           this.confirmLoading = false
           this.loadData();
         })
-      },
+      }
+      ,
     }
   }
 </script>
