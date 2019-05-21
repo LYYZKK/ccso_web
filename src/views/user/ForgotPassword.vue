@@ -9,6 +9,26 @@
             <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
           </a-input>
         </a-form-item>
+        <a-row :gutter="0">
+          <a-col :span="14">
+            <a-form-item
+              fieldDecoratorId="inputCodeVerified"
+              :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }, { validator: this.validateInputCode }], validateTrigger: ['change', 'blur']}">
+              <a-input
+                size="large"
+                type="text"
+                @change="inputCodeChange"
+                placeholder="请输入验证码">
+                <a-icon slot="prefix" v-if=" inputCodeContent==verifiedCode " type="smile"
+                        :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                <a-icon slot="prefix" v-else type="frown" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              </a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="10">
+            <j-graphic-code @success="generateCode" style="float: right"></j-graphic-code>
+          </a-col>
+        </a-row>
 
         <a-form-item style="margin-top:24px">
           <a-button
@@ -43,9 +63,13 @@
 
 <script>
   import {httpAction} from '@/api/manage'
+  import JGraphicCode from '@/components/jeecg/JGraphicCode'
 
   export default {
     name: 'ForgotPassword',
+    components: {
+      JGraphicCode
+    },
     data() {
       return {
         loginBtn: false,
@@ -53,16 +77,20 @@
           username: ''
         },
         url: {
-          retrievePasswordUrl: '/sys/user/retrievePassword',
+          retrievePasswordUrl: '/sys/user/resetPassword',
         },
-        confirmLoading: false
+        confirmLoading: false,
+        verifiedCode: "",
+        inputCodeContent: "",
+        inputCodeNull: true,
+        inputCodeVerified: "",
       }
     },
     created() {
     },
     methods: {
       handleSubmit() {
-        this.form.validateFields(['username'], {force: true}, (err, values) => {
+        this.form.validateFields(['username', 'inputCodeVerified'], {force: true}, (err, values) => {
           if (!err) {
             this.confirmLoading = true
             this.formData.username = values.username
@@ -80,7 +108,26 @@
             return
           }
         })
-      }
+      },
+      validateInputCode(rule,value,callback){
+        if(!value || this.verifiedCode==this.inputCodeContent){
+          callback();
+        }else{
+          callback("您输入的验证码不正确!");
+        }
+      },
+      generateCode(value){
+        this.verifiedCode = value.toLowerCase()
+      },
+      inputCodeChange(e){
+        this.inputCodeContent = e.target.value
+        if(!e.target.value||0==e.target.value){
+          this.inputCodeNull=true
+        }else{
+          this.inputCodeContent = this.inputCodeContent.toLowerCase()
+          this.inputCodeNull=false
+        }
+      },
     }
   }
 </script>

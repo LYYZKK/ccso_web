@@ -15,7 +15,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="姓名">
-          <a-input placeholder="请输入姓名" v-decorator="['name', {}]"/>
+          <a-input placeholder="请输入姓名" v-decorator="['name', validatorRules.name]"/>
         </a-form-item>
         <a-form-item label="个人照片" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-upload
@@ -26,8 +26,10 @@
             ref="personalPhotoUpload"
             :beforeUpload="beforeUpload"
             @change="handleChange_1"
+            v-decorator="['name', validatorRules.personalPhoto]"
           >
-            <img v-if="model.personalPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.personalPhoto)" alt="个人照片" style="height:104px;max-width:300px"/>
+            <img v-if="model.personalPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.personalPhoto)" alt="个人照片"
+                 style="height:104px;max-width:300px"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
               <div class="ant-upload-text">上传</div>
@@ -38,7 +40,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="身份证号码">
-          <a-input placeholder="请输入身份证号码" v-decorator="['idCard', {}]"/>
+          <a-input placeholder="请输入身份证号码" v-decorator="['idCard', validatorRules.idCard]"/>
         </a-form-item>
         <a-form-item label="证件照正面" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-upload
@@ -49,6 +51,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange_2"
+            v-decorator="['name', validatorRules.frontIdCardPhoto]"
           >
             <img v-if="model.frontIdCardPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.frontIdCardPhoto)" alt="证件照正面"
                  style="height:104px;max-width:300px"/>
@@ -67,6 +70,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange_3"
+            v-decorator="['name', validatorRules.reverseIdCardPhoto]"
           >
             <img v-if="model.reverseIdCardPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.reverseIdCardPhoto)" alt="证件照反面"
                  style="height:104px;max-width:300px"/>
@@ -91,19 +95,19 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="出生日期">
-          <a-date-picker v-decorator="[ 'birthDate', {}]"/>
+          <a-date-picker v-decorator="[ 'birthDate', validatorRules.birthDate]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="电子邮箱">
-          <a-input placeholder="请输入电子邮箱" v-decorator="['email', {}]"/>
+          <a-input placeholder="请输入电子邮箱" v-decorator="['email', validatorRules.email]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="手机号码">
-          <a-input placeholder="请输入手机号码" v-decorator="['phoneNum', {}]"/>
+          <a-input placeholder="请输入手机号码" v-decorator="['phoneNum', validatorRules.phoneNum]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -208,7 +212,6 @@
         },
         confirmLoading: false,
         form: this.$form.createForm(this),
-        validatorRules: {},
         url: {
           add: '/sys/personnel/add',
           edit: '/sys/personnel/edit',
@@ -220,6 +223,16 @@
         roleData: [],
         selectedRole: [],
         roleList: [],
+        validatorRules: {
+          name: {rules: [{required: true, message: '请输入标题!'}]},
+          idCard: {rules: [{required: true, message: '请输入身份证号码!'}]},
+          email: {rules: [{required: true, message: '请输入电子邮箱!'}]},
+          phoneNum: {rules: [{required: true, message: '请输入手机号码!'}]},
+          birthDate: {rules: [{required: true, message: '请选择出生日期!'}]},
+          personalPhoto: {rules: [{required: true, message: '请选择个人照片!'}]},
+          frontIdCardPhoto: {rules: [{required: true, message: '请选择身份证正面照!'}]},
+          reverseIdCardPhoto: {rules: [{required: true, message: '请选择身份证反面照!'}]}
+        },
       }
     },
     mounted() {
@@ -290,7 +303,7 @@
             let formData = Object.assign(this.model, values)
             //时间格式化
             formData.birthDate = formData.birthDate ? formData.birthDate.format() : null;
-            formData.roleIds = this.selectedRole.length>0?this.selectedRole.join(","):''
+            formData.roleIds = this.selectedRole.length > 0 ? this.selectedRole.join(",") : ''
             formData.certificateDate = formData.certificateDate ? formData.certificateDate.format() : null;
 
             console.log('send request with formData =', formData)

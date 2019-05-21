@@ -90,30 +90,16 @@
           @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a-dropdown>
-            <a class="ant-dropdown-link">
-              更多 <a-icon type="down"/>
-            </a>
-            <a-menu slot="overlay">
-              <a-menu-item v-if="record.status==1">
-                <a-popconfirm title="确定冻结吗?" @confirm="() => handleFrozen(record.id,2)">
-                  <a>冻结</a>
-                </a-popconfirm>
-              </a-menu-item>
-
-              <a-menu-item v-if="record.status==2">
-                <a-popconfirm title="确定解冻吗?" @confirm="() => handleFrozen(record.id,1)">
-                  <a>解冻</a>
-                </a-popconfirm>
-              </a-menu-item>
-              <a-menu-item>
-                <a-popconfirm title="确定重置密码吗?" @confirm="() => resetPassword(record.username)">
-                  <a>重置密码</a>
-                </a-popconfirm>
-              </a-menu-item>
-
-            </a-menu>
-          </a-dropdown>
+          <a-popconfirm title="确定冻结吗?" @confirm="() => handleFrozen(record.id,2)" v-if="record.status==1">
+            <a>冻结</a>
+          </a-popconfirm>
+          <a-popconfirm title="确定解冻吗?" @confirm="() => handleFrozen(record.id,1)" v-if="record.status==2">
+            <a>解冻</a>
+          </a-popconfirm>
+          <a-divider type="vertical"/>
+          <a-popconfirm title="确定重置密码吗?" @confirm="() => resetPassword(record.username)">
+            <a>重置密码</a>
+          </a-popconfirm>
         </span>
         </a-table>
       </div>
@@ -143,7 +129,7 @@
         description: '这是用户管理页面',
         queryType: {
           username: 'eq',
-          status:'eq'
+          status: 'eq'
         },
         formData: {
           username: ''
@@ -257,7 +243,7 @@
         ],
         url: {
           list: "/sys/user/list",
-          retrievePasswordUrl: '/sys/user/retrievePassword',
+          resetPasswordUrl: '/sys/user/resetPassword',
         },
         confirmLoading: false,
       }
@@ -329,7 +315,7 @@
       resetPassword(username) {
         this.confirmLoading = true;
         this.formData.username = username
-        httpAction(this.url.retrievePasswordUrl, this.formData, 'post').then((res) => {
+        httpAction(this.url.resetPasswordUrl, this.formData, 'post').then((res) => {
           if (res.success) {
             this.$message.success(res.message)
             let userInfo = JSON.parse(localStorage.getItem("pro__Login_Username"))

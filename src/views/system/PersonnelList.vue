@@ -136,23 +136,6 @@
           age_end: 'lt'
         }
         */
-        queryType: {
-          name: 'like',
-          personalPhoto: 'like',
-          idCard: 'like',
-          frontIdCardPhoto: 'like',
-          reverseIdCardPhoto: 'like',
-          sex: 'like',
-          birthDate: 'like',
-          email: 'like',
-          phoneNumber: 'like',
-          certificateType: 'like',
-          certificateNo: 'like',
-          certificateDate: 'like',
-          certificatePhoto: 'like',
-          enterpriseId: 'like',
-          roleIds: 'like',
-        },
         updateParam: {
           id: '',
           surfaceShow: ''
@@ -178,12 +161,6 @@
             dataIndex: 'name'
           },
           {
-            title: '角色',
-            align: 'center',
-            dataIndex: 'roleIds',
-            textWrap: 'word-break',
-          },
-          {
             title: '证书类型',
             align:
               'center',
@@ -193,63 +170,49 @@
               text => {
                 return this.DICT_SHOW_RENDER(filterDictOptionByText(this.certificateTypeDictOptions, text))
               }
-          }
-          ,
+          },
           {
             title: '证书日期',
             align:
               'center',
             dataIndex:
               'certificateDate'
-          }
-          ,
+          },
           {
             title: '企业名称',
-            align:
-              'center',
-            dataIndex:
-              'enterpriseId'
-          }
-          ,
+            align: 'center',
+            dataIndex: 'sysEnterprises',
+            customRender: (text, record) => {
+              return record.sysEnterprises.name
+            }
+          },
           {
             title: '登录账号',
-            align:
-              'center',
-            dataIndex:
-              'email',
-            customRender:
-              (text, record) => {
-                return record.sysUserId == -1 ? '' : text
-              }
-          }
-          ,
+            align: 'center',
+            dataIndex: 'email',
+            customRender: (text, record) => {
+              return record.sysUserId == -1 ? '' : text
+            }
+          },
           {
             title: '修改人',
-            align:
-              'center',
-            dataIndex:
-              'updateBy'
-          }
-          ,
+            align: 'center',
+            dataIndex: 'updateBy'
+          },
           {
             title: '修改时间',
             align:
               'center',
             dataIndex:
               'updateTime'
-          }
-          ,
+          },
           {
             title: '操作',
-            dataIndex:
-              'action',
-            align:
-              'center',
-            scopedSlots:
-              {
-                customRender: 'action'
-              }
-            ,
+            dataIndex: 'action',
+            align: 'center',
+            scopedSlots: {
+              customRender: 'action'
+            },
           }
         ],
         url: {
@@ -262,17 +225,13 @@
             "/sys/personnel/generateAccount",
           edit:
             '/sys/personnel/edit',
-        }
-        ,
+        },
         certificateTypeDictOptions: [],
-        surfaceShowDictOptions:
-          [],
-        surfaceShowTrueDictValue:
-          '',
-        surfaceShowFlaseDictValue:
-          '',
-        confirmLoading:
-          false,
+        surfaceShowDictOptions: [],
+        surfaceShowTrueDictValue: '',
+        surfaceShowFlaseDictValue: '',
+        confirmLoading: false,
+
       }
     },
     created() {
