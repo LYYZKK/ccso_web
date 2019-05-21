@@ -13,13 +13,28 @@
             </a-col>
             <a-col :md="6" :sm="8">
               <a-form-item label="状态">
-                <j-dict-select-tag
-                    v-model="queryParam.status"
+                <!--<j-dict-select-tag
+                  v-model="queryParam.status"
                   :triggerChange="true"
                   placeholder="请选择"
                   emptyOptionText="全部"
                   dictCode="user_status"
-                />
+                />-->
+
+
+                <a-select
+                  showSearch
+                  v-model="queryParam.status"
+                >
+                  <a-select-option value>全部</a-select-option>
+                  <a-select-option
+                    v-for="(item, key) in userStatusDictOptions"
+                    :key="key"
+                    :value="item.value"
+                  >{{ item.text }}
+                  </a-select-option>
+                </a-select>
+
               </a-form-item>
             </a-col>
 
@@ -35,7 +50,7 @@
 
       <!-- 操作按钮区域 -->
       <div class="table-operator" style="border-top: 5px">
-        <a-button @click="handleAdd" type="primary" icon="plus">添加用户</a-button>
+        <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <a-menu slot="overlay" @click="handleMenuClick">
             <a-menu-item key="2">
@@ -102,13 +117,14 @@
         </span>
         </a-table>
       </div>
+      <!-- 表单区域 -->
+      <user-modal ref="modalForm" @ok="modalFormOk"></user-modal>
     </a-spin>
   </a-card>
 </template>
 
 <script>
   import UserModal from './modules/UserModal'
-  import PasswordModal from './modules/PasswordModal'
   import {frozenBatch} from '@/api/api'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
@@ -121,7 +137,6 @@
     mixins: [JeecgListMixin, constantCfgMixin],
     components: {
       UserModal,
-      PasswordModal
     },
     data() {
       return {
@@ -242,10 +257,6 @@
         ],
         url: {
           list: "/sys/user/list",
-          delete: "/sys/user/delete",
-          deleteBatch: "/sys/user/deleteBatch",
-          exportXlsUrl: "sys/user/exportXls",
-          importExcelUrl: "sys/user/importExcel",
           retrievePasswordUrl: '/sys/user/retrievePassword',
         },
         confirmLoading: false,

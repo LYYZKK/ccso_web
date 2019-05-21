@@ -1,96 +1,109 @@
 <template>
   <div class="main user-layout-register">
-    <h3><span>注册</span></h3>
-    <a-form ref="formRegister" :autoFormCreate="(form)=>{this.form = form}" id="formRegister">
-      <a-form-item
-        fieldDecoratorId="email"
-        :fieldDecoratorOptions="{rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}">
+    <a-spin :spinning="confirmLoading">
 
-        <a-input size="large" type="text" placeholder="邮箱"></a-input>
-      </a-form-item>
-
-      <a-popover placement="rightTop" trigger="click" :visible="state.passwordLevelChecked">
-        <template slot="content">
-          <div :style="{ width: '240px' }" >
-            <div :class="['user-register', passwordLevelClass]">强度：<span>{{ passwordLevelName }}</span></div>
-            <a-progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor " />
-            <div style="margin-top: 10px;">
-              <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
-            </div>
-          </div>
-        </template>
+      <a-form ref="formRegister" :autoFormCreate="(form)=>{this.form = form}" id="formRegister">
+        <br>
         <a-form-item
-          fieldDecoratorId="password"
-          :fieldDecoratorOptions="{rules: [{ required: true, message: '至少6位密码，区分大小写'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}">
-          <a-input size="large" type="password" @click="handlePasswordInputClick" autocomplete="false" placeholder="至少6位密码，区分大小写"></a-input>
+          label="邮箱"
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          fieldDecoratorId="email"
+          :fieldDecoratorOptions="{rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}">
+          <a-input size="large" type="text" placeholder="邮箱"></a-input>
         </a-form-item>
-      </a-popover>
 
-      <a-form-item
-        fieldDecoratorId="password2"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '至少6位密码，区分大小写' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}">
-
-        <a-input size="large" type="password" autocomplete="false" placeholder="确认密码"></a-input>
-      </a-form-item>
-
-      <a-form-item
-        fieldDecoratorId="mobile"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }">
-        <a-input size="large" placeholder="11 位手机号">
-          <a-select slot="addonBefore" size="large" defaultValue="+86">
-            <a-select-option value="+86">+86</a-select-option>
-            <a-select-option value="+87">+87</a-select-option>
-          </a-select>
-        </a-input>
-      </a-form-item>
-      <!--<a-input-group size="large" compact>
-            <a-select style="width: 20%" size="large" defaultValue="+86">
-              <a-select-option value="+86">+86</a-select-option>
-              <a-select-option value="+87">+87</a-select-option>
-            </a-select>
-            <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
-          </a-input-group>-->
-
-      <a-row :gutter="16">
-        <a-col class="gutter-row" :span="16">
+        <a-popover placement="rightTop" trigger="click" :visible="state.passwordLevelChecked">
+          <template slot="content">
+            <div :style="{ width: '240px' }">
+              <div :class="['user-register', passwordLevelClass]">强度：<span>{{ passwordLevelName }}</span></div>
+              <a-progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor "/>
+              <div style="margin-top: 10px;">
+                <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
+              </div>
+            </div>
+          </template>
           <a-form-item
-            fieldDecoratorId="captcha"
-            :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}">
-            <a-input size="large" type="text" placeholder="验证码">
-              <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-            </a-input>
+            label="密码"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            fieldDecoratorId="password"
+            :fieldDecoratorOptions="{rules: [{ required: true, message: '至少6位密码，区分大小写'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}">
+            <a-input size="large" type="password" @click="handlePasswordInputClick" autocomplete="false"
+                     placeholder="至少6位密码，区分大小写"></a-input>
           </a-form-item>
-        </a-col>
-        <a-col class="gutter-row" :span="8">
+        </a-popover>
+
+        <a-form-item
+          label="确认密码"
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          fieldDecoratorId="password2"
+          :fieldDecoratorOptions="{rules: [{ required: true, message: '至少6位密码，区分大小写' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}">
+          <a-input size="large" type="password" autocomplete="false" placeholder="确认密码"></a-input>
+        </a-form-item>
+        <a-divider/>
+        <a-form-item
+          label="企业名称 "
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          fieldDecoratorId="enterpriseName"
+          :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入企业名称' }, { validator: this.handleEnterpriseCheck } ], validateTrigger: ['change', 'blur'] }">
+          <a-input size="large" placeholder="请输入企业名称"/>
+        </a-form-item>
+
+        <a-form-item
+          label="营业执照注册号"
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          fieldDecoratorId="businessLicenseNo"
+          :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入营业执照注册号' }, { validator: this.handleEnterpriseCheck } ], validateTrigger: ['change', 'blur'] }">
+          <a-input size="large" placeholder="请输入营业执照注册号"/>
+        </a-form-item>
+
+        <a-row :gutter="0">
+          <a-col :span="14">
+            <a-form-item>
+              <a-input
+                v-decorator="['inputCode',validatorRules.inputCode]"
+                size="large"
+                type="text"
+                @change="inputCodeChange"
+                placeholder="请输入验证码">
+                <a-icon slot="prefix" v-if=" inputCodeContent==verifiedCode " type="smile"
+                        :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                <a-icon slot="prefix" v-else type="frown" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              </a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="10">
+            <j-graphic-code @success="generateCode" style="float: right"></j-graphic-code>
+          </a-col>
+        </a-row>
+
+        <a-form-item>
           <a-button
-            class="getCaptcha"
             size="large"
-            :disabled="state.smsSendBtn"
-            @click.stop.prevent="getCaptcha"
-            v-text="!state.smsSendBtn && '获取验证码'||(state.time+' s')"></a-button>
-        </a-col>
-      </a-row>
-
-      <a-form-item>
-        <a-button
-          size="large"
-          type="primary"
-          htmlType="submit"
-          class="register-button"
-          :loading="registerBtn"
-          @click.stop.prevent="handleSubmit"
-          :disabled="registerBtn">注册
-        </a-button>
-        <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
-      </a-form-item>
-
-    </a-form>
+            type="primary"
+            htmlType="submit"
+            class="register-button"
+            :loading="registerBtn"
+            @click.stop.prevent="handleSubmit"
+            :disabled="registerBtn">注册
+          </a-button>
+          <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
+        </a-form-item>
+      </a-form>
+    </a-spin>
   </div>
 </template>
 
 <script>
-  import { mixinDevice } from '@/utils/mixin.js'
-  import { getSmsCaptcha } from '@/api/login'
+  import {mixinDevice} from '@/utils/mixin.js'
+  import {httpAction} from '@/api/manage'
+  import {getDictItemByDictCodeAndItemCode} from '@/components/dict/JDictSelectUtil'
+  import ConstConfig from '@/config/constant.config'
+  import JGraphicCode from '@/components/jeecg/JGraphicCode'
 
   const levelNames = {
     0: '低',
@@ -112,13 +125,19 @@
   }
   export default {
     name: "Register",
-    components: {
-    },
     mixins: [mixinDevice],
+    components: {
+      JGraphicCode
+    },
     data() {
       return {
-        form: null,
-
+        formData: {
+          username: '',
+          password: '',
+          enterpriseName: '',
+          businessLicenseNo: '',
+          enterpriseType: '',
+        },
         state: {
           time: 60,
           smsSendBtn: false,
@@ -127,26 +146,81 @@
           percent: 10,
           progressColor: '#FF0000'
         },
-        registerBtn: false
+        registerBtn: false,
+        url: {
+          registerUrl: '/sys/user/register'
+        },
+        confirmLoading: false,
+        labelCol: {
+          xs: {span: 28},
+          sm: {span: 8},
+        },
+        wrapperCol: {
+          xs: {span: 24},
+          sm: {span: 16},
+        },
+        verifiedCode: "",
+        inputCodeContent: "",
+        inputCodeNull: true,
+        validatorRules:{
+          inputCode:{rules: [{ required: true, message: '请输入验证码!'},{validator: this.validateInputCode}]}
+        },
       }
     },
     computed: {
-      passwordLevelClass () {
+      passwordLevelClass() {
         return levelClass[this.state.passwordLevel]
       },
-      passwordLevelName () {
+      passwordLevelName() {
         return levelNames[this.state.passwordLevel]
       },
-      passwordLevelColor () {
+      passwordLevelColor() {
         return levelColor[this.state.passwordLevel]
       }
     },
+    mounted() {
+      this.initDictConfig()
+    },
     methods: {
+      initDictConfig() {
+        // 初始化字典 - 企业类型
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_review}).then(res => {
+          if (res != null) {
+            this.formData.enterpriseType = res.itemValue
+          }
+        })
+      },
 
-      handlePasswordLevel (rule, value, callback) {
+      handleSubmit() {
+        this.form.validateFields(['email', 'password', 'enterpriseName', 'businessLicenseNo'], {force: true}, (err, values) => {
+          if (!err) {
+            this.confirmLoading = true
+            this.formData.username = values.email
+            this.formData.password = values.password
+            this.formData.enterpriseName = values.enterpriseName
+            this.formData.businessLicenseNo = values.businessLicenseNo
+            httpAction(this.url.registerUrl, this.formData, 'post').then((res) => {
+              if (res.success) {
+                this.$router.push({name: 'registerResult', params: {...values}})
+              } else {
+                this.$message.error(res.message)
+              }
+              this.confirmLoading = false;
+            }).finally(() => {
+              this.confirmLoading = false
+            })
+          } else {
+            return
+          }
+        })
+      },
 
+      handleEnterpriseCheck(rule, value, callback) {
+        callback()
+      },
+
+      handlePasswordLevel(rule, value, callback) {
         let level = 0
-
         // 判断这个字符串中有没有数字
         if (/[0-9]/.test(value)) {
           level++
@@ -174,9 +248,8 @@
         }
       },
 
-      handlePasswordCheck (rule, value, callback) {
+      handlePasswordCheck(rule, value, callback) {
         let password = this.form.getFieldValue('password')
-        console.log('value', value)
         if (value === undefined) {
           callback(new Error('请输入密码'))
         }
@@ -186,81 +259,37 @@
         callback()
       },
 
-      handlePhoneCheck (rule, value, callback) {
-       console.log('handlePhoneCheck, rule:', rule)
-        console.log('handlePhoneCheck, value', value)
-        console.log('handlePhoneCheck, callback', callback)
-
-       callback()
-      },
-
-      handlePasswordInputClick () {
+      handlePasswordInputClick() {
         if (!this.isMobile()) {
           this.state.passwordLevelChecked = true
           return;
         }
         this.state.passwordLevelChecked = false
       },
-
-      handleSubmit() {
-        this.form.validateFields((err, values) => {
-          if (!err) {
-            this.$router.push({ name: 'registerResult', params: {...values} })
-          }
-        })
+      watch: {
+        'state.passwordLevel'(val) {
+        }
       },
-
-      getCaptcha(e) {
-        e.preventDefault()
-        let that = this
-
-        this.form.validateFields(['mobile'], {force: true},
-          (err, values) => {
-            if (!err) {
-              this.state.smsSendBtn = true;
-
-              let interval = window.setInterval(() => {
-                if (that.state.time-- <= 0) {
-                  that.state.time = 60;
-                  that.state.smsSendBtn = false;
-                  window.clearInterval(interval);
-                }
-              }, 1000);
-
-              const hide = this.$message.loading('验证码发送中..', 0);
-
-              getSmsCaptcha({mobile: values.mobile}).then(res => {
-                setTimeout(hide, 2500);
-                this.$notification['success']({
-                  message: '提示',
-                  description: '验证码获取成功，您的验证码为：' + res.result.captcha,
-                  duration: 8
-                })
-              }).catch(err => {
-                setTimeout(hide, 1);
-                clearInterval(interval);
-                that.state.time = 60;
-                that.state.smsSendBtn = false;
-                this.requestFailed(err);
-              });
-            }
-          }
-        );
+      validateInputCode(rule, value, callback) {
+        if (!value || this.verifiedCode == this.inputCodeContent) {
+          callback();
+        } else {
+          callback("您输入的验证码不正确!");
+        }
       },
-      requestFailed(err) {
-        this.$notification['error']({
-          message: '错误',
-          description: ((err.response || {}).data || {}).message || "请求出现错误，请稍后再试",
-          duration: 4,
-        });
-        this.registerBtn = false;
+      generateCode(value) {
+        this.verifiedCode = value.toLowerCase()
       },
-    },
-    watch: {
-      'state.passwordLevel' (val) {
-        console.log(val)
-
-      }
+      inputCodeChange(e) {
+        debugger
+        this.inputCodeContent = e.target.value
+        if (!e.target.value || 0 == e.target.value) {
+          this.inputCodeNull = true
+        } else {
+          this.inputCodeContent = this.inputCodeContent.toLowerCase()
+          this.inputCodeNull = false
+        }
+      },
     }
   }
 </script>

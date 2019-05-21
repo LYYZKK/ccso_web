@@ -44,10 +44,14 @@
 </template>
 
 <script>
+
   import {getAction, httpAction} from '@/api/manage'
+  import antMixin from '@/mixins/ant-mixin'
+  import constantCfgMixin from '@/mixins/constant.cfg'
 
   export default {
     name: "UserModal",
+    mixins: [antMixin, constantCfgMixin],
     data() {
       return {
         confirmDirty: false,

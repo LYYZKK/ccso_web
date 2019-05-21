@@ -3,8 +3,8 @@
     <a-form class="user-layout-login" ref="formLogin" :autoFormCreate="(form)=>{this.form = form}" id="formLogin">
       <a-form-item
         fieldDecoratorId="username"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入账户邮箱' }], validateTrigger: 'change'}">
-        <a-input size="large" type="text" placeholder="请输入帐户邮箱" style="margin-top: 15%;">
+        :fieldDecoratorOptions="{rules: [{ required: true, type: 'email', message: '请输入帐户邮箱' }], validateTrigger: 'change'}">
+        <a-input size="large" type="email" placeholder="请输入帐户邮箱" style="margin-top: 15%;">
           <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </a-input>
       </a-form-item>

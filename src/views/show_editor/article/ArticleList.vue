@@ -20,7 +20,8 @@
                   v-for="(item, key) in articleTypeDictOptions"
                   :key="key"
                   :value="item.value"
-                >{{ item.text }}</a-select-option>
+                >{{ item.text }}
+                </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -36,7 +37,8 @@
                     v-for="(item, key) in articleStateDictOptions"
                     :key="key"
                     :value="item.value"
-                  >{{ item.text }}</a-select-option>
+                  >{{ item.text }}
+                  </a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -132,124 +134,120 @@
 </template>
 
 <script>
-import ArticleModal from './modules/ArticleModal'
-import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-import constantCfgMixin from '@/mixins/constant.cfg'
-import { initDictOptions, filterDictOptionByText } from '@/components/dict/JDictSelectUtil'
+  import ArticleModal from './modules/ArticleModal'
+  import {JeecgListMixin} from '@/mixins/JeecgListMixin'
+  import constantCfgMixin from '@/mixins/constant.cfg'
+  import {initDictOptions, filterDictOptionByText} from '@/components/dict/JDictSelectUtil'
 
-export default {
-  name: 'ArticleList',
-  mixins: [JeecgListMixin, constantCfgMixin],
-  components: {
-    ArticleModal
-  },
-  data () {
-    return {
-      description: '文章管理管理页面',
-      // 查询条件中的字段使用的查询条件方式, 支持的类型参考 src/mixins/JeecgListMixin.js 中 queryTypeAlias.
-      /*
-         e.g:
-         queryType: {
-           username: 'like',
-           email: 'llike',
-           phone: 'rlike',
-           age_start: 'gte',
-           age_end: 'lt'
-         }
-         */
-      queryType: {
-        title: 'like',
-        text: 'like',
-        articleType: 'like',
-        articleState: 'like',
-        createBy: 'like'
-      },
-      // 表头
-      columns: [
-        {
-          title: '#',
-          dataIndex: '',
-          key: 'rowIndex',
-          width: 60,
-          align: 'center',
-          customRender: (text, record, index) => {
-            return parseInt(index) + 1
+  export default {
+    name: 'ArticleList',
+    mixins: [JeecgListMixin, constantCfgMixin],
+    components: {
+      ArticleModal
+    },
+    data() {
+      return {
+        description: '文章管理管理页面',
+        // 查询条件中的字段使用的查询条件方式, 支持的类型参考 src/mixins/JeecgListMixin.js 中 queryTypeAlias.
+        /*
+           e.g:
+           queryType: {
+             username: 'like',
+             email: 'llike',
+             phone: 'rlike',
+             age_start: 'gte',
+             age_end: 'lt'
+           }
+           */
+        queryType: {
+          title: 'like',
+          text: 'like',
+          articleType: 'like',
+          articleState: 'like',
+          createBy: 'like'
+        },
+        // 表头
+        columns: [
+          {
+            title: '#',
+            dataIndex: '',
+            key: 'rowIndex',
+            width: 60,
+            align: 'center',
+            customRender: (text, record, index) => {
+              return parseInt(index) + 1
+            }
+          },
+          {
+            title: '文章标题',
+            align: 'center',
+            dataIndex: 'title'
+          },
+          {
+            title: '文章类型',
+            align: 'center',
+            dataIndex: 'articleType',
+            customRender: text => {
+              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.articleTypeDictOptions, text))
+            }
+          },
+          {
+            title: '文章状态',
+            align: 'center',
+            dataIndex: 'articleState',
+            customRender: text => {
+              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.articleStateDictOptions, text))
+            }
+          },
+          {
+            title: '附件地址',
+            align: 'center',
+            dataIndex: 'accessoryUrl'
+          },
+          {
+            title: '修改人',
+            align: 'center',
+            dataIndex: 'updateBy'
+          },
+          {
+            title: '修改时间',
+            align: 'center',
+            dataIndex: 'updateTime'
+          },
+          {
+            title: '操作',
+            dataIndex: 'action',
+            align: 'center',
+            scopedSlots: {customRender: 'action'}
           }
+        ],
+        url: {
+          list: '/show/article/list',
+          delete: '/show/article/delete',
+          deleteBatch: '/show/article/deleteBatch'
         },
-        {
-          title: '文章标题',
-          align: 'center',
-          dataIndex: 'title'
-        },
-        {
-          title: '文章类型',
-          align: 'center',
-          dataIndex: 'articleType',
-          customRender: text => {
-            return this.DICT_SHOW_RENDER(filterDictOptionByText(this.articleTypeDictOptions, text))
+        articleTypeDictOptions: [],
+        articleStateDictOptions: []
+      }
+    },
+    computed: {},
+    methods: {
+      initDictConfig() {
+        // 初始化字典 - 文章类型
+        initDictOptions('article_type').then(res => {
+          if (res.success) {
+            this.articleTypeDictOptions = res.result
           }
-        },
-        {
-          title: '文章状态',
-          align: 'center',
-          dataIndex: 'articleState',
-          customRender: text => {
-            return this.DICT_SHOW_RENDER(filterDictOptionByText(this.articleStateDictOptions, text))
+        })
+        // 初始化字典 - 文章状态
+        initDictOptions('article_state').then(res => {
+          if (res.success) {
+            this.articleStateDictOptions = res.result
           }
-        },
-        {
-          title: '附件地址',
-          align: 'center',
-          dataIndex: 'accessoryUrl'
-        },
-        {
-          title: '修改人',
-          align: 'center',
-          dataIndex: 'updateBy'
-        },
-        {
-          title: '修改时间',
-          align: 'center',
-          dataIndex: 'updateTime'
-        },
-        {
-          title: '操作',
-          dataIndex: 'action',
-          align: 'center',
-          scopedSlots: { customRender: 'action' }
-        }
-      ],
-      url: {
-        list: '/show/article/list',
-        delete: '/show/article/delete',
-        deleteBatch: '/show/article/deleteBatch'
-      },
-      articleTypeDictOptions: [],
-      articleStateDictOptions: []
-    }
-  },
-  computed: {
-    importExcelUrl: function () {
-      return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`
-    }
-  },
-  methods: {
-    initDictConfig () {
-      // 初始化字典 - 文章类型
-      initDictOptions('article_type').then(res => {
-        if (res.success) {
-          this.articleTypeDictOptions = res.result
-        }
-      })
-      // 初始化字典 - 文章状态
-      initDictOptions('article_state').then(res => {
-        if (res.success) {
-          this.articleStateDictOptions = res.result
-        }
-      })
+        })
+      }
     }
   }
-}
 </script>
 <style lang="less" scoped>
   /** Button按钮间距 */
