@@ -15,6 +15,27 @@
           <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </a-input>
       </a-form-item>
+      <a-row :gutter="0">
+        <a-col :span="14">
+          <a-form-item
+            fieldDecoratorId="inputCodeVerified"
+            :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }, { validator: this.validateInputCode }], validateTrigger: ['change', 'blur']}">
+            <a-input
+              size="large"
+              type="text"
+              @change="inputCodeChange"
+              placeholder="请输入验证码">
+              <a-icon slot="prefix" v-if=" inputCodeContent==verifiedCode " type="smile"
+                      :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              <a-icon slot="prefix" v-else type="frown" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </a-input>
+          </a-form-item>
+        </a-col>
+        <a-col :span="10">
+          <j-graphic-code @success="generateCode" style="float: right"></j-graphic-code>
+        </a-col>
+      </a-row>
+
 
       <a-form-item>
         <a-checkbox v-model="formLogin.rememberMe">自动登陆</a-checkbox>
@@ -46,15 +67,15 @@
 </template>
 
 <script>
-  import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
   import {mapActions} from "vuex"
   import {timeFix} from "@/utils/util"
   import Vue from 'vue'
   import {ACCESS_TOKEN} from "@/store/mutation-types"
+  import JGraphicCode from '@/components/jeecg/JGraphicCode'
 
   export default {
     components: {
-      TwoStepCaptcha
+      JGraphicCode
     },
     data() {
       return {
@@ -71,6 +92,10 @@
           mobile: "",
           rememberMe: true
         },
+        verifiedCode: "",
+        inputCodeContent: "",
+        inputCodeNull: true,
+        inputCodeVerified: "",
       }
     },
     created() {
@@ -87,7 +112,7 @@
         };
 
         // 使用账户密码登陆
-        that.form.validateFields(['username', 'password'], {force: true}, (err, values) => {
+        that.form.validateFields(['username', 'password', 'inputCodeVerified'], {force: true}, (err, values) => {
           if (!err) {
             flag = true
             loginParams.username = values.username
@@ -118,6 +143,25 @@
           duration: 4,
         });
         this.loginBtn = false;
+      },
+      validateInputCode(rule,value,callback){
+        if(!value || this.verifiedCode==this.inputCodeContent){
+          callback();
+        }else{
+          callback("您输入的验证码不正确!");
+        }
+      },
+      generateCode(value){
+        this.verifiedCode = value.toLowerCase()
+      },
+      inputCodeChange(e){
+        this.inputCodeContent = e.target.value
+        if(!e.target.value||0==e.target.value){
+          this.inputCodeNull=true
+        }else{
+          this.inputCodeContent = this.inputCodeContent.toLowerCase()
+          this.inputCodeNull=false
+        }
       },
     }
   }

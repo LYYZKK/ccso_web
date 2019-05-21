@@ -1,7 +1,6 @@
 <template>
   <div class="main user-layout-register">
     <a-spin :spinning="confirmLoading">
-
       <a-form ref="formRegister" :autoFormCreate="(form)=>{this.form = form}" id="formRegister">
         <br>
         <a-form-item
@@ -63,20 +62,20 @@
 
         <a-row :gutter="0">
           <a-col :span="14">
-            <a-form-item>
+            <a-form-item
+              fieldDecoratorId="inputCodeVerified"
+              :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }, { validator: this.validateInputCode }], validateTrigger: ['change', 'blur']}">
               <a-input
-                v-decorator="['inputCode',validatorRules.inputCode]"
                 size="large"
                 type="text"
                 @change="inputCodeChange"
                 placeholder="请输入验证码">
-                <a-icon slot="prefix" v-if=" inputCodeContent==verifiedCode " type="smile"
-                        :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                <a-icon slot="prefix" v-if=" inputCodeContent==verifiedCode " type="smile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
                 <a-icon slot="prefix" v-else type="frown" :style="{ color: 'rgba(0,0,0,.25)' }"/>
               </a-input>
             </a-form-item>
           </a-col>
-          <a-col :span="10">
+          <a-col  :span="10">
             <j-graphic-code @success="generateCode" style="float: right"></j-graphic-code>
           </a-col>
         </a-row>
@@ -162,9 +161,7 @@
         verifiedCode: "",
         inputCodeContent: "",
         inputCodeNull: true,
-        validatorRules:{
-          inputCode:{rules: [{ required: true, message: '请输入验证码!'},{validator: this.validateInputCode}]}
-        },
+        inputCodeVerified: "",
       }
     },
     computed: {
@@ -192,26 +189,26 @@
       },
 
       handleSubmit() {
-        this.form.validateFields(['email', 'password', 'enterpriseName', 'businessLicenseNo'], {force: true}, (err, values) => {
+        this.form.validateFields(['email', 'password', 'enterpriseName', 'businessLicenseNo', 'inputCodeVerified'], {force: true}, (err, values) => {
           if (!err) {
-            this.confirmLoading = true
-            this.formData.username = values.email
-            this.formData.password = values.password
-            this.formData.enterpriseName = values.enterpriseName
-            this.formData.businessLicenseNo = values.businessLicenseNo
-            httpAction(this.url.registerUrl, this.formData, 'post').then((res) => {
-              if (res.success) {
-                this.$router.push({name: 'registerResult', params: {...values}})
-              } else {
-                this.$message.error(res.message)
-              }
-              this.confirmLoading = false;
-            }).finally(() => {
-              this.confirmLoading = false
-            })
-          } else {
-            return
-          }
+              this.confirmLoading = true
+              this.formData.username = values.email
+              this.formData.password = values.password
+              this.formData.enterpriseName = values.enterpriseName
+              this.formData.businessLicenseNo = values.businessLicenseNo
+              httpAction(this.url.registerUrl, this.formData, 'post').then((res) => {
+                if (res.success) {
+                  this.$router.push({name: 'registerResult', params: {...values}})
+                } else {
+                  this.$message.error(res.message)
+                }
+                this.confirmLoading = false;
+              }).finally(() => {
+                this.confirmLoading = false
+              })
+            } else {
+              return
+            }
         })
       },
 
@@ -270,24 +267,23 @@
         'state.passwordLevel'(val) {
         }
       },
-      validateInputCode(rule, value, callback) {
-        if (!value || this.verifiedCode == this.inputCodeContent) {
+      validateInputCode(rule,value,callback){
+        if(!value || this.verifiedCode==this.inputCodeContent){
           callback();
-        } else {
+        }else{
           callback("您输入的验证码不正确!");
         }
       },
-      generateCode(value) {
+      generateCode(value){
         this.verifiedCode = value.toLowerCase()
       },
-      inputCodeChange(e) {
-        debugger
+      inputCodeChange(e){
         this.inputCodeContent = e.target.value
-        if (!e.target.value || 0 == e.target.value) {
-          this.inputCodeNull = true
-        } else {
+        if(!e.target.value||0==e.target.value){
+          this.inputCodeNull=true
+        }else{
           this.inputCodeContent = this.inputCodeContent.toLowerCase()
-          this.inputCodeNull = false
+          this.inputCodeNull=false
         }
       },
     }
