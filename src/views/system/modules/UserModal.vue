@@ -10,7 +10,7 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
           <br><br>
-          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="所有员工">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="员工">
             <a-select
               v-model="model.personnelId"
               showSearch

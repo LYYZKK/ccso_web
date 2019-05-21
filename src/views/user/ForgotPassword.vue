@@ -77,7 +77,7 @@
           username: ''
         },
         url: {
-          retrievePasswordUrl: '/sys/user/retrievePassword',
+          retrievePasswordUrl: '/sys/user/resetPassword',
         },
         confirmLoading: false,
         verifiedCode: "",
