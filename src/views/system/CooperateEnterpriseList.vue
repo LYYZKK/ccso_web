@@ -7,13 +7,13 @@
           <a-row :gutter="24">
 
             <a-col :md="6" :sm="8">
-              <a-form-item label="姓名">
-                <a-input placeholder="请输入姓名" v-model="queryParam.name"></a-input>
+              <a-form-item label="企业名称">
+                <a-input placeholder="请输入企业名称" v-model="queryParam.name"></a-input>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="8">
-              <a-form-item label="身份证号码">
-                <a-input placeholder="请输入身份证号码" v-model="queryParam.idCard"></a-input>
+              <a-form-item label="营业执照编号">
+                <a-input placeholder="请输入营业执照编号" v-model="queryParam.businessLicenseNo"></a-input>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="8">
@@ -64,12 +64,13 @@
           @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <span v-show="record.sysUserId == '-1'">
-            <a @click="generateAccount(record)">生成账号</a>
-            <a-divider type="vertical"/>
-          </span>
-          <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)"
-                        v-if="record.surfaceShow === surfaceShowTrueDictValue && record.surfaceShow!==''">
+          <a @click="jumpPersonnelList(record.id)">下属人员</a>
+
+          <a-divider type="vertical"/>
+          <a @click="jumpUserList(record.id)">账户管理</a>
+
+          <a-divider type="vertical"/>
+          <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)" v-if="record.surfaceShow === surfaceShowTrueDictValue && record.surfaceShow!==''">
             <a><font color="#dc143c">取消展示</font></a>
           </a-popconfirm>
           <a-popconfirm title="确定前台展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowTrueDictValue)" v-else>
@@ -97,14 +98,14 @@
       <!-- table区域-end -->
 
       <!-- 表单区域 -->
-      <personnel-modal ref="modalForm" @ok="modalFormOk"></personnel-modal>
+      <cooperate-enterprise-modal ref="modalForm" @ok="modalFormOk"></cooperate-enterprise-modal>
     </a-spin>
   </a-card>
 
 </template>
 
 <script>
-  import PersonnelModal from './modules/PersonnelModal'
+  import CooperateEnterpriseModal from './modules/CooperateEnterpriseModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
@@ -113,35 +114,36 @@
     getDictItemByDictCodeAndItemCode,
     initDictOptions
   } from '@/components/dict/JDictSelectUtil'
-  import {httpAction} from '@/api/manage'
+
   import ConstConfig from '@/config/constant.config'
+  import {httpAction} from '@/api/manage'
 
   export default {
-    name: 'PersonnelList',
+    name: 'EnterpriseList',
     mixins: [JeecgListMixin, constantCfgMixin, antMixin],
     components: {
-      PersonnelModal
+      CooperateEnterpriseModal
     },
     data() {
       return {
-        description: '企业人员管理管理页面',
+        description: '合作企业管理管理页面',
         // 查询条件中的字段使用的查询条件方式, 支持的类型参考 src/mixins/JeecgListMixin.js 中 queryTypeAlias.
-        /*
-        e.g:
+        queryParam: {
+          enterpriseType: ''
+        },
         queryType: {
-          username: 'like',
-          email: 'llike',
-          phone: 'rlike',
-          age_start: 'gte',
-          age_end: 'lt'
-        }
-        */
+          name: 'like',
+          logo: 'like',
+          enterpriseType: 'eq',
+          businessLicenseNo: 'like',
+          businessLicenseFile: 'like',
+          registeredCapital: 'like',
+          sitesLinks: 'like',
+          briefIntroduction: 'like',
+        },
         updateParam: {
           id: '',
           surfaceShow: ''
-        },
-        queryParam: {
-          enterpriseId: this.$route.params.enterpriseId || ''
         },
         // 表头
         columns: [
@@ -156,43 +158,22 @@
             }
           },
           {
-            title: '姓名',
+            title: '企业类型',
             align: 'center',
-            dataIndex: 'name'
-          },
-          {
-            title: '证书类型',
-            align:
-              'center',
-            dataIndex:
-              'certificateType',
-            customRender:
-              text => {
-                return this.DICT_SHOW_RENDER(filterDictOptionByText(this.certificateTypeDictOptions, text))
-              }
-          },
-          {
-            title: '证书日期',
-            align:
-              'center',
-            dataIndex:
-              'certificateDate'
+            dataIndex: 'enterpriseType',
+            customRender: text => {
+              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.enterpriseTypeDictOptions, text))
+            }
           },
           {
             title: '企业名称',
             align: 'center',
-            dataIndex: 'sysEnterprises',
-            customRender: (text, record) => {
-              return record.sysEnterprises.name
-            }
+            dataIndex: 'name'
           },
           {
-            title: '登录账号',
+            title: '营业执照编号',
             align: 'center',
-            dataIndex: 'email',
-            customRender: (text, record) => {
-              return record.sysUserId == -1 ? '' : text
-            }
+            dataIndex: 'businessLicenseNo'
           },
           {
             title: '修改人',
@@ -201,61 +182,61 @@
           },
           {
             title: '修改时间',
-            align:
-              'center',
-            dataIndex:
-              'updateTime'
+            align: 'center',
+            dataIndex: 'updateTime',
           },
           {
             title: '操作',
             dataIndex: 'action',
             align: 'center',
-            scopedSlots: {
-              customRender: 'action'
-            },
+            scopedSlots: {customRender: 'action'},
+            width: 400
           }
         ],
         url: {
-          list: '/sys/personnel/list',
-          delete:
-            '/sys/personnel/delete',
-          deleteBatch:
-            '/sys/personnel/deleteBatch',
-          generateAccountUrl:
-            "/sys/personnel/generateAccount",
-          edit:
-            '/sys/personnel/edit',
+          list: '/sys/enterprise/list',
+          delete: '/sys/enterprise/delete',
+          deleteBatch: '/sys/enterprise/deleteBatch',
+          edit: '/sys/enterprise/edit',
         },
-        certificateTypeDictOptions: [],
+        enterpriseTypeDictOptions: [],
+        registeredCapitalDictOptions: [],
         surfaceShowDictOptions: [],
         surfaceShowTrueDictValue: '',
         surfaceShowFlaseDictValue: '',
         confirmLoading: false,
-
       }
     },
     created() {
-
-    }
-    ,
+      console.log('into created')
+      // 初始化 - 合作企业类型值
+      getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_cooperate}).then(res => {
+        if (res != null) {
+          this.queryParam.enterpriseType = res.itemValue
+          this.loadData();
+        }
+      })
+      //初始化字典配置 在自己页面定义
+      this.initDictConfig();
+    },
     methods: {
       initDictConfig() {
-        // 初始化字典 - 证书类型
-        initDictOptions('certificate_type').then(res => {
+        // 初始化字典 - 企业类型
+        initDictOptions('enterprise_type').then(res => {
           if (res.success) {
-            this.certificateTypeDictOptions = res.result
+            this.enterpriseTypeDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 注册资本
+        initDictOptions('registered_capital').then(res => {
+          if (res.success) {
+            this.registeredCapitalDictOptions = res.result
           }
         })
         // 初始化字典 - 前台是否显示
         initDictOptions('is_true').then(res => {
           if (res.success) {
             this.surfaceShowDictOptions = res.result
-          }
-        })
-        // 初始化字典 - 是否
-        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_cooperate}).then(res => {
-          if (res.success) {
-            this.queryParam.enterpriseType = res.itemValue
           }
         })
         // 初始化字典 - 前台显示值
@@ -271,21 +252,6 @@
           }
         })
       },
-      /* 生成账号 */
-      generateAccount(record) {
-        this.confirmLoading = true
-        httpAction(this.url.generateAccountUrl, record, 'post').then(res => {
-          if (res.code === 200) {
-            this.$message.success(res.message)
-          } else {
-            this.$message.error(res.message)
-          }
-        }).finally(() => {
-          this.confirmLoading = false
-          this.loadData();
-        })
-      }
-      ,
       updateSurfaceShow(id, surfaceShowValue) {
         this.confirmLoading = true
         this.updateParam.id = id
@@ -302,8 +268,21 @@
           this.confirmLoading = false
           this.loadData();
         })
+      },
+      jumpPersonnelList(id) {
+        this.$router.push({
+          name: 'isystem-personnel',
+          path: '/isystem/personnel',
+          params: {enterpriseId: id}
+        })
+      },
+      jumpUserList(id) {
+        this.$router.push({
+          name: 'isystem-user',
+          path: '/isystem/user',
+          params: {enterpriseId: id}
+        })
       }
-      ,
     }
   }
 </script>

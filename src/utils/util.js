@@ -225,3 +225,21 @@ export function topNavScrollToSelectItem(doc) {
     }
   }
 }
+
+/**
+ * 【从对象中copy指定属性到新属性并返回新对象】
+ *  @date 2019-04-08
+ *  顶部导航栏滚动条位置滚动到选中的菜单处
+ * @param orignal_obj 源对象
+ * @return 替换属性名称后返回的新对象
+ */
+export function copy2NewKeyObjeect(orignal_obj = {}, old_keys = [], old_new_keyMap = {}) {
+  const new_obj = {}
+  for(let old_key in orignal_obj) {
+    if (old_keys.includes(old_key)) {
+      new_obj[old_new_keyMap[old_key]] = orignal_obj[old_key]
+    }
+  }
+
+  return new_obj
+}
