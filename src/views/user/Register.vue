@@ -60,25 +60,28 @@
           <a-input size="large" placeholder="请输入营业执照注册号"/>
         </a-form-item>
 
-        <a-row :gutter="0">
-          <a-col :span="14">
-            <a-form-item
-              fieldDecoratorId="inputCodeVerified"
-              :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }, { validator: this.validateInputCode }], validateTrigger: ['change', 'blur']}">
-              <a-input
-                size="large"
-                type="text"
-                @change="inputCodeChange"
-                placeholder="请输入验证码">
-                <a-icon slot="prefix" v-if=" inputCodeContent==verifiedCode " type="smile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                <a-icon slot="prefix" v-else type="frown" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-              </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col  :span="10">
-            <j-graphic-code @success="generateCode" style="float: right"></j-graphic-code>
-          </a-col>
-        </a-row>
+        <div style="margin-left: 17%;">
+          <a-row :gutter="10">
+            <label style="float: left;padding: 9px;margin-right: -4%;">验证码：</label>
+            <a-col :span="8">
+              <a-form-item
+                fieldDecoratorId="inputCodeVerified"
+                :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }, { validator: this.validateInputCode }], validateTrigger: ['change', 'blur']}">
+                <a-input
+                  size="large"
+                  type="text"
+                  @change="inputCodeChange">
+                  <a-icon slot="prefix" v-if=" inputCodeContent==verifiedCode " type="smile"
+                          :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                  <a-icon slot="prefix" v-else type="frown" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                </a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="5">
+              <j-graphic-code @success="generateCode"/>
+            </a-col>
+          </a-row>
+        </div>
 
         <a-form-item>
           <a-button
@@ -90,6 +93,7 @@
             @click.stop.prevent="handleSubmit"
             :disabled="registerBtn">注册
           </a-button>
+          <br />
           <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
         </a-form-item>
       </a-form>
@@ -191,24 +195,24 @@
       handleSubmit() {
         this.form.validateFields(['email', 'password', 'enterpriseName', 'businessLicenseNo', 'inputCodeVerified'], {force: true}, (err, values) => {
           if (!err) {
-              this.confirmLoading = true
-              this.formData.username = values.email
-              this.formData.password = values.password
-              this.formData.enterpriseName = values.enterpriseName
-              this.formData.businessLicenseNo = values.businessLicenseNo
-              httpAction(this.url.registerUrl, this.formData, 'post').then((res) => {
-                if (res.success) {
-                  this.$router.push({name: 'registerResult', params: {...values}})
-                } else {
-                  this.$message.error(res.message)
-                }
-                this.confirmLoading = false;
-              }).finally(() => {
-                this.confirmLoading = false
-              })
-            } else {
-              return
-            }
+            this.confirmLoading = true
+            this.formData.username = values.email
+            this.formData.password = values.password
+            this.formData.enterpriseName = values.enterpriseName
+            this.formData.businessLicenseNo = values.businessLicenseNo
+            httpAction(this.url.registerUrl, this.formData, 'post').then((res) => {
+              if (res.success) {
+                this.$router.push({name: 'registerResult', params: {...values}})
+              } else {
+                this.$message.error(res.message)
+              }
+              this.confirmLoading = false;
+            }).finally(() => {
+              this.confirmLoading = false
+            })
+          } else {
+            return
+          }
         })
       },
 
@@ -267,23 +271,23 @@
         'state.passwordLevel'(val) {
         }
       },
-      validateInputCode(rule,value,callback){
-        if(!value || this.verifiedCode==this.inputCodeContent){
+      validateInputCode(rule, value, callback) {
+        if (!value || this.verifiedCode == this.inputCodeContent) {
           callback();
-        }else{
+        } else {
           callback("您输入的验证码不正确!");
         }
       },
-      generateCode(value){
+      generateCode(value) {
         this.verifiedCode = value.toLowerCase()
       },
-      inputCodeChange(e){
+      inputCodeChange(e) {
         this.inputCodeContent = e.target.value
-        if(!e.target.value||0==e.target.value){
-          this.inputCodeNull=true
-        }else{
+        if (!e.target.value || 0 == e.target.value) {
+          this.inputCodeNull = true
+        } else {
           this.inputCodeContent = this.inputCodeContent.toLowerCase()
-          this.inputCodeNull=false
+          this.inputCodeNull = false
         }
       },
     }
@@ -329,7 +333,10 @@
     }
 
     .register-button {
-      width: 50%;
+      padding: 0 15px;
+      font-size: 16px;
+      height: 40px;
+      width: 100%;
     }
 
     .login {
