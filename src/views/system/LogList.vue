@@ -163,8 +163,8 @@
 
         let param = Object.assign({}, this.queryParamWithQueryType, this.isorter);
         param.field = this.getQueryField();
-        param.pageNo = this.ipagination.current;
-        param.pageSize = this.ipagination.pageSize;
+        param.pageNo = param.pageNo === undefined || param.pageNo === null ? this.ipagination.current : param.pageNo
+        param.pageSize = param.pageSize === undefined || param.pageSize === null ? this.ipagination.pageSize : param.pageSize
         delete param.createTimeRange; // 时间参数不传递后台
         return filterObj(param);
       },
