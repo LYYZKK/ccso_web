@@ -54,7 +54,7 @@
       },
       contentWidth: {
         type: Number,
-        default:136
+        default:120
       },
       contentHeight: {
         type: Number,

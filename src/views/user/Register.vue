@@ -63,7 +63,7 @@
         <div style="margin-left: 17%;">
           <a-row :gutter="10">
             <label style="float: left;padding: 9px;margin-right: -4%;">验证码：</label>
-            <a-col :span="8">
+            <a-col :span="9">
               <a-form-item
                 fieldDecoratorId="inputCodeVerified"
                 :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }, { validator: this.validateInputCode }], validateTrigger: ['change', 'blur']}">

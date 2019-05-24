@@ -28,7 +28,7 @@
       </div>
 
       <!-- 操作按钮区域 -->
-      <div class="table-operator">
+      <!--<div class="table-operator">
         <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <a-menu slot="overlay">
@@ -41,7 +41,7 @@
             <a-icon type="down"/>
           </a-button>
         </a-dropdown>
-      </div>
+      </div>-->
 
       <!-- table区域-begin -->
       <div>
@@ -81,7 +81,7 @@
           <a @click="handleEdit(record)">编辑</a>
 
           <a-divider type="vertical"/>
-          <a-dropdown>
+          <!--<a-dropdown>
             <a class="ant-dropdown-link">更多 <a-icon type="down"/></a>
             <a-menu slot="overlay">
               <a-menu-item>
@@ -90,7 +90,7 @@
                 </a-popconfirm>
               </a-menu-item>
             </a-menu>
-          </a-dropdown>
+          </a-dropdown>-->
         </span>
 
         </a-table>
@@ -98,14 +98,14 @@
       <!-- table区域-end -->
 
       <!-- 表单区域 -->
-      <enterprise-modal ref="modalForm" @ok="modalFormOk"></enterprise-modal>
+      <review-enterprise-modal ref="modalForm" @ok="modalFormOk"></review-enterprise-modal>
     </a-spin>
   </a-card>
 
 </template>
 
 <script>
-  import EnterpriseModal from './modules/EnterpriseModal'
+  import ReviewEnterpriseModal from './modules/ReviewEnterpriseModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
@@ -119,25 +119,15 @@
   import {httpAction} from '@/api/manage'
 
   export default {
-    name: 'EnterpriseList',
+    name: 'ReviewEnterpriseList',
     mixins: [JeecgListMixin, constantCfgMixin, antMixin],
     components: {
-      EnterpriseModal
+      ReviewEnterpriseModal
     },
     data() {
       return {
         description: '合作企业管理管理页面',
         // 查询条件中的字段使用的查询条件方式, 支持的类型参考 src/mixins/JeecgListMixin.js 中 queryTypeAlias.
-        /*
-        e.g:
-        queryType: {
-          username: 'like',
-          email: 'llike',
-          phone: 'rlike',
-          age_start: 'gte',
-          age_end: 'lt'
-        }
-        */
         queryParam: {
           enterpriseType: ''
         },
@@ -211,6 +201,10 @@
         },
         enterpriseTypeDictOptions: [],
         registeredCapitalDictOptions: [],
+        sexDictOptions: [],
+        positionDictOptions: [],
+        positionSizeDictOptions: [],
+        industryDictOptions: [],
         surfaceShowDictOptions: [],
         surfaceShowTrueDictValue: '',
         surfaceShowFlaseDictValue: '',
@@ -237,12 +231,6 @@
             this.surfaceShowDictOptions = res.result
           }
         })
-        // 初始化字典 - 企业类型
-        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_cooperate}).then(res => {
-          if (res != null) {
-            this.queryParam.enterpriseType = res.itemValue
-          }
-        })
         // 初始化字典 - 前台显示值
         getDictItemByDictCodeAndItemCode({...ConstConfig.DICT._true}).then(res => {
           if (res != null) {
@@ -253,6 +241,36 @@
         getDictItemByDictCodeAndItemCode({...ConstConfig.DICT._false}).then(res => {
           if (res != null) {
             this.surfaceShowFlaseDictValue = res.itemValue
+          }
+        })
+        // 初始化 - 评审企业类型值
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_review}).then(res => {
+          if (res != null) {
+            this.queryParam.enterpriseType = res.itemValue
+          }
+        })
+        // 初始化字典 - 性别
+        initDictOptions('sex').then(res => {
+          if (res.success) {
+            this.sexDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 职位
+        initDictOptions('position').then(res => {
+          if (res.success) {
+            this.positionDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 行业
+        initDictOptions('industry').then(res => {
+          if (res.success) {
+            this.industryDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 坐席规模
+        initDictOptions('position_size').then(res => {
+          if (res.success) {
+            this.positionSizeDictOptions = res.result
           }
         })
       },

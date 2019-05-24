@@ -2,7 +2,7 @@
   <a-drawer
     :title="title"
     :maskClosable="true"
-    width="650px"
+    width=650
     placement="right"
     :closable="true"
     @close="close"
@@ -10,7 +10,7 @@
     style="height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;">
 
     <a-form>
-      <a-form-item label="所拥有的权限">
+      <a-form-item label='所拥有的权限'>
         <a-tree
           checkable
           @check="onCheck"
@@ -20,8 +20,8 @@
           @select="onTreeNodeSelect"
           :expandedKeys="expandedKeysss"
           :checkStrictly="checkStrictly">
-          <span slot="hasDatarule" slot-scope="{slotTitle,icon}">
-            {{ slotTitle }}<a-icon v-if="icon" type="align-left" style="margin-left:5px;color: red;"></a-icon>
+          <span slot="hasDatarule" slot-scope="{slotTitle,ruleFlag}">
+            {{ slotTitle }}<a-icon v-if="ruleFlag" type="align-left" style="margin-left:5px;color: red;"></a-icon>
           </span>
         </a-tree>
       </a-form-item>
@@ -132,8 +132,9 @@
       handleSubmit(){
         let that = this;
         let params =  {
+          roleId:that.roleId,
           permissionIds:that.checkedKeys.join(","),
-          roleId:that.roleId
+          lastpermissionIds:that.defaultCheckedKeys.join(","),
         };
         that.loading = true;
         console.log("请求参数：",params);
@@ -150,22 +151,22 @@
         })
       },
     },
-  watch: {
-    visible () {
-      if (this.visible) {
-        queryTreeListForRole().then((res) => {
-          this.treeData = res.result.treeList
-          this.allTreeKeys = res.result.ids
-          queryRolePermission({roleId:this.roleId}).then((res)=>{
+    watch: {
+      visible () {
+        if (this.visible) {
+          queryTreeListForRole().then((res) => {
+            this.treeData = res.result.treeList
+            this.allTreeKeys = res.result.ids
+            queryRolePermission({roleId:this.roleId}).then((res)=>{
               this.checkedKeys = [...res.result];
               this.defaultCheckedKeys = [...res.result];
               this.expandedKeysss = this.allTreeKeys;
               //console.log(this.defaultCheckedKeys)
+            })
           })
-        })
+        }
       }
     }
-  }
   }
 
 </script>

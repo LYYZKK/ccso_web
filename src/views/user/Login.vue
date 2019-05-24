@@ -144,23 +144,23 @@
         });
         this.loginBtn = false;
       },
-      validateInputCode(rule,value,callback){
-        if(!value || this.verifiedCode==this.inputCodeContent){
+      validateInputCode(rule, value, callback) {
+        if (!value || this.verifiedCode == this.inputCodeContent) {
           callback();
-        }else{
+        } else {
           callback("您输入的验证码不正确!");
         }
       },
-      generateCode(value){
+      generateCode(value) {
         this.verifiedCode = value.toLowerCase()
       },
-      inputCodeChange(e){
+      inputCodeChange(e) {
         this.inputCodeContent = e.target.value
-        if(!e.target.value||0==e.target.value){
-          this.inputCodeNull=true
-        }else{
+        if (!e.target.value || 0 == e.target.value) {
+          this.inputCodeNull = true
+        } else {
           this.inputCodeContent = this.inputCodeContent.toLowerCase()
-          this.inputCodeNull=false
+          this.inputCodeNull = false
         }
       },
     }
