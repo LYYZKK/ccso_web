@@ -4,10 +4,10 @@
       <div class="line">
         <div>
           您的位置：<span
-            @click="$router.push('/website/home')"
-            style="cursor:pointer;"
-            >首页</span
-          >
+          @click="$router.push('/website/home')"
+          style="cursor:pointer;"
+        >首页</span
+        >
           > 标准指引
         </div>
       </div>
@@ -39,42 +39,61 @@
 </template>
 
 <script>
-import axios from "axios";
+import async from 'async'
+import { getAction } from '@/api/manage'
+import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
+import ConstConfig from '@/config/constant.config'
+
 export default {
-  data() {
+  data () {
     return {
-      guide: []
-    };
-  },
-  methods: {
-    showArticle(index) {
-      for (let i = 0; i < this.guide.length; i++) {
-        this.guide[i].articleState = 0;
-      }
-      this.guide[index].articleState = 1;
-    },
-    getArticle() {
-      axios
-        .get("http://119.27.179.175:8111/ccso/show/article/list?pageSize=-1")
-        .then(res => {
-          if (res.data.code === 0) {
-            console.log();
-            for (let i = 0; i < res.data.result.records.length; i++) {
-              if (res.data.result.records[i].articleType === "2") {
-                res.data.result.records[i].articleState = 0;
-                this.guide.push(res.data.result.records[i]);
-              }
-            }
-            this.guide[0].articleState = 1;
-          }
-        });
+      guide: [],
+      url: 'show/article/list'
     }
   },
-  mounted() {
-    this.getArticle();
+  methods: {
+    showArticle (index) {
+      for (let i = 0; i < this.guide.length; i++) {
+        this.guide[i].articleState = 0
+      }
+      this.guide[index].articleState = 1
+    },
+    getArticle ({ article_type, article_state }) {
+      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1 , article_type, article_state}).then(res => {
+        if (res.code === 0) {
+          for (let i = 0; i < res.result.records.length; i++) {
+            if (res.result.records[i].articleType === '2') {
+              res.result.records[i].articleState = 0
+              this.guide.push(res.result.records[i])
+            }
+
+            if (i === 0) {
+              this.guide[0].articleState = 1
+            }
+          }
+        }
+      })
+    }
+  },
+  mounted () {
+    async.series({
+      article_type: async cb => {
+        const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_type_guide })
+        cb(null, res.itemValue)
+      },
+      article_state: async cb => {
+        const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_state_released })
+        cb(null, res.itemValue)
+      }
+    },
+    (err, result) => {
+      if (!err) {
+        this.getArticle({ ...result })
+      }
+    })
   }
-};
+}
 </script>
 <style lang="scss" scoped>
-@import '../common.scss';
+  @import '../common.scss';
 </style>

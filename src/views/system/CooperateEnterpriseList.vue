@@ -208,7 +208,6 @@
       }
     },
     created() {
-      console.log('into created')
       // 初始化 - 合作企业类型值
       getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_cooperate}).then(res => {
         if (res != null) {

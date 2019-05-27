@@ -15,6 +15,22 @@ export default {
     _false: {
       dict_code: 'is_true',
       dict_item_code: 'is_true_false'
-    }
+    },
+    article_type_news: {
+      dict_code: 'article_type',
+      dict_item_code: 'article_type_news'
+    },
+    article_type_train: {
+      dict_code: 'article_type',
+      dict_item_code: 'article_type_train'
+    },
+    article_type_guide: {
+      dict_code: 'article_type',
+      dict_item_code: 'article_type_guide'
+    },
+    article_state_released: {
+      dict_code: 'article_state',
+      dict_item_code: 'article_state_released'
+    },
   }
 }

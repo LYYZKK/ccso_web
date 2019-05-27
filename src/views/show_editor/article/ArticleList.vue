@@ -162,7 +162,6 @@
         queryType: {
           title: 'like',
           text: 'like',
-          articleType: 'like',
           articleState: 'like',
           createBy: 'like'
         },
