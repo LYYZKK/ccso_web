@@ -200,12 +200,6 @@
           edit: '/sys/enterprise/edit',
         },
         enterpriseTypeDictOptions: [],
-        registeredCapitalDictOptions: [],
-        sexDictOptions: [],
-        positionDictOptions: [],
-        positionSizeDictOptions: [],
-        industryDictOptions: [],
-        surfaceShowDictOptions: [],
         surfaceShowTrueDictValue: '',
         surfaceShowFlaseDictValue: '',
         confirmLoading: false,
@@ -217,18 +211,6 @@
         initDictOptions('enterprise_type').then(res => {
           if (res.success) {
             this.enterpriseTypeDictOptions = res.result
-          }
-        })
-        // 初始化字典 - 注册资本
-        initDictOptions('registered_capital').then(res => {
-          if (res.success) {
-            this.registeredCapitalDictOptions = res.result
-          }
-        })
-        // 初始化字典 - 前台是否显示
-        initDictOptions('is_true').then(res => {
-          if (res.success) {
-            this.surfaceShowDictOptions = res.result
           }
         })
         // 初始化字典 - 前台显示值
@@ -247,30 +229,6 @@
         getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_review}).then(res => {
           if (res != null) {
             this.queryParam.enterpriseType = res.itemValue
-          }
-        })
-        // 初始化字典 - 性别
-        initDictOptions('sex').then(res => {
-          if (res.success) {
-            this.sexDictOptions = res.result
-          }
-        })
-        // 初始化字典 - 职位
-        initDictOptions('position').then(res => {
-          if (res.success) {
-            this.positionDictOptions = res.result
-          }
-        })
-        // 初始化字典 - 行业
-        initDictOptions('industry').then(res => {
-          if (res.success) {
-            this.industryDictOptions = res.result
-          }
-        })
-        // 初始化字典 - 坐席规模
-        initDictOptions('position_size').then(res => {
-          if (res.success) {
-            this.positionSizeDictOptions = res.result
           }
         })
       },

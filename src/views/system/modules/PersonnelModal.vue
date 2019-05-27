@@ -157,7 +157,7 @@
             showSearch
             :filterOption="filterOption"
             placeholder="请选择所属企业"
-            v-decorator="['enterpriseId', {}]"
+            v-decorator="['enterpriseId', validatorRules.enterpriseId]"
           >
             <a-select-option value="">请选择</a-select-option>
             <a-select-option
@@ -231,7 +231,8 @@
           birthDate: {rules: [{required: true, message: '请选择出生日期!'}]},
           personalPhoto: {rules: [{required: true, message: '请选择个人照片!'}]},
           frontIdCardPhoto: {rules: [{required: true, message: '请选择身份证正面照!'}]},
-          reverseIdCardPhoto: {rules: [{required: true, message: '请选择身份证反面照!'}]}
+          reverseIdCardPhoto: {rules: [{required: true, message: '请选择身份证反面照!'}]},
+          enterpriseId: {rules: [{required: true, message: '请选择企业!'}]}
         },
       }
     },
