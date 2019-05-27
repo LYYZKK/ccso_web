@@ -155,7 +155,7 @@
           <a-select
             v-model="model.enterpriseId"
             showSearch
-            :filterOption="filterOption"
+            :filterOption="filterSelectOption"
             placeholder="请选择所属企业"
             v-decorator="['enterpriseId', validatorRules.enterpriseId]"
           >

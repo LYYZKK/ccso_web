@@ -24,7 +24,7 @@
           <a-select
             v-model="model.categoryId"
             showSearch
-            :filterOption="filterOption"
+            :filterOption="filterSelectOption"
             placeholder="请选择评审类别"
             v-decorator="['categoryId', validatorRules.categoryId]"
           >
@@ -40,7 +40,7 @@
           <a-select
             v-model="model.informationId"
             showSearch
-            :filterOption="filterOption"
+            :filterOption="filterSelectOption"
             placeholder="请选择评审资料"
             v-decorator="['informationId', validatorRules.informationId]"
           >

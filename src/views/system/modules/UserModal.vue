@@ -14,7 +14,7 @@
             <a-select
               v-model="model.personnelId"
               showSearch
-              :filterOption="filterOption"
+              :filterOption="filterSelectOption"
               placeholder="请选择员工"
               v-decorator="['personnelId', validatorRules.personnelId]"
             >
