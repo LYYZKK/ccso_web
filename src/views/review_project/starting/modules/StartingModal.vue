@@ -28,7 +28,7 @@
             @change="handleChange"
           >
             <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
-                 style="height:104px;max-width:300px"/>
+                 class="logo-img"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
               <div class="ant-upload-text">上传</div>
@@ -82,9 +82,7 @@
             dictCode="industry"
           />
         </a-form-item>
-
-        <br/>
-        <h3 style="margin-bottom: 20px;">评审主体信息</h3>
+        <h3 class="devide-title">评审主体信息</h3>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -130,8 +128,7 @@
             <a-radio value="3">综合</a-radio>
           </a-radio-group>
         </a-form-item>
-        <br/>
-        <h3 style="margin-bottom: 20px;">负责人信息</h3>
+        <h3 class="devide-title">负责人信息</h3>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -178,11 +175,11 @@
           label="出生年份">
           <a-MonthPicker v-decorator="[ 'birthYear', {}]" format="YYYY"/>
         </a-form-item>
-        <br/>
-        <h3 style="margin-bottom: 20px;">请选择协调员</h3>
+        <h3 class="devide-title">请选择协调员</h3>
         <a-form-item
           :labelCol="labelCol"
-          :wrapperCol="wrapperCol">
+          :wrapperCol="wrapperCol"
+          class="coordinator-form-item">
           <a-transfer
             :dataSource="mockData"
             :filterOption="filterOption"
@@ -193,7 +190,7 @@
           >
           </a-transfer>
         </a-form-item>
-        <h3 style="margin-bottom: 20px;">请选择支付信息</h3>
+        <h3 class="devide-title">请选择支付信息</h3>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -369,5 +366,18 @@
 </script>
 
 <style scoped>
+  .coordinator-form-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 
+  .logo-img {
+    height: 104px;
+    max-width: 300px;
+  }
+
+  .devide-title {
+    margin-bottom: 20px;
+  }
 </style>
