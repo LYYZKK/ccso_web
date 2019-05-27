@@ -11,14 +11,14 @@
         <div class="left">
           <div class="title">新闻资讯</div>
           <div class="list">
-            <div v-for="(item, index) in news" :key="index" @click="showArticle(index)">
+            <div v-for="(item, index) in articles" :key="index" @click="showArticle(index)">
               {{ item.title }}
             </div>
           </div>
         </div>
         <div class="right">
           <div class="detail">
-            <div v-for="(item, k) in news" :key="k" v-show="item.articleState">
+            <div v-for="(item, k) in articles" :key="k" v-show="item.active">
               <div class="newsTitle">{{ item.title }}</div>
               <div class="newsTime">【发布时间】{{ item.createTime }}</div>
               <div class="newsContent" v-html="item.text"></div>
@@ -39,30 +39,24 @@ import ConstConfig from '@/config/constant.config'
 export default {
   data () {
     return {
-      news: [],
+      articles: [],
       url: 'show/article/list'
     }
   },
 
   methods: {
     showArticle (index) {
-      for (let i = 0; i < this.news.length; i++) {
-        this.news[i].articleState = 0
+      for (let i = 0; i < this.articles.length; i++) {
+        this.articles[i].active = 0
       }
-      this.news[index].articleState = 1
+      this.articles[index].active = 1
     },
-    getArticle ({ article_type, article_state }) {
-      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1 , article_type, article_state}).then(res => {
+    getArticle (param = {}) {
+      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1 , ...param }).then(res => {
         if (res.code === 0) {
-          for (let i = 0; i < res.result.records.length; i++) {
-            if (res.result.records[i].articleType === '1') {
-              res.result.records[i].articleState = 0
-              this.news.push(res.result.records[i])
-            }
-
-            if (i === 0) {
-              this.news[0].articleState = 1
-            }
+          this.articles = res.result.records
+          if (this.articles.length > 0) {
+            this.articles[0].active = 1
           }
         }
       })
@@ -70,11 +64,12 @@ export default {
   },
   mounted() {
     async.series({
-      article_type: async cb => {
+      articleType: async cb => {
         const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_type_news })
+        this.article_type_news = res.itemValue
         cb(null, res.itemValue)
       },
-      article_state: async cb => {
+      articleState: async cb => {
         const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_state_released })
         cb(null, res.itemValue)
       }

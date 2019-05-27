@@ -16,7 +16,7 @@
           <div class="title">标准指引</div>
           <div class="list">
             <div
-              v-for="(item, index) in guide"
+              v-for="(item, index) in articles"
               :key="index"
               @click="showArticle(index)"
             >
@@ -26,7 +26,7 @@
         </div>
         <div class="right">
           <div class="detail">
-            <div v-for="(item, k) in guide" :key="k" v-show="item.articleState">
+            <div v-for="(item, k) in articles" :key="k" v-show="item.active">
               <div class="newsTitle">{{ item.title }}</div>
               <div class="newsTime">【发布时间】{{ item.createTime }}</div>
               <div class="newsContent" v-html="item.text"></div>
@@ -47,29 +47,23 @@ import ConstConfig from '@/config/constant.config'
 export default {
   data () {
     return {
-      guide: [],
+      articles: [],
       url: 'show/article/list'
     }
   },
   methods: {
     showArticle (index) {
-      for (let i = 0; i < this.guide.length; i++) {
-        this.guide[i].articleState = 0
+      for (let i = 0; i < this.articles.length; i++) {
+        this.articles[i].active = 0
       }
-      this.guide[index].articleState = 1
+      this.articles[index].active = 1
     },
-    getArticle ({ article_type, article_state }) {
-      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1 , article_type, article_state}).then(res => {
+    getArticle (param = {}) {
+      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1 , ...param }).then(res => {
         if (res.code === 0) {
-          for (let i = 0; i < res.result.records.length; i++) {
-            if (res.result.records[i].articleType === '2') {
-              res.result.records[i].articleState = 0
-              this.guide.push(res.result.records[i])
-            }
-
-            if (i === 0) {
-              this.guide[0].articleState = 1
-            }
+          this.articles = res.result.records
+          if (this.articles.length > 0) {
+            this.articles[0].active = 1
           }
         }
       })
@@ -77,11 +71,11 @@ export default {
   },
   mounted () {
     async.series({
-      article_type: async cb => {
+      articleType: async cb => {
         const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_type_guide })
         cb(null, res.itemValue)
       },
-      article_state: async cb => {
+      articleState: async cb => {
         const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_state_released })
         cb(null, res.itemValue)
       }

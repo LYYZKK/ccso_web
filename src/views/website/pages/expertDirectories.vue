@@ -1,13 +1,15 @@
 <template>
-  <div class="">
+  <div class>
     <div class="main">
       <div class="line">
-        <div><div>您的位置：<span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span> > 专家名录</div></div>
+        <div>
+          <div>
+            您的位置：
+            <span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span> > 专家名录
+          </div>
+        </div>
         <div class="search">
-          <a-input-search
-            placeholder="请输入姓名/编号"
-            style="width: 200px"
-          />
+          <a-input-search placeholder="请输入姓名/编号" style="width: 200px"/>
         </div>
       </div>
       <div class="expert">
@@ -19,68 +21,60 @@
             <div style="display:flex; align-items: flex-end;font-size:12px;">
               <img
                 src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-                alt=""
-              />
+                alt
+              >
               <div>
                 <span>专家委员-甲</span>
                 <span>2018-12-12</span>
               </div>
             </div>
             <div>
-              <p>
-                第一行第一行第一行第一
-              </p>
+              <p>第一行第一行第一行第一</p>
             </div>
           </div>
           <div>
             <div style="display:flex; align-items: flex-end;font-size:12px;">
               <img
                 src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-                alt=""
-              />
+                alt
+              >
               <div>
                 <span>专家委员-甲</span>
                 <span>2018-12-12</span>
               </div>
             </div>
             <div>
-              <p>
-                第一行第一行第一行第一
-              </p>
+              <p>第一行第一行第一行第一</p>
             </div>
           </div>
           <div>
             <div style="display:flex; align-items: flex-end;font-size:12px;">
               <img
                 src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-                alt=""
-              />
+                alt
+              >
               <div>
                 <span>专家委员-甲</span>
                 <span>2018-12-12</span>
               </div>
             </div>
             <div>
-              <p>
-                第一行第一行第一行第一
-              </p>
+              <p>第一行第一行第一行第一</p>
             </div>
           </div>
           <div>
             <div style="display:flex; align-items: flex-end;font-size:12px;">
               <img
                 src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-                alt=""
-              />
+                alt
+              >
               <div>
                 <span>专家委员-甲</span>
                 <span>2018-12-12</span>
               </div>
             </div>
             <div>
-              <p>
-                第一行第一行第一行第一
-              </p>
+              <p>第一行第一行第一行第一</p>
             </div>
           </div>
         </div>
@@ -91,8 +85,8 @@
           <div>
             <img
               src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
+              alt
+            >
             <div>注册合作企业</div>
             <div>
               第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
@@ -102,8 +96,8 @@
           <div>
             <img
               src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
+              alt
+            >
             <div>注册合作企业</div>
             <div>
               第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
@@ -113,8 +107,8 @@
           <div>
             <img
               src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
+              alt
+            >
             <div>注册合作企业</div>
             <div>
               第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
@@ -124,8 +118,8 @@
           <div>
             <img
               src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
+              alt
+            >
             <div>注册合作企业</div>
             <div>
               第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
@@ -140,8 +134,8 @@
           <div>
             <img
               src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
+              alt
+            >
             <div>注册合作企业</div>
             <div>
               第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
@@ -151,8 +145,8 @@
           <div>
             <img
               src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
+              alt
+            >
             <div>注册合作企业</div>
             <div>
               第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
@@ -162,8 +156,8 @@
           <div>
             <img
               src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
+              alt
+            >
             <div>注册合作企业</div>
             <div>
               第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
@@ -173,8 +167,8 @@
           <div>
             <img
               src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
+              alt
+            >
             <div>注册合作企业</div>
             <div>
               第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
@@ -188,16 +182,42 @@
 </template>
 
 <script>
+import async from 'async'
+import { getAction } from '@/api/manage'
+import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
+import ConstConfig from '@/config/constant.config'
 export default {
   data() {
-    return {};
+    return {
+      
+      url:'sys/personnel/list'
+    };
   },
-  methods: {}
+  methods: {
+    getArticle(param = {}){
+      async.serise({
+
+      })
+    }
+  },
+  mounted(){
+    async.series({
+      isShow: async cb => {
+        const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
+        cb(null, res.itemValue)
+      }
+    },
+    (err,result)=>{
+      if(!err){
+        this.getArticle({ ...result })
+      }
+    })
+  }
 };
 </script>
 <style lang="scss" scoped>
 @import '../common.scss';
-.expert{
+.expert {
   margin: 20px 0;
 }
 .detail {
