@@ -367,6 +367,7 @@ export default {
 
 <style scoped>
   .coordinator-form-item {
+    display: -webkit-flex;
     display: flex;
     flex-direction: row;
     justify-content: center;
