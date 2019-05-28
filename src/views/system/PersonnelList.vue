@@ -217,14 +217,10 @@
         ],
         url: {
           list: '/sys/personnel/list',
-          delete:
-            '/sys/personnel/delete',
-          deleteBatch:
-            '/sys/personnel/deleteBatch',
-          generateAccountUrl:
-            "/sys/personnel/generateAccount",
-          edit:
-            '/sys/personnel/edit',
+          delete: '/sys/personnel/delete',
+          deleteBatch: '/sys/personnel/deleteBatch',
+          generateAccountUrl: "/sys/personnel/generateAccount",
+          edit: '/sys/personnel/edit',
         },
         certificateTypeDictOptions: [],
         surfaceShowDictOptions: [],
@@ -284,8 +280,7 @@
           this.confirmLoading = false
           this.loadData();
         })
-      }
-      ,
+      },
       updateSurfaceShow(id, surfaceShowValue) {
         this.confirmLoading = true
         this.updateParam.id = id
@@ -302,8 +297,7 @@
           this.confirmLoading = false
           this.loadData();
         })
-      }
-      ,
+      },
     }
   }
 </script>

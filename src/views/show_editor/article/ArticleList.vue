@@ -107,9 +107,19 @@
         @change="handleTableChange"
       >
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
 
+          <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)"
+                        v-if="record.surfaceShow === surfaceShowTrueDictValue && record.surfaceShow!==''">
+            <a><font color="#dc143c">取消展示</font></a>
+          </a-popconfirm>
+          <a-popconfirm title="确定前台展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowTrueDictValue)" v-else>
+            <a>前台展示</a>
+          </a-popconfirm>
           <a-divider type="vertical"/>
+
+          <a @click="handleEdit(record)">编辑</a>
+          <a-divider type="vertical"/>
+
           <a-dropdown>
             <a class="ant-dropdown-link">
               更多
@@ -137,7 +147,13 @@
   import ArticleModal from './modules/ArticleModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
-  import {initDictOptions, filterDictOptionByText} from '@/components/dict/JDictSelectUtil'
+  import {
+    initDictOptions,
+    getDictItemByDictCodeAndItemCode,
+    filterDictOptionByText
+  } from '@/components/dict/JDictSelectUtil'
+  import ConstConfig from '@/config/constant.config'
+  import {httpAction} from '@/api/manage'
 
   export default {
     name: 'ArticleList',
@@ -223,10 +239,17 @@
         url: {
           list: '/show/article/list',
           delete: '/show/article/delete',
-          deleteBatch: '/show/article/deleteBatch'
+          deleteBatch: '/show/article/deleteBatch',
+          edit: '/show/article/edit'
         },
         articleTypeDictOptions: [],
-        articleStateDictOptions: []
+        articleStateDictOptions: [],
+        updateParam: {
+          id: '',
+          surfaceShow: ''
+        },
+        surfaceShowFlaseDictValue:'',
+        surfaceShowTrueDictValue:'',
       }
     },
     computed: {},
@@ -244,7 +267,42 @@
             this.articleStateDictOptions = res.result
           }
         })
-      }
+        // 初始化字典 - 是否
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_cooperate}).then(res => {
+          if (res.success) {
+            this.queryParam.enterpriseType = res.itemValue
+          }
+        })
+        // 初始化字典 - 前台显示值
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT._true}).then(res => {
+          if (res != null) {
+            this.surfaceShowTrueDictValue = res.itemValue
+          }
+        })
+        // 初始化字典 - 前台不显示值
+        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT._false}).then(res => {
+          if (res != null) {
+            this.surfaceShowFlaseDictValue = res.itemValue
+          }
+        })
+      },
+      updateSurfaceShow(id, surfaceShowValue) {
+        this.confirmLoading = true
+        this.updateParam.id = id
+        this.updateParam.surfaceShow = surfaceShowValue
+        httpAction(this.url.edit, this.updateParam, 'put').then(res => {
+          if (res.code === 200) {
+            this.$message.success(res.message)
+          } else {
+            this.$message.error(res.message)
+          }
+          this.confirmLoading = false
+          this.record.surfaceShow = surfaceShowValue
+        }).finally(() => {
+          this.confirmLoading = false
+          this.loadData();
+        })
+      },
     }
   }
 </script>
