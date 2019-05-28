@@ -18,7 +18,7 @@
       },
       fontSizeMax: {
         type: Number,
-        default: 45
+        default: 30
       },
       backgroundColorMin: {
         type: Number,
@@ -93,18 +93,17 @@
         ctx.fillStyle = this.randomColor(this.colorMin, this.colorMax)
         let fontSize = this.randomNum(this.fontSizeMin, this.fontSizeMax)
         ctx.font = fontSize + 'px SimHei'
-        let padding = 10;
-        let offset = (this.contentWidth-40)/(this.code.length-1)
-        let x=padding;
-        if(i>0){
-          x = padding+(i*offset)
+        let padding = 10
+        let offset = (this.contentWidth - 30)/(this.code.length - 1)
+        let x = padding
+        if (i > 0) {
+          x = padding + (i * offset)
         }
-        //let x = (i + 1) * (this.contentWidth / (this.code.length + 1))
         let y = this.randomNum(this.fontSizeMax, this.contentHeight - 5)
-        if(fontSize>40){
-          y=40
+        if (fontSize > 30) {
+          y = 30
         }
-        var deg = this.randomNum(-10,10)
+        const deg = this.randomNum(-10, 10)
         // 修改坐标原点和旋转角度
         ctx.translate(x, y)
         ctx.rotate(deg * Math.PI / 180)
@@ -115,7 +114,7 @@
       },
       drawLine (ctx) {
         // 绘制干扰线
-        for (let i = 0; i <1; i++) {
+        for (let i = 0; i < 1; i++) {
           ctx.strokeStyle = this.randomColor(this.lineColorMin, this.lineColorMax)
           ctx.beginPath()
           ctx.moveTo(this.randomNum(0, this.contentWidth), this.randomNum(0, this.contentHeight))
@@ -137,12 +136,21 @@
       },
       randomCode(){
         let random = ''
-        //去掉了I l i o O
-        let str = "QWERTYUPLKJHGFDSAZXCVBNMqwertyupkjhgfdsazxcvbnm1234567890"
-        for(let i = 0; i < this.length; i++) {
-          let index = Math.floor(Math.random()*57);
-          random += str[index];
+        let str = 'QWERTYUPLKJHGFDAXCVBNMqwertyupkjgfdaxcvbm1346789'
+
+        console.log('this.length =', this.length)
+        console.log('str.length =', str.length)
+
+        for (let i = 0; i < this.length; i++) {
+          console.log('into loop with i =', i)
+          let index = Math.floor(Math.random() * 48)
+          console.log('into loop with index =', index)
+          random += str[index]
+          console.log('into loop with random =', random)
         }
+
+        console.log('this.code =', this.code)
+
         this.code = random
       }
     },
@@ -151,7 +159,7 @@
     },
     data(){
       return {
-        code:""
+        code: ""
       }
     }
 
