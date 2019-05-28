@@ -1,13 +1,10 @@
 <template>
-  <div class="">
+  <div class>
     <div class="main">
       <div class="line">
         <div>
-          您的位置：<span
-          @click="$router.push('/website/home')"
-          style="cursor:pointer;"
-        >首页</span
-        >
+          您的位置：
+          <span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span>
           > 标准指引
         </div>
       </div>
@@ -19,9 +16,7 @@
               v-for="(item, index) in articles"
               :key="index"
               @click="showArticle(index)"
-            >
-              {{ item.title }}
-            </div>
+            >{{ item.title }}</div>
           </div>
         </div>
         <div class="right">
@@ -45,49 +40,55 @@ import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectU
 import ConstConfig from '@/config/constant.config'
 
 export default {
-  data () {
+  data() {
     return {
       articles: [],
       url: 'show/article/list'
     }
   },
   methods: {
-    showArticle (index) {
+    showArticle(index) {
       for (let i = 0; i < this.articles.length; i++) {
-        this.articles[i].active = 0
+        this.articles[i].active = false
       }
-      this.articles[index].active = 1
+      this.articles[index].active = true
+      console.log(this.articles, index)
     },
-    getArticle (param = {}) {
-      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1 , ...param }).then(res => {
+    getArticle(param = {}) {
+      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1, ...param }).then(res => {
         if (res.code === 0) {
           this.articles = res.result.records
           if (this.articles.length > 0) {
-            this.articles[0].active = 1
+            this.articles.forEach(item => {
+              item.articleState = 0
+            })
+            this.articles[0].articleState = 1
           }
         }
       })
     }
   },
-  mounted () {
-    async.series({
-      articleType: async cb => {
-        const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_type_guide })
-        cb(null, res.itemValue)
+  mounted() {
+    async.series(
+      {
+        articleType: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_type_guide })
+          cb(null, res.itemValue)
+        },
+        surfaceShow: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
+          cb(null, res.itemValue)
+        },
       },
-      articleState: async cb => {
-        const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_state_released })
-        cb(null, res.itemValue)
+      (err, result) => {
+        if (!err) {
+          this.getArticle({ ...result })
+        }
       }
-    },
-    (err, result) => {
-      if (!err) {
-        this.getArticle({ ...result })
-      }
-    })
+    )
   }
 }
 </script>
 <style lang="scss" scoped>
-  @import '../common.scss';
+@import '../common.scss';
 </style>

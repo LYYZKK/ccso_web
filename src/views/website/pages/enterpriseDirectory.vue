@@ -86,15 +86,13 @@ export default {
               this.cooperateEnterprises.push(v)
             }
           })
-          console.log('reviewEnterprises =', this.reviewEnterprises)
-          console.log('cooperateEnterprises =', this.cooperateEnterprises)
         }
       })
     }
   },
   mounted() {
     async.series({
-      isShow: async cb => {
+      surfaceShow: async cb => {
         const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
         cb(null, res.itemValue)
       }

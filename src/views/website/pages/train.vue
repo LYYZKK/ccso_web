@@ -1,9 +1,10 @@
 <template>
-  <div class="">
+  <div class>
     <div class="main">
       <div class="line">
         <div>
-          您的位置：<span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span>
+          您的位置：
+          <span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span>
           > 标准培训
         </div>
       </div>
@@ -11,14 +12,16 @@
         <div class="left">
           <div class="title">标准培训</div>
           <div class="list">
-            <div v-for="(item, index) in articles" :key="index" @click="showArticle(index)">
-              {{ item.title }}
-            </div>
+            <div
+              v-for="(item, index) in articles"
+              :key="index"
+              @click="showArticle(index)"
+            >{{ item.title }}</div>
           </div>
         </div>
         <div class="right">
           <div class="detail">
-            <div v-for="(item, k) in articles" :key="k" v-show="item.active">
+            <div v-for="(item, k) in articles" :key="k" v-show="item.articleState">
               <div class="newsTitle">{{ item.title }}</div>
               <div class="newsTime">【发布时间】{{ item.createTime }}</div>
               <div class="newsContent" v-html="item.text"></div>
@@ -44,40 +47,45 @@ export default {
     }
   },
   methods: {
-    showArticle (index) {
+    showArticle(index) {
       for (let i = 0; i < this.articles.length; i++) {
-        this.articles[i].active = 0
+        this.articles[i].articleState = 0
       }
-      this.articles[index].active = 1
+      this.articles[index].articleState = 1
     },
-    getArticle (param = {}) {
-      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1 , ...param }).then(res => {
+    getArticle(param = {}) {
+      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1, ...param }).then(res => {
         if (res.code === 0) {
           this.articles = res.result.records
           if (this.articles.length > 0) {
-            this.articles[0].active = 1
+            this.articles.forEach(item => {
+              item.articleState = 0
+            })
+            this.articles[0].articleState = 1
           }
         }
       })
     }
   },
   mounted() {
-    async.series({
-      articleType: async cb => {
-        const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_type_train })
-        cb(null, res.itemValue)
+    async.series(
+      {
+        articleType: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_type_train })
+          cb(null, res.itemValue)
+        },
+        surfaceShow: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
+          cb(null, res.itemValue)
+        },
       },
-      articleState: async cb => {
-        const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_state_released })
-        cb(null, res.itemValue)
+      (err, result) => {
+        console.log('into final with result =', result)
+        if (!err) {
+          this.getArticle({ ...result })
+        }
       }
-    },
-    (err, result) => {
-      console.log('into final with result =', result)
-      if (!err) {
-        this.getArticle({ ...result })
-      }
-    })
+    )
   }
 }
 </script>
