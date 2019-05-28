@@ -22,9 +22,9 @@
     </div>
 
     <!-- 操作按钮区域 -->
-    <div class="table-operator">
+    <!--<div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <!--<a-dropdown v-if="selectedRowKeys.length > 0">
+      <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel">
             <a-icon type="delete"/>
@@ -34,8 +34,8 @@
         <a-button> 批量操作
           <a-icon type="down"/>
         </a-button>
-      </a-dropdown>-->
-    </div>
+      </a-dropdown>
+    </div>-->
 
     <!-- table区域-begin -->
     <div>
@@ -58,7 +58,7 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a @click="queryDetailed(record.id)">查看项目</a>
+          <a @click="queryDetailed(record.id)">查看评审结果</a>
         </span>
 
       </a-table>
@@ -72,17 +72,13 @@
 </template>
 
 <script>
-  import StartingModal from './modules/StartingModal'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
 
   export default {
-    name: 'StartingList',
+    name: 'ReviewList',
     mixins: [JeecgListMixin, constantCfgMixin, antMixin],
-    components: {
-      StartingModal
-    },
     data() {
       return {
         // 查询条件中的字段使用的查询条件方式, 支持的类型参考 src/mixins/JeecgListMixin.js 中 queryTypeAlias.
@@ -131,32 +127,25 @@
             align: 'center',
             dataIndex: 'state',
             customRender: text => {
-              return '启动中'
+              return '已归档'
             }
           },
           {
-            title: '评审协调员',
+            title: '评审结果',
             align: 'center',
-            dataIndex: 'realName',
-            customRender: (text, record) => {
-              const realNames = []
-              record.sysPersonnels.forEach((v) => {
-                realNames.push(v.name)
-              })
-              return realNames.join("，")
-            }
-          },
-          {
-            title: '评审费用',
-            align: 'center',
-            dataIndex: 'isPay',
+            dataIndex: 'result',
             customRender: text => {
               if (text == 0) {
-                return '未支付'
+                return '未通过'
               } else {
-                return '已支付'
+                return '通过'
               }
             }
+          },
+          {
+            title: '证书编号',
+            align: 'center',
+            dataIndex: 'certificateNo'
           },
           {
             title: '修改人',
@@ -176,7 +165,7 @@
           }
         ],
         url: {
-          list: 'review/project/starting/list',
+          list: 'review/project/archive/list',
           delete: 'review/project/delete',
           deleteBatch: 'review/project/deleteBatch',
           exportXlsUrl: 'review/project/exportXls',

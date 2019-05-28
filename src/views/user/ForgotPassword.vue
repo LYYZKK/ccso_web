@@ -87,6 +87,9 @@
       }
     },
     created() {
+
+    },
+    mounted(){
     },
     methods: {
       handleSubmit() {
@@ -98,6 +101,7 @@
               this.confirmLoading = false;
               if (res.success) {
                 this.$message.success(res.message)
+                setInterval(this.jumpLogin(),1000)
               } else {
                 this.$message.error(res.message)
               }
@@ -108,6 +112,12 @@
             return
           }
         })
+      },
+      beforeDestroy() {
+        clearInterval(this.timer);
+      },
+      jumpLogin(){
+        this.$router.push({name:"login"})
       },
       validateInputCode(rule,value,callback){
         if(!value || this.verifiedCode==this.inputCodeContent){
