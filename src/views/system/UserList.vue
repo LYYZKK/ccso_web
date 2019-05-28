@@ -192,7 +192,7 @@
               record.sysRoles.forEach((v) => {
                 roleNames.push(v.roleName)
               })
-              return roleNames.join(', ')
+              return roleNames.join('，')
             }
           },
           {

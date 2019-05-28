@@ -207,162 +207,163 @@
 </template>
 
 <script>
-import pick from 'lodash.pick'
+  import pick from 'lodash.pick'
 
-import antMixin from '@/mixins/ant-mixin'
-import constantCfgMixin from '@/mixins/constant.cfg'
+  import antMixin from '@/mixins/ant-mixin'
+  import constantCfgMixin from '@/mixins/constant.cfg'
 
-import { httpAction, getAction } from '@/api/manage'
-import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
-import ConstConfig from '@/config/constant.config'
+  import {httpAction, getAction} from '@/api/manage'
+  import {getDictItemByDictCodeAndItemCode} from '@/components/dict/JDictSelectUtil'
+  import ConstConfig from '@/config/constant.config'
 
-export default {
-  name: 'StartingModal',
-  mixins: [antMixin, constantCfgMixin],
-  data () {
-    return {
-      title: '操作',
-      visible: false,
-      model: {},
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
-      confirmLoading: false,
-      form: this.$form.createForm(this),
-      validatorRules: {},
-      url: {
-        add: '/review/project/add',
-        edit: '/review/project/edit',
-        queryUserByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
-      },
-      businessType: '',
-      isPay: '',
-      mockData: [],
-      targetKeys: [],
-      uploadLoading: false,
-      enterpriseType: ''
-    }
-  },
-  created () {
-    // 初始化 - 评审企业类型值
-    getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.enterprise_type_review }).then(res => {
-      if (res != null) {
-        this.enterpriseType = res.itemValue
+  export default {
+    name: 'StartingModal',
+    mixins: [antMixin, constantCfgMixin],
+    data() {
+      return {
+        title: '操作',
+        visible: false,
+        model: {},
+        labelCol: {
+          xs: {span: 24},
+          sm: {span: 5}
+        },
+        wrapperCol: {
+          xs: {span: 24},
+          sm: {span: 16}
+        },
+        confirmLoading: false,
+        form: this.$form.createForm(this),
+        validatorRules: {},
+        url: {
+          add: '/review/project/add',
+          edit: '/review/project/edit',
+          queryUserByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
+        },
+        businessType: '',
+        isPay: '',
+        mockData: [],
+        targetKeys: [],
+        uploadLoading: false,
+        enterpriseType: ''
       }
-    })
-  },
-  mounted () {
-    this.getMock()
-  },
-  methods: {
-    handleChange (info) {
-      if (info.file.status === 'uploading') {
-        this.uploadLoading = true
-        return
-      }
-      if (info.file.status === 'done') {
-        var response = info.file.response
-        this.uploadLoading = false
-        console.log(response)
-        if (response.success) {
-          this.model.logo = response.message
-        } else {
-          this.$message.warning(response.message)
+    },
+    created() {
+
+      // 初始化 - 评审企业类型值
+      getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_review}).then(res => {
+        if (res != null) {
+          this.enterpriseType = res.itemValue
         }
-      }
-    },
-    beforeUpload: function (file) {
-      var fileType = file.type
-      if (fileType.indexOf('image') < 0) {
-        this.$message.warning('请上传图片')
-        return false
-      }
-      //TODO 验证文件大小
-    },
-    add () {
-      this.edit({})
-    },
-    edit (record) {
-      this.form.resetFields()
-      this.model = Object.assign({}, record)
-      this.visible = true
-      this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.model, 'no', 'state', 'isPay', 'result'))
-        //时间格式化
       })
     },
-    close () {
-      this.$emit('close')
-      this.visible = false
+    mounted() {
+      this.getMock()
     },
-    handleOk () {
-      const that = this
-      // 触发表单验证
-      this.form.validateFields((err, values) => {
-        if (!err && this.targetKeys.length > 0) {
-          that.confirmLoading = true
-          let httpurl = '', method = ''
-          if (!this.model.id) {
-            httpurl += this.url.add
-            method = 'post'
+    methods: {
+      handleChange(info) {
+        if (info.file.status === 'uploading') {
+          this.uploadLoading = true
+          return
+        }
+        if (info.file.status === 'done') {
+          var response = info.file.response
+          this.uploadLoading = false
+          console.log(response)
+          if (response.success) {
+            this.model.logo = response.message
           } else {
-            httpurl += this.url.edit
-            method = 'put'
+            this.$message.warning(response.message)
           }
-          let formData = Object.assign(this.model, values)
+        }
+      },
+      beforeUpload: function (file) {
+        var fileType = file.type
+        if (fileType.indexOf('image') < 0) {
+          this.$message.warning('请上传图片')
+          return false
+        }
+        //TODO 验证文件大小
+      },
+      add() {
+        this.edit({})
+      },
+      edit(record) {
+        this.form.resetFields()
+        this.model = Object.assign({}, record)
+        this.visible = true
+        this.$nextTick(() => {
+          this.form.setFieldsValue(pick(this.model, 'no', 'state', 'isPay', 'result'))
           //时间格式化
-          var selectedCoordinator = []
-          for (var i = 0; i < this.targetKeys.length; i++) {
-            selectedCoordinator.push(this.mockData[this.targetKeys[i]].userId)
-          }
-          formData.coordinatorIds = selectedCoordinator.join(',')
-          formData.enterpriseType = this.enterpriseType
-          formData.isPay = this.isPay
-          formData.businessType = this.businessType
-          console.log('send request with formData =', formData)
-          httpAction(httpurl, formData, method).then((res) => {
-            if (res.success) {
-              that.$message.success(res.message)
-              that.$emit('ok')
+        })
+      },
+      close() {
+        this.$emit('close')
+        this.visible = false
+      },
+      handleOk() {
+        const that = this
+        // 触发表单验证
+        this.form.validateFields((err, values) => {
+          if (!err && this.targetKeys.length > 0) {
+            that.confirmLoading = true
+            let httpurl = '', method = ''
+            if (!this.model.id) {
+              httpurl += this.url.add
+              method = 'post'
             } else {
-              that.$message.warning(res.message)
+              httpurl += this.url.edit
+              method = 'put'
             }
-          }).finally(() => {
-            that.confirmLoading = false
-            that.close()
-          })
-        }
-      })
-    },
-    handleCancel () {
-      this.close()
-    },
-    getMock () {
-      const mockData = []
-      getAction(this.url.queryUserByRoleCodeUrl, { roleCode: 'coordinator' }).then(res => {
-        if (res.success) {
-          for (let i = 0; i < res.result.length; i++) {
-            const data = {
-              key: i.toString(),
-              title: res.result[i].name,
-              userId: res.result[i].id
+            let formData = Object.assign(this.model, values)
+            //时间格式化
+            var selectedCoordinator = []
+            for (var i = 0; i < this.targetKeys.length; i++) {
+              selectedCoordinator.push(this.mockData[this.targetKeys[i]].userId)
             }
-            mockData.push(data)
+            formData.coordinatorIds = selectedCoordinator.join(',')
+            formData.enterpriseType = this.enterpriseType
+            formData.isPay = this.isPay
+            formData.businessType = this.businessType
+            console.log('send request with formData =', formData)
+            httpAction(httpurl, formData, method).then((res) => {
+              if (res.success) {
+                that.$message.success(res.message)
+                that.$emit('ok')
+              } else {
+                that.$message.warning(res.message)
+              }
+            }).finally(() => {
+              that.confirmLoading = false
+              that.close()
+            })
           }
-        }
-      })
-      this.mockData = mockData
-    },
-    handleChange_coordinator (targetKeys) {
-      this.targetKeys = targetKeys
+        })
+      },
+      handleCancel() {
+        this.close()
+      },
+      getMock() {
+        const mockData = []
+        getAction(this.url.queryUserByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
+          if (res.success) {
+            for (let i = 0; i < res.result.length; i++) {
+              const data = {
+                key: i.toString(),
+                title: res.result[i].name,
+                userId: res.result[i].id
+              }
+              mockData.push(data)
+            }
+          }
+        })
+        this.mockData = mockData
+      },
+      handleChange_coordinator(targetKeys) {
+        this.targetKeys = targetKeys
+      }
     }
   }
-}
 </script>
 
 <style scoped>
