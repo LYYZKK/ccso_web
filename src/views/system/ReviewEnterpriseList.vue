@@ -205,6 +205,16 @@
         confirmLoading: false,
       }
     },
+    created() {
+      // 初始化 - 评审企业类型值
+      getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_review}).then(res => {
+        if (res != null) {
+          this.queryParam.enterpriseType = res.itemValue
+          this.loadData()
+        }
+      })
+      this.initDictConfig()
+    },
     methods: {
       initDictConfig() {
         // 初始化字典 - 企业类型
@@ -223,12 +233,6 @@
         getDictItemByDictCodeAndItemCode({...ConstConfig.DICT._false}).then(res => {
           if (res != null) {
             this.surfaceShowFlaseDictValue = res.itemValue
-          }
-        })
-        // 初始化 - 评审企业类型值
-        getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_review}).then(res => {
-          if (res != null) {
-            this.queryParam.enterpriseType = res.itemValue
           }
         })
       },

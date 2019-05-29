@@ -25,7 +25,6 @@ import 'quill/dist/quill.bubble.css'
 
 Vue.use(VueQuillEditor)
 
-
 import {
   ACCESS_TOKEN,
   DEFAULT_COLOR,
@@ -53,6 +52,10 @@ Vue.use(JDictSelectTag)
 Vue.use(Print)
 Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
+
+Vue.config.optionMergeStrategies.created = (parentVal, childVal) => {
+  return childVal ? [childVal] : (parentVal ? [parentVal] : [() => {}])
+}
 
 new Vue({
   router,

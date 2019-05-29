@@ -62,9 +62,9 @@ export const JeecgListMixin = {
     }
   },
   created() {
-    this.loadData();
+    this.loadData()
     //初始化字典配置 在自己页面定义
-    this.initDictConfig();
+    this.initDictConfig()
   },
   methods:{
     loadData(arg) {
