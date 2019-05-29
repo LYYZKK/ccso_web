@@ -58,7 +58,9 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a @click="queryDetailed(record.id)">查看项目</a>
+          <a @click="detail(record)">查看</a>
+          <a-divider type="vertical"/>
+          <a>启动</a>
         </span>
 
       </a-table>
@@ -67,12 +69,14 @@
 
     <!-- 表单区域 -->
     <starting-modal ref="modalForm" @ok="modalFormOk"></starting-modal>
+    <detail ref="detail"></detail>
   </a-card>
 
 </template>
 
 <script>
   import StartingModal from './modules/StartingModal'
+  import Detail from './modules/Detail'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
@@ -81,7 +85,8 @@
     name: 'StartingList',
     mixins: [JeecgListMixin, constantCfgMixin, antMixin],
     components: {
-      StartingModal
+      StartingModal,
+      Detail
     },
     data() {
       return {
@@ -190,8 +195,8 @@
       }
     },
     methods: {
-      queryDetailed(id) {
-        this.$router.push({path: "/review_project_1"})
+      detail(record){
+        this.$refs.detail.edit(record);
       }
     }
   }

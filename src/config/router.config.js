@@ -224,22 +224,6 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/review_project_1',
-    name: 'review_project_1',
-    component: RouteView,
-    redirect: '/review_project_1/detail',
-    meta: {title: '评审项目', hidden: true},
-    children: [
-      {
-        path: 'detail',
-        name: 'review_project_1_detail',
-        component: () => import('@/views/review_project/starting/Detail'),
-        meta: {title: '查看项目', hidden: true},
-      }
-    ]
-  },
-
-  {
     path: '/404',
     component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404')
   },

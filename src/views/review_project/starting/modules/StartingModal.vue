@@ -207,8 +207,6 @@
 </template>
 
 <script>
-  import pick from 'lodash.pick'
-
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
 
@@ -238,7 +236,7 @@
         url: {
           add: '/review/project/add',
           edit: '/review/project/edit',
-          queryUserByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
+          getPersonnelUrl: '/sys/user/queryUserByRoleCode'
         },
         businessType: '',
         isPay: '',
@@ -249,7 +247,6 @@
       }
     },
     created() {
-
       // 初始化 - 评审企业类型值
       getDictItemByDictCodeAndItemCode({...ConstConfig.DICT.enterprise_type_review}).then(res => {
         if (res != null) {
@@ -258,7 +255,7 @@
       })
     },
     mounted() {
-      this.getMock()
+      this.getPersonnel()
     },
     methods: {
       handleChange(info) {
@@ -286,16 +283,7 @@
         //TODO 验证文件大小
       },
       add() {
-        this.edit({})
-      },
-      edit(record) {
-        this.form.resetFields()
-        this.model = Object.assign({}, record)
         this.visible = true
-        this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'no', 'state', 'isPay', 'result'))
-          //时间格式化
-        })
       },
       close() {
         this.$emit('close')
@@ -343,9 +331,9 @@
       handleCancel() {
         this.close()
       },
-      getMock() {
+      getPersonnel() {
         const mockData = []
-        getAction(this.url.queryUserByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
+        getAction(this.url.getPersonnelUrl, {roleCode: 'coordinator'}).then(res => {
           if (res.success) {
             for (let i = 0; i < res.result.length; i++) {
               const data = {
