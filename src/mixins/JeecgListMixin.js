@@ -102,7 +102,7 @@ export const JeecgListMixin = {
       keys(this.queryParam).forEach(v => {
         if (this.queryType[v] && this.queryTypeAlias[this.queryType[v]]) {
           this.queryParamWithQueryType[v] = this.queryTypeAlias[this.queryType[v]](this.queryParam[v])
-        } else {
+        } else if (this.queryParam[v] != null && this.queryParam[v] != undefined) {
           this.queryParamWithQueryType[v] = this.queryParam[v]
         }
       })

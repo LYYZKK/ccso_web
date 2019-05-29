@@ -137,20 +137,10 @@
       randomCode(){
         let random = ''
         let str = 'QWERTYUPLKJHGFDAXCVBNMqwertyupkjgfdaxcvbm1346789'
-
-        console.log('this.length =', this.length)
-        console.log('str.length =', str.length)
-
         for (let i = 0; i < this.length; i++) {
-          console.log('into loop with i =', i)
           let index = Math.floor(Math.random() * 48)
-          console.log('into loop with index =', index)
           random += str[index]
-          console.log('into loop with random =', random)
         }
-
-        console.log('this.code =', this.code)
-
         this.code = random
       }
     },

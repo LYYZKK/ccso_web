@@ -24,7 +24,9 @@
             </a-col>
             <a-col :md="6" :sm="8">
               <a-form-item label="文件大小">
-                <a-input placeholder="请输入文件大小" v-model="queryParam.size"></a-input>
+                <a-input-number :min="1" v-model="queryParam.size_begin" />
+                ~
+                <a-input-number :min="1" v-model="queryParam.size_end" />
               </a-form-item>
             </a-col>
           </template>
@@ -133,7 +135,6 @@
           no: 'like',
           name: 'like',
           format: 'like',
-          size: 'like',
         },
         // 表头
         columns: [
