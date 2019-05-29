@@ -206,14 +206,14 @@
               return this.DICT_SHOW_RENDER(filterDictOptionByText(this.articleTypeDictOptions, text))
             }
           },
-          {
+          /*{
             title: '文章状态',
             align: 'center',
             dataIndex: 'articleState',
             customRender: text => {
               return this.DICT_SHOW_RENDER(filterDictOptionByText(this.articleStateDictOptions, text))
             }
-          },
+          },*/
           {
             title: '附件地址',
             align: 'center',

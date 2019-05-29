@@ -21,14 +21,14 @@
             dictCode="article_type"
           />
         </a-form-item>
-        <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="状态">
+        <!--<a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="状态">
           <j-dict-select-tag
             v-decorator="['articleState', validatorRules.articleState]"
             :triggerChange="true"
             placeholder="请选择文章状态"
             dictCode="article_state"
           />
-        </a-form-item>
+        </a-form-item>-->
         <a-form-item>
           <rich-editor ref="richText" v-if="refreshRichText" v-model="model.text"></rich-editor>
         </a-form-item>
