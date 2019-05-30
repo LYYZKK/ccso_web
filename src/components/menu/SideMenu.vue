@@ -13,7 +13,8 @@
       :theme="theme"
       @select="onSelect"
       :mode="mode"
-      style="padding: 0;"></s-menu>
+      :style="smenuStyle">
+    </s-menu>
   </a-layout-sider>
 
 </template>
@@ -52,6 +53,17 @@
       menus: {
         type: Array,
         required: true
+      }
+    },
+    computed:{
+      smenuStyle() {
+        let style = { 'padding': '0' }
+        if (this.fixSiderbar) {
+          style['height'] = 'calc(100% - 59px)'
+          style['overflow'] = 'auto'
+          style['overflow-x'] = 'hidden'
+        }
+        return style
       }
     },
     methods: {
