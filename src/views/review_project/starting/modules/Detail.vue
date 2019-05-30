@@ -1,10 +1,9 @@
 <template>
   <a-modal
     :title="title"
-    :width="1000"
+    :width="1200"
     :visible="visible"
     :confirmLoading="confirmLoading"
-    @ok="handleOk"
     @cancel="handleCancel"
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
@@ -43,22 +42,7 @@
           <a-input placeholder="请输入企业名称" v-decorator="['name', validatorRules.name]"/>
         </a-form-item>
         <a-form-item label="LOGO" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-upload
-            listType="picture-card"
-            :showUploadList="false"
-            :action="FILE_UPLOAD_ACTION"
-            :data="{'isup':1}"
-            :headers="FILE_UPLOAD_HEADERS"
-            :beforeUpload="beforeUpload"
-            @change="handleChange"
-          >
-            <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="Logo"
-                 class="logo-img"/>
-            <div v-else>
-              <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
-              <div class="ant-upload-text">上传</div>
-            </div>
-          </a-upload>
+          <Avatar shape="square" size={64} icon="user"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -220,6 +204,33 @@
           </a-radio-group>
         </a-form-item>
       </a-form>
+      <h3 class="devide-title">评审资料</h3>
+      <a-table
+        ref="table"
+        size="middle"
+        bordered
+        rowKey="id"
+        :columns="columns"
+        :dataSource="dataSource"
+        :pagination=false
+        :loading="loading"
+        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+        @change="handleTableChange">
+        <span slot="action" slot-scope="text, record">
+          <a-upload
+            name="file"
+            :action="FILE_INFORMATION_UPLOAD_ACTION"
+            :headers="FILE_UPLOAD_HEADERS"
+            :data="{'reviewInformationId':record.informationId, 'reviewProjectId':reviewProjectId,
+            'reviewInformationFileId': record.reviewInformationFileId}"
+            @change="handleUploadChange">
+            <a-button>
+                <a-icon type="upload"/>
+                选择文件
+            </a-button>
+          </a-upload>
+        </span>
+      </a-table>
     </a-spin>
   </a-modal>
 </template>
@@ -232,11 +243,12 @@
   import moment from 'moment'
   import {copy2NewKeyObjeect} from '@/utils/util'
   import {getAction} from '@/api/manage'
+  import {JeecgListMixin} from '@/mixins/JeecgListMixin'
 
 
   export default {
     name: 'Detail',
-    mixins: [antMixin, constantCfgMixin],
+    mixins: [antMixin, constantCfgMixin, JeecgListMixin],
     data() {
       return {
         title: '操作',
@@ -258,18 +270,97 @@
           getResponsibleUrl: '/review/responsible/queryByEnterpriseId',
           getReviewObjectUrl: '/review/object/queryByEnterpriseId',
           getPersonnelUrl: '/review/projectUser/queryByProjectAndRoleCode',
+          list: '/review/information/getInformationAndFile',
         },
         businessType: '',
         isPay: '',
         mockData: [],
         targetKeys: [],
         enterpriseType: '',
-
+        uploading: false,
+        // 表头
+        columns: [
+          {
+            title: '#',
+            dataIndex: '',
+            key: 'rowIndex',
+            width: 60,
+            align: 'center',
+            customRender: (t, r, index) => {
+              return parseInt(index) + 1
+            }
+          },
+          {
+            title: '文件名称',
+            align: 'center',
+            dataIndex: 'name'
+          },
+          {
+            title: '限传格式',
+            align: 'center',
+            dataIndex: 'format'
+          },
+          {
+            title: '限传大小',
+            align: 'center',
+            dataIndex: 'size',
+            customRender: text => {
+              return text + "M"
+            }
+          },
+          {
+            title: '上传状态',
+            align: 'center',
+            dataIndex: 'path',
+            customRender: text => {
+              if (text != null) {
+                return '查看文件'
+              } else {
+                return ( < font
+                color = "red" > 未上传 < /font>)
+              }
+            }
+          },
+          {
+            title: '上传时间',
+            align: 'center',
+            dataIndex: 'updateTime'
+          },
+          {
+            title: '上传人员',
+            align: 'center',
+            dataIndex: 'updateBy'
+          },
+          {
+            title: '操作',
+            dataIndex: 'action',
+            align: 'center',
+            scopedSlots: {customRender: 'action'},
+          }
+        ],
+        reviewProjectId: ''
       }
     },
     methods: {
+      handleUploadChange(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          if (info.file.response.success) {
+            this.$message.success('上传成功！');
+            this.getInformation(this.reviewProjectId);
+          } else {
+            this.$message.error(info.file.response.message);
+          }
+        } else if (info.file.status === 'error') {
+          this.$message.error(`上传失败！`);
+        }
+      },
+
       edit(record) {
         this.getPersonnel(record.id)
+        this.reviewProjectId = record.id
         this.form.resetFields()
         this.model = Object.assign({}, record)
         this.visible = true
@@ -303,8 +394,9 @@
               this.businessType = res.result.businessType
               this.isPay = record.isPay
             }
+            this.getInformation(record.id)
           })
-          //时间格式化
+
         })
       },
       close() {
@@ -313,6 +405,15 @@
       },
       handleCancel() {
         this.close()
+      },
+
+      getInformation(id) {
+        // 得到评审资料信息
+        getAction(this.url.list, {reviewProjectId: id}).then((res) => {
+          if (res.success) {
+            this.dataSource = res.result
+          }
+        })
       },
 
       getPersonnel(id) {
@@ -351,11 +452,6 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-  }
-
-  .logo-img {
-    height: 104px;
-    max-width: 300px;
   }
 
   .devide-title {
