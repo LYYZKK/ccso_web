@@ -1,11 +1,8 @@
 <template>
   <div class="user-wrapper" :class="theme">
-    <span class="action">
-      <a class="logout_title" target="_blank" href="http://jeecg-boot.mydoc.io">
-        <a-icon type="question-circle-o"></a-icon>
-      </a>
+    <span class="action setting-drawer" @click="toggleSettingDraw">
+      <a-icon type="setting"/>
     </span>
-    <header-notice class="action"/>
     <a-dropdown>
       <span class="action action-full ant-dropdown-link user-dropdown-menu">
         <a-avatar class="avatar" size="small" :src="getAvatar()"/>
@@ -42,11 +39,12 @@
       </a>
     </span>
     <user-password ref="userPassword"></user-password>
+    <setting-drawer ref="settingDrawer"></setting-drawer>
   </div>
 </template>
 
 <script>
-  import HeaderNotice from './HeaderNotice'
+  import SettingDrawer from '@/components/setting/SettingDrawer'
   import UserPassword from './UserPassword'
   import { mapActions, mapGetters } from 'vuex'
   import { mixinDevice } from '@/utils/mixin.js'
@@ -55,8 +53,8 @@
     name: "UserMenu",
     mixins: [mixinDevice],
     components: {
-      HeaderNotice,
-      UserPassword
+      UserPassword,
+      SettingDrawer
     },
     props: {
       theme: {
@@ -68,6 +66,9 @@
     methods: {
       ...mapActions(["Logout"]),
       ...mapGetters(["nickname", "avatar","userInfo"]),
+      toggleSettingDraw() {
+        this.$refs.settingDrawer.toggle()
+      },
       getAvatar(){
         if (this.avatar()) {
           return window._CONFIG['imgDomainURL'] + "/" + this.avatar()

@@ -55,7 +55,7 @@
         required: true
       }
     },
-    computed:{
+    computed: {
       smenuStyle() {
         let style = { 'padding': '0' }
         if (this.fixSiderbar) {
