@@ -44,6 +44,10 @@ export default {
       FILE_UPLOAD_ACTION: () => {
         return this.FILE_UPLOAD_URL
       },
+      FILE_INFORMATION_UPLOAD_URL: `${window._CONFIG['domainURL']}/review/information/file/upload`,
+      FILE_INFORMATION_UPLOAD_ACTION: () => {
+        return this.FILE_INFORMATION_UPLOAD_URL
+      },
       FILE_REVIEW_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/view`,
       IMAGE_REVIEW_URL_RENDER: (filePathSuffix) => {
         return `${this.FILE_REVIEW_BASE_URL}/${filePathSuffix}`

@@ -127,7 +127,6 @@
         if (info.file.status === 'done') {
           var response = info.file.response;
           this.uploadLoading = false;
-          console.log(response);
           if (response.success) {
             this.model.logo = response.message;
           } else {
