@@ -52,7 +52,7 @@ export default {
       IMAGE_REVIEW_URL_RENDER: (filePathSuffix) => {
         return `${this.FILE_REVIEW_BASE_URL}/${filePathSuffix}`
       },
-      FILE_DOWNLOAD_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/view`,
+      FILE_DOWNLOAD_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/download`,
       FILE_DOWNLOAD_URL_RENDER: (filePathSuffix) => {
         return `${this.FILE_DOWNLOAD_BASE_URL}?filePath=${filePathSuffix}`
       },
