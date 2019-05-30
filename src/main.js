@@ -54,7 +54,7 @@ Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 
 Vue.config.optionMergeStrategies.created = (parentVal, childVal) => {
-  return childVal ? [childVal] : (parentVal ? [parentVal] : [() => {}])
+  return childVal ? [childVal] : (parentVal ? (Array.isArray(parentVal) ? parentVal : [parentVal]) : [() => {}])
 }
 
 new Vue({
