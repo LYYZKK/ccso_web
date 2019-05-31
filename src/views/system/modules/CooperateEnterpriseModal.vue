@@ -25,7 +25,7 @@
             :data="{'isup':1}"
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
-            @change="handleChange"
+            @change="handleChange_1"
           >
             <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像" style="height:104px;max-width:300px"/>
             <div v-else>
@@ -44,8 +44,18 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="营业执照文件">
-          <a-input placeholder="请输入营业执照文件"
-                   v-decorator="['businessLicenseFile', validatorRules.businessLicenseFile]"/>
+          <a-upload
+            name="file"
+            :action="FILE_UPLOAD_ACTION"
+            :headers="FILE_UPLOAD_HEADERS"
+            :data="{'isup':1}"
+            v-decorator="['businessLicenseFile', validatorRules.businessLicenseFile]"
+            @change="handleChange_2">
+            <a-button>
+              <a-icon type="upload"/>
+              选择文件
+            </a-button>
+          </a-upload>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -119,7 +129,7 @@
       }
     },
     methods: {
-      handleChange(info) {
+      handleChange_1(info) {
         if (info.file.status === 'uploading') {
           this.uploadLoading = true
           return
@@ -129,6 +139,21 @@
           this.uploadLoading = false;
           if (response.success) {
             this.model.logo = response.message;
+          } else {
+            this.$message.warning(response.message);
+          }
+        }
+      },
+      handleChange_2(info) {
+        if (info.file.status === 'uploading') {
+          this.uploadLoading = true
+          return
+        }
+        if (info.file.status === 'done') {
+          var response = info.file.response;
+          this.uploadLoading = false;
+          if (response.success) {
+            this.model.businessLicenseFile = response.message;
           } else {
             this.$message.warning(response.message);
           }

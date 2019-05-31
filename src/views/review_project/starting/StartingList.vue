@@ -60,7 +60,9 @@
         <span slot="action" slot-scope="text, record">
           <a @click="detail(record)">查看</a>
           <a-divider type="vertical"/>
-          <a>启动</a>
+          <a @click="detail(record)">编辑</a>
+          <a-divider type="vertical"/>
+          <a @click="start(record.id)">启动</a>
         </span>
 
       </a-table>
@@ -70,12 +72,14 @@
     <!-- 表单区域 -->
     <starting-modal ref="modalForm" @ok="modalFormOk"></starting-modal>
     <detail ref="detail"></detail>
+    <start ref="start"></start>
   </a-card>
 
 </template>
 
 <script>
   import StartingModal from './modules/StartingModal'
+  import Start from './modules/Start'
   import Detail from './modules/Detail'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
@@ -86,7 +90,8 @@
     mixins: [JeecgListMixin, constantCfgMixin, antMixin],
     components: {
       StartingModal,
-      Detail
+      Detail,
+      Start
     },
     data() {
       return {
@@ -195,6 +200,9 @@
       }
     },
     methods: {
+      start(id){
+        this.$refs.start.edit(id);
+      },
       detail(record){
         this.$refs.detail.edit(record);
       }
