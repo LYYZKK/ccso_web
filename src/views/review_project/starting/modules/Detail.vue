@@ -5,6 +5,7 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
+    @ok="handleOk"
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
@@ -244,6 +245,7 @@
   import {copy2NewKeyObjeect} from '@/utils/util'
   import {getAction} from '@/api/manage'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
+  import {httpAction} from '@/api/manage'
 
 
   export default {
@@ -271,6 +273,7 @@
           getReviewObjectUrl: '/review/object/queryByEnterpriseId',
           getPersonnelUrl: '/review/projectUser/queryByProjectAndRoleCode',
           list: '/review/information/getInformationAndFile',
+          edit: '/review/project/edit'
         },
         businessType: '',
         isPay: '',
@@ -314,7 +317,8 @@
             dataIndex: 'path',
             customRender: text => {
               if (text != null) {
-                return '查看文件'
+                return ( < a
+                href = {text} > 查看文件 < /a>)
               } else {
                 return ( < font
                 color = "red" > 未上传 < /font>)
@@ -366,16 +370,29 @@
         this.visible = true
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model, 'no', 'state', 'isPay', 'result', 'createTime'))
-          this.form.setFieldsValue(pick(this.model.sysEnterprises[0], 'name', 'businessLicenseNo', 'logo', 'registeredCapital', 'sitesLinks', 'briefIntroduction', 'industry'))
+          /* this.form.setFieldsValue(pick(this.model.sysEnterprises[0], 'id', 'name', 'businessLicenseNo', 'logo', 'registeredCapital', 'sitesLinks',
+             'briefIntroduction', 'industry'))*/
+
+          // 得到评审企业信息
+          this.form.setFieldsValue(copy2NewKeyObjeect(this.model.sysEnterprises[0], ['id', 'name', 'businessLicenseNo', 'logo', 'registeredCapital',
+            'sitesLinks', 'briefIntroduction', 'industry'], {
+            id: 'reviewProjectId',
+            name: 'name',
+            businessLicenseNo: 'businessLicenseNo',
+            logo: 'logo',
+            registeredCapital: 'registeredCapital',
+            sitesLinks: 'sitesLinks',
+            briefIntroduction: 'briefIntroduction',
+            industry: 'industry'
+          }))
+
           // 得到评审负责人信息
           getAction(this.url.getResponsibleUrl, {enterpriseId: record.sysEnterprises[0].id}).then((res) => {
             if (res.success) {
-              this.form.setFieldsValue(copy2NewKeyObjeect(
-                res.result, ['name', 'email', 'tel', 'position', 'sex'],
-                {
-                  name: 'responsibleName', email: 'email', tel: 'tel', position: 'position',
-                  sex: 'sex'
-                }))
+              this.form.setFieldsValue(copy2NewKeyObjeect(res.result, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
+                id: 'objectId', name: 'responsibleName', email: 'email', tel: 'tel', position: 'position',
+                sex: 'sex'
+              }))
               this.form.setFieldsValue({birthYear: res.result.birthYear ? moment(res.result.birthYear) : null})
             }
           })
@@ -383,8 +400,9 @@
           getAction(this.url.getReviewObjectUrl, {enterpriseId: record.sysEnterprises[0].id}).then((res) => {
             if (res.success) {
               this.form.setFieldsValue(copy2NewKeyObjeect(
-                res.result, ['name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
+                res.result, ['id', 'name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
                 {
+                  id: 'responsibleId',
                   name: 'objectName',
                   establishingSite: 'establishingSite',
                   licenseNo: 'licenseNo',
@@ -397,6 +415,30 @@
             this.getInformation(record.id)
           })
 
+        })
+      },
+      handleOk() {
+        const that = this
+        // 触发表单验证
+        this.form.validateFields((err, values) => {
+          if (!err) {
+            that.confirmLoading = true
+            let formData = Object.assign(this.model, values)
+            //时间格式化
+            console.log('send request with formData =', formData)
+            formData.businessTypes = this.businessType
+            httpAction(this.url.edit, formData, 'put').then((res) => {
+              if (res.success) {
+                that.$message.success(res.message)
+                that.$emit('ok')
+              } else {
+                that.$message.warning(res.message)
+              }
+            }).finally(() => {
+              that.confirmLoading = false
+              that.close()
+            })
+          }
         })
       },
       close() {
