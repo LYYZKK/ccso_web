@@ -128,12 +128,7 @@
             align: 'center',
             dataIndex: 'enterpriseName',
             customRender: (text, record) => {
-              const enterpriseNames = []
-              record.sysEnterprises.forEach((v) => {
-                enterpriseNames.push(v.name)
-              })
-              console.log("enterpriseNames：" + enterpriseNames)
-              return enterpriseNames
+              return record.sysEnterprise.name
             }
           },
           {

@@ -78,8 +78,6 @@
         }
       }
     },
-    created () {
-    },
     methods: {
       add () {
         this.edit({});

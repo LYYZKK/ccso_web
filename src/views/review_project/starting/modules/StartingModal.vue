@@ -27,7 +27,7 @@
             :beforeUpload="beforeUpload"
             @change="handleChange"
           >
-            <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
+            <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="LOGO"
                  class="logo-img"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
@@ -45,7 +45,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="营业执照文件">
-          <a-input placeholder="请输入营业执照文件"
+          <a-input placeholder="请上传营业执照文件"
                    v-decorator="['businessLicenseFile', validatorRules.businessLicenseFile]"/>
         </a-form-item>
         <a-form-item
@@ -87,20 +87,20 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="企业主体名称">
-          <a-input placeholder="请输入企业主体名称" v-decorator="['objectName', {}]"/>
+          <a-input placeholder="请输入企业主体名称" v-decorator="['objectName', validatorRules.objectName]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="经营许可证号码">
-          <a-input placeholder="请输入经营许可证号码" v-decorator="['licenseNo', {}]"/>
+          <a-input placeholder="请输入经营许可证号码" v-decorator="['licenseNo', validatorRules.licenseNo]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="坐席规模">
           <j-dict-select-tag
-            v-decorator="['positionSize', {}]"
+            v-decorator="['positionSize', validatorRules.positionSize]"
             :triggerChange="true"
             placeholder="请选择坐席规模"
             dictCode="position_size"
@@ -110,7 +110,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="建制地点">
-          <a-input placeholder="请输入建制地点" v-decorator="['establishingSite', {}]"/>
+          <a-input placeholder="请输入建制地点" v-decorator="['establishingSite', validatorRules.establishingSite]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -133,7 +133,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="负责人姓名">
-          <a-input placeholder="请输入姓名" v-decorator="['responsibleName', {}]"/>
+          <a-input placeholder="请输入姓名" v-decorator="['responsibleName', validatorRules.responsibleName]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -145,14 +145,14 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="手机号码">
-          <a-input placeholder="请输入手机号码" v-decorator="['tel', {}]"/>
+          <a-input placeholder="请输入手机号码" v-decorator="['tel', validatorRules.tel]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="职位">
           <j-dict-select-tag
-            v-decorator="['position', {}]"
+            v-decorator="['position', validatorRules.position]"
             :triggerChange="true"
             placeholder="请选择职位"
             dictCode="position"
@@ -163,7 +163,7 @@
           :wrapperCol="wrapperCol"
           label="性别">
           <j-dict-select-tag
-            v-decorator="['sex', {}]"
+            v-decorator="['sex', validatorRules.sex]"
             :triggerChange="true"
             placeholder="请选择性别"
             dictCode="sex"
@@ -181,7 +181,7 @@
           :wrapperCol="wrapperCol"
           class="coordinator-form-item">
           <a-transfer
-            :dataSource="mockData"
+            :dataSource="personnel"
             :filterOption="filterTransferOption"
             :targetKeys="targetKeys"
             showSearch
@@ -230,17 +230,33 @@
           xs: {span: 24},
           sm: {span: 16}
         },
+        validatorRules: {
+          name: {rules: [{required: true, message: '请输入企业名称!'}]},
+          businessLicenseNo: {rules: [{required: true, message: '请输入营业执照编号!'}]},
+          businessLicenseFile: {rules: [{required: true, message: '请上传营业执照文件!'}]},
+          registeredCapital: {rules: [{required: true, message: '请选择注册资本!'}]},
+          sitesLinks: {rules: [{required: true, message: '请输入网站链接!'}]},
+
+          objectName: {rules: [{required: true, message: '请输入企业主体名称!'}]},
+          licenseNo: {rules: [{required: true, message: '请输入经营许可证号码!'}]},
+          positionSize: {rules: [{required: true, message: '请选择坐席规模!'}]},
+          establishingSite: {rules: [{required: true, message: '请输入建制地点!'}]},
+
+          responsibleName: {rules: [{required: true, message: '请输入姓名!'}]},
+          email: {rules: [{required: true, message: '请输入电子邮箱!'}]},
+          tel: {rules: [{required: true, message: '请输入手机号码!'}]},
+          position: {rules: [{required: true, message: '请选择职位!'}]},
+        },
         confirmLoading: false,
         form: this.$form.createForm(this),
-        validatorRules: {},
         url: {
           add: '/review/project/add',
           edit: '/review/project/edit',
-          getPersonnelUrl: '/sys/user/queryUserByRoleCode'
+          getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
         },
         businessType: '',
         isPay: '',
-        mockData: [],
+        personnel: [],
         targetKeys: [],
         uploadLoading: false,
         enterpriseType: ''
@@ -253,10 +269,12 @@
           this.enterpriseType = res.itemValue
         }
       })
-    },
+    }
+    ,
     mounted() {
       this.getPersonnel()
-    },
+    }
+    ,
     methods: {
       handleChange(info) {
         if (info.file.status === 'uploading') {
@@ -273,7 +291,8 @@
             this.$message.warning(response.message)
           }
         }
-      },
+      }
+      ,
       beforeUpload: function (file) {
         var fileType = file.type
         if (fileType.indexOf('image') < 0) {
@@ -281,14 +300,17 @@
           return false
         }
         //TODO 验证文件大小
-      },
+      }
+      ,
       add() {
         this.visible = true
-      },
+      }
+      ,
       close() {
         this.$emit('close')
         this.visible = false
-      },
+      }
+      ,
       handleOk() {
         const that = this
         // 触发表单验证
@@ -307,7 +329,7 @@
             //时间格式化
             var selectedCoordinator = []
             for (var i = 0; i < this.targetKeys.length; i++) {
-              selectedCoordinator.push(this.mockData[this.targetKeys[i]].userId)
+              selectedCoordinator.push(this.personnel[this.targetKeys[i]].userId)
             }
             formData.coordinatorIds = selectedCoordinator.join(',')
             formData.enterpriseType = this.enterpriseType
@@ -327,13 +349,15 @@
             })
           }
         })
-      },
+      }
+      ,
       handleCancel() {
         this.close()
-      },
+      }
+      ,
       getPersonnel() {
-        const mockData = []
-        getAction(this.url.getPersonnelUrl, {roleCode: 'coordinator'}).then(res => {
+        const dataSource = []
+        getAction(this.url.getAccountByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
           if (res.success) {
             for (let i = 0; i < res.result.length; i++) {
               const data = {
@@ -341,12 +365,13 @@
                 title: res.result[i].name,
                 userId: res.result[i].id
               }
-              mockData.push(data)
+              dataSource.push(data)
             }
           }
         })
-        this.mockData = mockData
-      },
+        this.personnel = dataSource
+      }
+      ,
       handleChange_coordinator(targetKeys) {
         this.targetKeys = targetKeys
       }
