@@ -230,10 +230,6 @@
 
       }
     },
-    created() {
-
-    }
-    ,
     methods: {
       initDictConfig() {
         // 初始化字典 - 证书类型

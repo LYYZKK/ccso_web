@@ -348,6 +348,8 @@
               that.close()
             })
           }
+          this.confirmLoading = false
+          this.$emit('error', {err})
         })
       }
       ,
