@@ -21,7 +21,7 @@
         </div>
         <div class="right">
           <div class="detail">
-            <div v-for="(item, k) in articles" :key="k" v-show="item.active">
+            <div v-for="(item, k) in articles" :key="k" v-show="active[k]">
               <div class="newsTitle">{{ item.title }}</div>
               <div class="newsTime">【发布时间】{{ item.createTime }}</div>
               <div class="newsContent" v-html="item.text"></div>
@@ -43,15 +43,16 @@ export default {
   data() {
     return {
       articles: [],
-      url: 'show/article/list'
+      url: 'show/article/list',
+      active:[]
     }
   },
   methods: {
     showArticle(index) {
       for (let i = 0; i < this.articles.length; i++) {
-        this.articles[i].active = false
+        this.active[i] = false
       }
-      this.articles[index].active = true
+      this.active[index] = true
       console.log(this.articles, index)
     },
     getArticle(param = {}) {
@@ -59,10 +60,13 @@ export default {
         if (res.code === 0) {
           this.articles = res.result.records
           if (this.articles.length > 0) {
-            this.articles.forEach(item => {
-              item.articleState = 0
-            })
-            this.articles[0].articleState = 1
+            for(let n=0;n<this.articles.length;n++){
+              if(n==0){
+                this.active[n] = true
+              }else{
+                this.active[n] = false
+              }
+            }
           }
         }
       })
