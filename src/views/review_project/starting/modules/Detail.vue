@@ -9,9 +9,11 @@
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <span v-show="sendBackNum>0">
-          <label style="color: red;float:right">第 {{sendBackNum}} 次回退，回退原因：{{sendBackMsg}}</label>
+        <span v-show="sendBackNum > 0">
+          <br>
+          <label style="float:right">第 <font color="red">{{sendBackNum}}</font> 次回退，回退原因：<font color="red">{{sendBackMsg}}</font></label>
           <br><br>
+          <a-divider/>
         </span>
         <div v-show="isShow=='1'">
           <h3>项目信息</h3>
@@ -521,8 +523,8 @@
       close() {
         this.$emit('close')
         this.isShow = '0'
-        this.sendBackMsg= '-1'
-        this.sendBackNum= '-1'
+        this.sendBackMsg = '-1'
+        this.sendBackNum = '-1'
         this.visible = false
       },
       handleCancel() {
