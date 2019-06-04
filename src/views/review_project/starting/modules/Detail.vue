@@ -43,7 +43,22 @@
           <a-input placeholder="请输入企业名称" v-decorator="['name', validatorRules.name]"/>
         </a-form-item>
         <a-form-item label="LOGO" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <Avatar shape="square" size={64} icon="user"/>
+          <a-upload
+            listType="picture-card"
+            :showUploadList="false"
+            :action="FILE_UPLOAD_ACTION"
+            :data="{'isup':1}"
+            :headers="FILE_UPLOAD_HEADERS"
+            :beforeUpload="beforeUpload"
+            @change="handleUploadChange"
+          >
+            <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="LOGO"
+                 class="logo-img"/>
+            <div v-else>
+              <a-icon :type="uploading ? 'loading' : 'plus'"/>
+              <div class="ant-upload-text">上传</div>
+            </div>
+          </a-upload>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -184,7 +199,7 @@
           :wrapperCol="wrapperCol"
           class="coordinator-form-item">
           <a-transfer
-            :dataSource="mockData"
+            :dataSource="personnel"
             :filterOption="filterTransferOption"
             :targetKeys="targetKeys"
             showSearch
@@ -268,16 +283,16 @@
         form: this.$form.createForm(this),
         validatorRules: {},
         url: {
-          uploadFileUrl: '/sys/user/queryUserByRoleCode',
           getResponsibleUrl: '/review/responsible/queryByEnterpriseId',
           getReviewObjectUrl: '/review/object/queryByEnterpriseId',
-          getPersonnelUrl: '/review/projectUser/queryByProjectAndRoleCode',
+          getByProjectAndRoleCode: '/review/projectUser/queryByProjectAndRoleCode',
           list: '/review/information/getInformationAndFile',
-          edit: '/review/project/edit'
+          edit: '/review/project/edit',
+          getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
         },
         businessType: '',
         isPay: '',
-        mockData: [],
+        personnel: [],
         targetKeys: [],
         enterpriseType: '',
         uploading: false,
@@ -342,10 +357,20 @@
             scopedSlots: {customRender: 'action'},
           }
         ],
-        reviewProjectId: ''
+        reviewProjectId: '',
+        selectdCoordinator: [],
       }
     },
     methods: {
+      beforeUpload: function (file) {
+        var fileType = file.type
+        if (fileType.indexOf('image') < 0) {
+          this.$message.warning('请上传图片')
+          return false
+        }
+        //TODO 验证文件大小
+      },
+
       handleUploadChange(info) {
         if (info.file.status !== 'uploading') {
           console.log(info.file, info.fileList);
@@ -363,20 +388,19 @@
       },
 
       edit(record) {
-        this.getPersonnel(record.id)
         this.reviewProjectId = record.id
         this.form.resetFields()
         this.model = Object.assign({}, record)
         this.visible = true
+        this.getAccountByRoleCode(record.id)
+        this.getInformation(record.id)
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model, 'no', 'state', 'isPay', 'result', 'createTime'))
-          /* this.form.setFieldsValue(pick(this.model.sysEnterprises[0], 'id', 'name', 'businessLicenseNo', 'logo', 'registeredCapital', 'sitesLinks',
-             'briefIntroduction', 'industry'))*/
 
           // 得到评审企业信息
-          this.form.setFieldsValue(copy2NewKeyObjeect(this.model.sysEnterprises[0], ['id', 'name', 'businessLicenseNo', 'logo', 'registeredCapital',
+          this.form.setFieldsValue(copy2NewKeyObjeect(this.model.sysEnterprise, ['id', 'name', 'businessLicenseNo', 'logo', 'registeredCapital',
             'sitesLinks', 'briefIntroduction', 'industry'], {
-            id: 'reviewProjectId',
+            id: 'sysEnterpriseId',
             name: 'name',
             businessLicenseNo: 'businessLicenseNo',
             logo: 'logo',
@@ -387,22 +411,27 @@
           }))
 
           // 得到评审负责人信息
-          getAction(this.url.getResponsibleUrl, {enterpriseId: record.sysEnterprises[0].id}).then((res) => {
+          getAction(this.url.getResponsibleUrl, {enterpriseId: record.sysEnterprise.id}).then((res) => {
             if (res.success) {
               this.form.setFieldsValue(copy2NewKeyObjeect(res.result, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
-                id: 'objectId', name: 'responsibleName', email: 'email', tel: 'tel', position: 'position',
+                id: 'responsibleId', name: 'responsibleName', email: 'email', tel: 'tel', position: 'position',
                 sex: 'sex'
               }))
               this.form.setFieldsValue({birthYear: res.result.birthYear ? moment(res.result.birthYear) : null})
+              if (res.result.length == 0) {
+                this.model.reviewResponsible = {}
+              } else {
+                this.model.reviewResponsible = res.result
+              }
             }
           })
           // 得到评审主体信息
-          getAction(this.url.getReviewObjectUrl, {enterpriseId: record.sysEnterprises[0].id}).then((res) => {
+          getAction(this.url.getReviewObjectUrl, {enterpriseId: record.sysEnterprise.id}).then((res) => {
             if (res.success) {
               this.form.setFieldsValue(copy2NewKeyObjeect(
                 res.result, ['id', 'name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
                 {
-                  id: 'responsibleId',
+                  id: 'objectId',
                   name: 'objectName',
                   establishingSite: 'establishingSite',
                   licenseNo: 'licenseNo',
@@ -411,10 +440,9 @@
               this.form.setFieldsValue({establishingYear: res.result.establishingYear ? moment(res.result.establishingYear) : null})
               this.businessType = res.result.businessType
               this.isPay = record.isPay
+              this.model.reviewObject = res.result
             }
-            this.getInformation(record.id)
           })
-
         })
       },
       handleOk() {
@@ -427,6 +455,12 @@
             //时间格式化
             console.log('send request with formData =', formData)
             formData.businessTypes = this.businessType
+            formData.reviewProjectId = this.reviewProjectId
+            var selectedCoordinator = []
+            for (var i = 0; i < this.targetKeys.length; i++) {
+              selectedCoordinator.push(this.personnel[this.targetKeys[i]].userId)
+            }
+            formData.coordinatorIds = selectedCoordinator.join(',')
             httpAction(this.url.edit, formData, 'put').then((res) => {
               if (res.success) {
                 that.$message.success(res.message)
@@ -458,10 +492,11 @@
         })
       },
 
-      getPersonnel(id) {
+      getAccountByRoleCode(id) {
         const dataSource = [];
         const targetKeys = [];
-        getAction(this.url.getPersonnelUrl, {
+        // 得到选中的
+        getAction(this.url.getByProjectAndRoleCode, {
           roleCode: 'coordinator',
           reviewProjectId: id
         }).then(res => {
@@ -469,14 +504,31 @@
             for (let i = 0; i < res.result.length; i++) {
               const data = {
                 key: i.toString(),
-                title: res.result[i]
+                userId: res.result[i].userId
               }
-              targetKeys.push(data.key);
-              dataSource.push(data)
+              this.selectdCoordinator.push(data)
             }
+            // 获取所有，选中的放入选中框
+            getAction(this.url.getAccountByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
+              if (res.success) {
+                for (let i = 0; i < res.result.length; i++) {
+                  const data = {
+                    key: i.toString(),
+                    title: res.result[i].name,
+                    userId: res.result[i].id
+                  }
+                  for (var j = 0; j < this.selectdCoordinator.length; j++) {
+                    if (this.selectdCoordinator[j].userId == res.result[i].id) {
+                      // 已选
+                      targetKeys.push(data.key)
+                    }
+                  }
+                  dataSource.push(data)
+                }
+              }
+            })
             this.targetKeys = targetKeys
-            this.mockData = dataSource
-
+            this.personnel = dataSource
           }
         })
       },
