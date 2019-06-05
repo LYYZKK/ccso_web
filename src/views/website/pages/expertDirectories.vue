@@ -79,7 +79,7 @@
           </div>
         </div>
         <div class="title">
-          <span>注册合评审员</span>
+          <span>注册评审员</span>
         </div>
         <div class="qiye">
           <div>
@@ -128,7 +128,7 @@
           </div>
         </div>
         <div class="title">
-          <span>注册合协调员</span>
+          <span>注册协调员</span>
         </div>
         <div class="qiye">
           <div>
@@ -186,34 +186,69 @@ import async from 'async'
 import { getAction } from '@/api/manage'
 import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
 import ConstConfig from '@/config/constant.config'
+import constantCfgMixin from '@/mixins/constant.cfg'
+
 export default {
+  mixins: [constantCfgMixin],
   data() {
     return {
-      
-      url:'sys/personnel/list'
-    };
+      certificate: [],
+      professor: [],
+      approvar: [],
+      cooperator: [],
+      url: 'sys/personnel/list'
+    }
   },
   methods: {
-    getArticle(param = {}){
+    getArticle(param = {}) {
       async.serise({
-
+        certificate_type_professor: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_professor })
+          cb(null, res.itemValue)
+        },
+        certificate_type_approvar: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_approvar })
+          cb(null, res.itemValue)
+        },
+        certificate_type_cooperator: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_cooperator })
+          cb(null, res.itemValue)
+        },
+        certificate: async cb => {
+          const res = await getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1, ...param })
+          if (res.code === 0) {
+            this.certificate = res.result.records
+          }
+          cb(null, this.certificate)
+        }
       })
     }
   },
-  mounted(){
-    async.series({
-      isShow: async cb => {
-        const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
-        cb(null, res.itemValue)
+  mounted() {
+    async.series(
+      {
+        surfaceShow: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
+          cb(null, res.itemValue)
+        }
+      },
+      (err, result) => {
+        if (!err) {
+          console.log(result)
+          result.certificate.forEach(v => {
+            if (v.enterpriseType === result.certificate_type_professor) {
+              this.professor.push(v)
+            } else if (v.enterpriseType === result.certificate_type_approvar) {
+              this.approvar.push(v)
+            } else if (v.enterpriseType === result.certificate_type_cooperator) {
+              this.cooperator.push(v)
+            }
+          })
+        }
       }
-    },
-    (err,result)=>{
-      if(!err){
-        this.getArticle({ ...result })
-      }
-    })
+    )
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 @import '../common.scss';
