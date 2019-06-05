@@ -1,10 +1,13 @@
 <template>
-  <a-tooltip placement="topLeft">
+  <a-tooltip placement="topLeft" v-if="withTooltip">
     <template slot="title">
       <span>{{ value }}</span>
     </template>
     {{ value | ellipsis(length) }}
   </a-tooltip>
+  <span v-else>
+    {{ value | ellipsis(length) }}
+  </span>
 </template>
 
 <script>
@@ -19,7 +22,12 @@
         type: Number,
         required: false,
         default: 25,
-      }
+      },
+      withTooltip: {
+        type: Boolean,
+        required: false,
+        default: true,
+      },
     }
   }
 </script>
