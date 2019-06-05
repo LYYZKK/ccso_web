@@ -24,9 +24,9 @@
             </a-col>
             <a-col :md="6" :sm="8">
               <a-form-item label="文件大小">
-                <a-input-number :min="1" v-model="queryParam.size_begin" />
+                <a-input-number :min="1" v-model="queryParam.size_begin"/>
                 ~
-                <a-input-number :min="1" v-model="queryParam.size_end" />
+                <a-input-number :min="1" v-model="queryParam.size_end"/>
               </a-form-item>
             </a-col>
           </template>
@@ -152,6 +152,18 @@
             title: '文件编号',
             align: "center",
             dataIndex: 'no'
+          },
+          {
+            title: '资料类型',
+            align: "center",
+            dataIndex: 'type',
+            customRender: text => {
+              if (text == 1) {
+                return "现场资料"
+              } else if (text == 2) {
+                return "其它"
+              }
+            }
           },
           {
             title: '文件名称',
