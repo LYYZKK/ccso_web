@@ -136,9 +136,9 @@
       },
       randomCode(){
         let random = ''
-        let str = 'QWERTYUPLKJHGFDAXCVBNMqwertyupkjgfdaxcvbm1346789'
+        let str = 'QWERTYUPLKJHGFDAXCVBNMwertyupkjfdaxcvbm134678'
         for (let i = 0; i < this.length; i++) {
-          let index = Math.floor(Math.random() * 48)
+          let index = Math.floor(Math.random() * 45)
           random += str[index]
         }
         this.code = random

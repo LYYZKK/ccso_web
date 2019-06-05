@@ -30,7 +30,7 @@
           />
         </a-form-item>-->
         <a-form-item>
-          <rich-editor ref="richText" v-if="refreshRichText" v-model="model.text"></rich-editor>
+          <j-editor v-if="refreshEditorStatus" v-model="model.text"/>
         </a-form-item>
       </a-form>
     </a-spin>
@@ -38,18 +38,20 @@
 </template>
 
 <script>
-import RichEditor from '@/components/tools/RichEditor'
-import { httpAction } from '@/api/manage'
 import pick from 'lodash.pick'
+
+import { httpAction } from '@/api/manage'
+
+import JEditor from '@/components/jeecg/JEditor'
 
 export default {
   name: 'ArticleModal',
   components: {
-    RichEditor
+    JEditor,
   },
   data() {
     return {
-      refreshRichText: false,
+      refreshEditorStatus: false,
       editorOption: {},
       title: '操作',
       visible: false,
@@ -79,13 +81,18 @@ export default {
     add() {
       this.edit({})
     },
+    refreshEditor() {
+      this.refreshEditorStatus = false
+      this.$nextTick(() => {
+        this.refreshEditorStatus = true
+      })
+    },
     edit(record) {
       this.form.resetFields()
       this.model = Object.assign({}, record)
       this.visible = true
-      this.refreshRichText = false
       this.$nextTick(() => {
-        this.refreshRichText = true
+        this.refreshEditor()
         this.form.setFieldsValue(pick(this.model, 'title', 'text', 'articleType', 'articleState', 'accessoryUrl'))
         //时间格式化
       })

@@ -12,16 +12,14 @@
         <div class="left">
           <div class="title">新闻资讯</div>
           <div class="list">
-            <div
-              v-for="(item, index) in articles"
-              :key="index"
-              @click="showArticle(index)"
-            >{{ item.title }}</div>
+            <div v-for="(item, idx) in articles" :key="idx" @click="showArticle(idx)" :class="activeClasses[idx]">
+              <j-ellipsis :value="item.title" :length="10"/>
+            </div>
           </div>
         </div>
         <div class="right">
           <div class="detail">
-            <div v-for="(item, k) in articles" :key="k" v-show="active[k]">
+            <div v-for="(item, idx) in articles" :key="idx" v-if="changeArticle" v-show="active[idx]">
               <div class="newsTitle">{{ item.title }}</div>
               <div class="newsTime">【发布时间】{{ item.createTime }}</div>
               <div class="newsContent" v-html="item.text"></div>
@@ -35,39 +33,58 @@
 
 <script>
 import async from 'async'
+
 import { getAction } from '@/api/manage'
 import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
 import ConstConfig from '@/config/constant.config'
 
+import JEllipsis from '@/components/jeecg/JEllipsis'
+
 export default {
+  components: {
+    JEllipsis
+  },
   data() {
     return {
       articles: [],
       url: 'show/article/list',
-      active:[]
+      active: [],
+      activeClasses: [],
+      changeArticle: false
     }
   },
 
   methods: {
+    refresh() {
+      this.changeArticle = false
+      this.$nextTick(() => {
+        this.changeArticle = true
+      })
+    },
     showArticle(index) {
       for (let i = 0; i < this.articles.length; i++) {
         this.active[i] = false
+        this.activeClasses[i] = ''
       }
       this.active[index] = true
+      this.activeClasses[index] = 'actived'
+      this.refresh()
     },
     getArticle(param = {}) {
       getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1, ...param }).then(res => {
         if (res.code === 0) {
           this.articles = res.result.records
           if (this.articles.length > 0) {
-            for(let n=0;n<this.articles.length;n++){
-              if(n==0){
-                this.active[n] = true
-              }else{
-                this.active[n] = false
+            for (let i = 0; i < this.articles.length; i++) {
+              if(i === 0) {
+                this.active[i] = true
+                this.activeClasses[i] = 'actived'
+              } else {
+                this.active[i] = false
+                this.activeClasses[i] = ''
               }
             }
-            console.log(this.active)
+            this.refresh()
           }
         }
       })
