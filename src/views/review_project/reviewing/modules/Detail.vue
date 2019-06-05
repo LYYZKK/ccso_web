@@ -193,15 +193,15 @@
           label="出生年份">
           <a-MonthPicker v-decorator="[ 'birthYear', {}]" format="YYYY"/>
         </a-form-item>
-        <h3 class="devide-title">请选择协调员</h3>
+        <h3 class="devide-title">已选择协调员</h3>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           class="coordinator-form-item">
           <a-transfer
-            :dataSource="personnel"
+            :dataSource="coordinator"
             :filterOption="filterTransferOption"
-            :targetKeys="targetKeys"
+            :targetKeys="targetKeys_1"
             showSearch
             @change="handleChange_coordinator"
             :titles="['可选协调员', '已选协调员']"
@@ -219,26 +219,23 @@
             <a-radio value="1">已支付</a-radio>
           </a-radio-group>
         </a-form-item>
-      </a-form>
-      <h3 class="devide-title">评审资料</h3>
-      <a-table
-        ref="table"
-        size="middle"
-        bordered
-        rowKey="id"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination=false
-        :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-        @change="handleTableChange">
+
+        <h3 class="devide-title">评审资料</h3>
+        <a-form-item>
+          <a-table
+            ref="table"
+            size="middle"
+            bordered
+            rowKey="id"
+            :columns="columns"
+            :dataSource="dataSource_1"
+            :pagination=false
+            :loading="loading"
+            :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+            @change="handleTableChange">
         <span slot="action" slot-scope="text, record">
           <a-upload
             name="file"
-            :action="FILE_INFORMATION_UPLOAD_ACTION"
-            :headers="FILE_UPLOAD_HEADERS"
-            :data="{'reviewInformationId':record.informationId, 'reviewProjectId':reviewProjectId,
-            'reviewInformationFileId': record.reviewInformationFileId}"
             @change="handleUploadChange">
             <a-button>
                 <a-icon type="upload"/>
@@ -246,7 +243,78 @@
             </a-button>
           </a-upload>
         </span>
-      </a-table>
+          </a-table>
+        </a-form-item>
+        <h3 class="devide-title">请选择计划时间</h3>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="资料评审计划开始">
+          <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY-MM"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="资料评审计划结束">
+          <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY-MM"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="现场评审计划开始">
+          <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY-MM"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="现场评审计划结束">
+          <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY-MM"/>
+        </a-form-item>
+        <h3 class="devide-title">请选择评审员</h3>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          class="coordinator-form-item">
+          <a-transfer
+            :dataSource="reviewer"
+            :filterOption="filterTransferOption"
+            :targetKeys="targetKeys_2"
+            showSearch
+            @change="handleChange_reviewer"
+            :titles="['可选评审员', '已选评审员']"
+            :render="item => item.title"
+          >
+          </a-transfer>
+        </a-form-item>
+        <h3 class="devide-title">评审现场记录</h3>
+        <a-form-item>
+          <a-table
+            ref="table"
+            size="middle"
+            bordered
+            rowKey="id"
+            :columns="columns"
+            :dataSource="dataSource_2"
+            :pagination=false
+            :loading="loading"
+            :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+            @change="handleTableChange">
+        <span slot="action" slot-scope="text, record">
+          <a-upload
+            name="file"
+            :action="url.uploadInformationFileUrl"
+            :headers="FILE_UPLOAD_HEADERS"
+            :data="{'reviewInformationId':record.informationId, 'reviewProjectId':reviewProjectId,'type':1, 'reviewInformationFileId': record.reviewInformationFileId}"
+            @change="handleUploadChange">
+            <a-button>
+                <a-icon type="upload"/>
+                选择文件
+            </a-button>
+          </a-upload>
+        </span>
+          </a-table>
+        </a-form-item>
+      </a-form>
     </a-spin>
   </a-modal>
 </template>
@@ -285,6 +353,7 @@
         form: this.$form.createForm(this),
         validatorRules: {},
         url: {
+          uploadInformationFileUrl: `${window._CONFIG['domainURL']}/review/information/file/upload`,
           getResponsibleUrl: '/review/responsible/queryByEnterpriseId',
           getReviewObjectUrl: '/review/object/queryByEnterpriseId',
           getByProjectAndRoleCode: '/review/projectUser/queryByProjectAndRoleCode',
@@ -294,8 +363,10 @@
         },
         businessType: '',
         isPay: '',
-        personnel: [],
-        targetKeys: [],
+        coordinator: [],
+        targetKeys_1: [],
+        targetKeys_2: [],
+        reviewer: [],
         enterpriseType: '',
         uploading: false,
         // 表头
@@ -387,6 +458,7 @@
           licenseNo: '',
           positionSize: '',
         },
+
       }
     },
     methods: {
@@ -420,7 +492,8 @@
         this.form.resetFields()
         this.model = Object.assign({}, record)
         this.visible = true
-        this.getAccountByRoleCode(record.id)
+        this.getSelectedPersonnelByRoleCode(record.id, "coordinator")
+        this.getSelectedPersonnelByRoleCode(record.id, "reviewer")
         this.getInformation(record.id)
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model, 'no', 'state', 'isPay', 'result', 'createTime'))
@@ -484,8 +557,8 @@
             formData.businessTypes = this.businessType
             formData.reviewProjectId = this.reviewProjectId
             var selectedCoordinator = []
-            for (var i = 0; i < this.targetKeys.length; i++) {
-              selectedCoordinator.push(this.personnel[this.targetKeys[i]].userId)
+            for (var i = 0; i < this.targetKeys_1.length; i++) {
+              selectedCoordinator.push(this.coordinator[this.targetKeys_1[i]].userId)
             }
             formData.coordinatorIds = selectedCoordinator.join(',')
             formData.isPay = this.isPay;
@@ -513,19 +586,25 @@
 
       getInformation(id) {
         // 得到评审资料信息
-        getAction(this.url.list, {reviewProjectId: id}).then((res) => {
+        getAction(this.url.list, {reviewProjectId: id, type: 2}).then((res) => {
           if (res.success) {
-            this.dataSource = res.result
+            this.dataSource_1 = res.result
+          }
+        })
+        // 得到评审资料信息
+        getAction(this.url.list, {reviewProjectId: id, type: 1}).then((res) => {
+          if (res.success) {
+            this.dataSource_2 = res.result
           }
         })
       },
 
-      getAccountByRoleCode(id) {
+      getSelectedPersonnelByRoleCode(id, roleCode) {
         const dataSource = [];
         const targetKeys = [];
         // 得到选中的
         getAction(this.url.getByProjectAndRoleCode, {
-          roleCode: 'coordinator',
+          roleCode: roleCode,
           reviewProjectId: id
         }).then(res => {
           if (res.success) {
@@ -536,33 +615,45 @@
               }
               this.selectdCoordinator.push(data)
             }
-            // 获取所有，选中的放入选中框
-            getAction(this.url.getAccountByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
-              if (res.success) {
-                for (let i = 0; i < res.result.length; i++) {
-                  const data = {
-                    key: i.toString(),
-                    title: res.result[i].name,
-                    userId: res.result[i].id
-                  }
-                  for (var j = 0; j < this.selectdCoordinator.length; j++) {
-                    if (this.selectdCoordinator[j].userId == res.result[i].id) {
-                      // 已选
-                      targetKeys.push(data.key)
-                    }
-                  }
-                  dataSource.push(data)
+            this.getAllByRoleCode(roleCode, dataSource, targetKeys)
+          }
+        })
+      },
+
+      getAllByRoleCode(roleCode, dataSource, targetKeys) {
+        // 获取所有指定角色编码人员，选中的放入选中框
+        getAction(this.url.getAccountByRoleCodeUrl, {roleCode: roleCode}).then(res => {
+          if (res.success) {
+            for (let i = 0; i < res.result.length; i++) {
+              const data = {
+                key: i.toString(),
+                title: res.result[i].name,
+                userId: res.result[i].id
+              }
+              for (var j = 0; j < this.selectdCoordinator.length; j++) {
+                if (this.selectdCoordinator[j].userId == res.result[i].id) {
+                  // 已选
+                  targetKeys.push(data.key)
                 }
               }
-            })
-            this.targetKeys = targetKeys
-            this.personnel = dataSource
+              dataSource.push(data)
+            }
+            if (roleCode == 'coordinator') {
+              this.targetKeys_1 = targetKeys
+              this.coordinator = dataSource
+            } else if (roleCode == 'reviewer') {
+              this.targetKeys_2 = targetKeys
+              this.reviewer = dataSource
+            }
           }
         })
       },
 
       handleChange_coordinator(targetKeys) {
-        this.targetKeys = targetKeys
+        this.targetKeys_1 = targetKeys
+      },
+      handleChange_reviewer(targetKeys_2) {
+        this.targetKeys_2 = targetKeys_2
       }
     }
   }
