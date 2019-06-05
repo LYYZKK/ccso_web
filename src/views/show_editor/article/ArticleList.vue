@@ -26,6 +26,7 @@
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
+            <!--
             <a-col :md="6" :sm="8">
               <a-form-item label="文章状态">
                 <a-select
@@ -42,6 +43,7 @@
                 </a-select>
               </a-form-item>
             </a-col>
+            -->
             <a-col :md="6" :sm="8">
               <a-form-item label="修改人">
                 <a-input placeholder="请输入修改人名称" v-model="queryParam.createBy"></a-input>
@@ -215,6 +217,14 @@
             }
           },*/
           {
+            title: '是否前台展示',
+            align: 'center',
+            dataIndex: 'surfaceShow',
+            customRender: text => {
+              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.isTrueDictOptions, text))
+            }
+          },
+          {
             title: '附件地址',
             align: 'center',
             dataIndex: 'accessoryUrl'
@@ -244,6 +254,7 @@
         },
         articleTypeDictOptions: [],
         articleStateDictOptions: [],
+        isTrueDictOptions: [],
         updateParam: {
           id: '',
           surfaceShow: ''
@@ -265,6 +276,12 @@
         initDictOptions('article_state').then(res => {
           if (res.success) {
             this.articleStateDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 是否前台显示
+        initDictOptions('is_true').then(res => {
+          if (res.success) {
+            this.isTrueDictOptions = res.result
           }
         })
         // 初始化字典 - 是否
