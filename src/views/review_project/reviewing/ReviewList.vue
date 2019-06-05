@@ -58,8 +58,10 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a @click="queryDetailed(record.id)" v-if="record.isAssign==1 && record.isRecord==1">查看评审</a>
-          <a @click="queryDetailed(record.id)" v-else>分配评审员</a>
+          <a @click="detail(record)" v-if="record.isAssign==1 && record.isRecord==1">查看评审</a>
+          <a @click="detail(record)" v-else>分配评审员</a>
+          <a-divider type="vertical"/>
+          <a @click="sendBack(record.id)">回退</a>
         </span>
 
       </a-table>
@@ -67,7 +69,8 @@
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <starting-modal ref="modalForm" @ok="modalFormOk"></starting-modal>
+    <detail ref="detail" />
+    <send-back ref="sendBack" />
   </a-card>
 
 </template>
@@ -76,10 +79,16 @@
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
+  import Detail from './modules/Detail'
+  import SendBack from './modules/SendBack'
 
   export default {
     name: 'ReviewList',
     mixins: [JeecgListMixin, constantCfgMixin, antMixin],
+    components: {
+      Detail,
+      SendBack
+    },
     data() {
       return {
         // 查询条件中的字段使用的查询条件方式, 支持的类型参考 src/mixins/JeecgListMixin.js 中 queryTypeAlias.
@@ -115,12 +124,7 @@
             align: 'center',
             dataIndex: 'enterpriseName',
             customRender: (text, record) => {
-              const enterpriseNames = []
-              record.sysEnterprises.forEach((v) => {
-                enterpriseNames.push(v.name)
-              })
-              console.log("enterpriseNames：" + enterpriseNames)
-              return enterpriseNames
+              return record.sysEnterprise.name
             }
           },
           {
@@ -187,9 +191,12 @@
       }
     },
     methods: {
-      queryDetailed(id) {
-        this.$router.push({path: "/review_project_1"})
-      }
+      detail(record){
+        this.$refs.detail.edit(record);
+      },
+      sendBack(id){
+        this.$refs.sendBack.edit(id);
+      },
     }
   }
 </script>

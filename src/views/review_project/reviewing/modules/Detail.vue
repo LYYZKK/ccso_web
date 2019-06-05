@@ -9,39 +9,32 @@
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-        <span v-show="sendBackNum > 0">
-          <br>
-          <label style="float:right">第 <font color="red">{{sendBackNum}}</font> 次回退，回退原因：<font color="red">{{sendBackMsg}}</font></label>
-          <br><br>
-          <a-divider/>
-        </span>
-        <div v-show="isShow=='1'">
-          <h3>项目信息</h3>
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="项目编号">
-            <a-input v-decorator="['no', {}]"/>
-          </a-form-item>
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="当前状态">
-            <a-input defaultValue="启动中"/>
-          </a-form-item>
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="评审结果">
-            <a-input defaultValue="未知"/>
-          </a-form-item>
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="新建时间">
-            <a-input v-decorator="['createTime', {}]"/>
-          </a-form-item>
-        </div>
+        <h3>项目信息</h3>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="项目编号">
+          <a-input v-decorator="['no', {}]"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="当前状态">
+          <a-input defaultValue="启动中"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="评审结果">
+          <a-input defaultValue="未知"/>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="新建时间">
+          <a-input v-decorator="['createTime', {}]"/>
+        </a-form-item>
+
         <h3>企业信息</h3>
         <a-form-item
           :labelCol="labelCol"
@@ -268,10 +261,12 @@
   import {getAction} from '@/api/manage'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import {httpAction} from '@/api/manage'
+  import ATextarea from "ant-design-vue/es/input/TextArea";
 
 
   export default {
     name: 'Detail',
+    components: {ATextarea},
     mixins: [antMixin, constantCfgMixin, JeecgListMixin],
     data() {
       return {
@@ -295,8 +290,7 @@
           getByProjectAndRoleCode: '/review/projectUser/queryByProjectAndRoleCode',
           list: '/review/information/getInformationAndFile',
           edit: '/review/project/edit',
-          getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode',
-          getSendBackByReviewProjectUrl: '/review/sendBack/getSendBackByReviewProject'
+          getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
         },
         businessType: '',
         isPay: '',
@@ -393,9 +387,6 @@
           licenseNo: '',
           positionSize: '',
         },
-        isShow: '0',
-        sendBackMsg: '-1',
-        sendBackNum: '-1',
       }
     },
     methods: {
@@ -424,10 +415,7 @@
         }
       },
 
-      edit(record, judge) {
-        if (judge == '1') {
-          this.isShow = judge
-        }
+      edit(record) {
         this.reviewProjectId = record.id
         this.form.resetFields()
         this.model = Object.assign({}, record)
@@ -436,6 +424,7 @@
         this.getInformation(record.id)
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model, 'no', 'state', 'isPay', 'result', 'createTime'))
+
           // 得到评审企业信息
           this.form.setFieldsValue(copy2NewKeyObjeect(this.model.sysEnterprise, ['id', 'name', 'businessLicenseNo', 'logo', 'registeredCapital',
             'sitesLinks', 'briefIntroduction', 'industry'], {
@@ -448,6 +437,7 @@
             briefIntroduction: 'briefIntroduction',
             industry: 'industry'
           }))
+
           // 得到评审负责人信息
           getAction(this.url.getResponsibleUrl, {enterpriseId: record.sysEnterprise.id}).then((res) => {
             if (res.success) {
@@ -476,11 +466,6 @@
               this.isPay = record.isPay
               this.model.reviewObject = res.result
             }
-          })
-          // 得到回退信息
-          getAction(this.url.getSendBackByReviewProjectUrl, {reviewProjectId: record.id}).then((res) => {
-            this.sendBackMsg = res.result.sendBackMsg
-            this.sendBackNum = res.result.sendBackNum
           })
         })
       },
@@ -516,15 +501,10 @@
               that.close()
             })
           }
-          this.confirmLoading = false
-          this.$emit('error', {err})
         })
       },
       close() {
         this.$emit('close')
-        this.isShow = '0'
-        this.sendBackMsg = '-1'
-        this.sendBackNum = '-1'
         this.visible = false
       },
       handleCancel() {
