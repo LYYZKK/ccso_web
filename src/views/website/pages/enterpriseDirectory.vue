@@ -15,40 +15,13 @@
           <span>评审合格企业</span>
         </div>
         <div class="detail">
-          <div>
+          <div v-for="(item,index) in reviewEnterprises" :key="index">
             <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
+              :src="item.logo"
               alt="LOGO"
             />
             <p>
-              第一行第一
-            </p>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt="LOGO"
-            />
-            <p>
-              第一行第一
-            </p>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt="LOGO"
-            />
-            <p>
-              第一行第一行第一行第一行第一行第一行第二行
-            </p>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt="LOGO"
-            />
-            <p>
-              第一行第一行第一行第一行第一行第一行第二行
+              {{item.name}}
             </p>
           </div>
         </div>
@@ -56,48 +29,14 @@
           <span>注册合作企业</span>
         </div>
         <div class="qiye">
-          <div>
+          <div v-for="(item,index) in cooperateEnterprises" :key="index">
             <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
+              src="item.logo"
+              alt="LOGO"
             />
             <div>注册合作企业</div>
             <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第
-            </div>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第
-            </div>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第
-            </div>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt=""
-            />
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第
+              {{item.name}}
             </div>
           </div>
         </div>
@@ -107,11 +46,63 @@
 </template>
 
 <script>
+import async from 'async'
+import { getAction } from '@/api/manage'
+import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
+import ConstConfig from '@/config/constant.config'
 export default {
   data() {
-    return {};
+    return {
+      reviewEnterprises: [],
+      cooperateEnterprises: [],
+      url:'sys/enterprise/list'
+    }
   },
-  methods: {}
+  methods: {
+    getArticle(param = {}) {
+      async.series({
+        enterprise_type_review: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.enterprise_type_review })
+          cb(null, res.itemValue)
+        },
+        enterprise_type_cooperate: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.enterprise_type_cooperate })
+          cb(null, res.itemValue)
+        },
+        enterprises: async cb => {
+          const res = await getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1 , ...param })
+          if (res.code === 0) {
+            this.enterprises = res.result.records
+          }
+          cb(null, this.enterprises)
+        }
+      },
+      (err, result) => {
+        if (!err) {
+          result.enterprises.forEach(v => {
+            if (v.enterpriseType === result.enterprise_type_review) {
+              this.reviewEnterprises.push(v)
+            } else if (v.enterpriseType === result.enterprise_type_cooperate) {
+              this.cooperateEnterprises.push(v)
+            }
+          })
+        }
+      })
+    }
+  },
+  mounted() {
+    async.series({
+      surfaceShow: async cb => {
+        const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
+        cb(null, res.itemValue)
+      }
+    },
+    (err, result) => {
+      if (!err) {
+        this.getArticle({ ...result })
+      }
+    })
+  }
 }
 </script>
 <style lang="scss" scoped>
