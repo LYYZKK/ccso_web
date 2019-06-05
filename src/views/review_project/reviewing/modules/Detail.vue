@@ -263,7 +263,6 @@
   import {httpAction} from '@/api/manage'
   import ATextarea from "ant-design-vue/es/input/TextArea";
 
-
   export default {
     name: 'Detail',
     components: {ATextarea},
@@ -292,6 +291,7 @@
           edit: '/review/project/edit',
           getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
         },
+        FILE_INFORMATION_UPLOAD_URL: `${window._CONFIG['domainURL']}/review/information/file/upload`,
         businessType: '',
         isPay: '',
         personnel: [],
@@ -332,13 +332,11 @@
             title: '上传状态',
             align: 'center',
             dataIndex: 'path',
-            customRender: text => {
+            customRender: (text, record) => {
               if (text != null) {
-                return ( < a
-                href = {text} > 查看文件 < /a>)
+                return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)}>下载文件</a>)
               } else {
-                return ( < font
-                color = "red" > 未上传 < /font>)
+                return (<span style="color: red;">未上传</span>)
               }
             }
           },
@@ -390,6 +388,9 @@
       }
     },
     methods: {
+      FILE_INFORMATION_UPLOAD_ACTION: () => {
+        return this.FILE_INFORMATION_UPLOAD_URL
+      },
       beforeUpload: function (file) {
         var fileType = file.type
         if (fileType.indexOf('image') < 0) {
