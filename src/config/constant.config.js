@@ -32,5 +32,17 @@ export default {
       dict_code: 'article_state',
       dict_item_code: 'article_state_released'
     },
+    certificate_type_professor: { // 证书类型 - 专家.
+      dict_code: 'certificate_type',
+      dict_item_code: 'certificate_type_professor'
+    },
+    certificate_type_approvar: { // 证书类型 - 评审员.
+      dict_code: 'certificate_type',
+      dict_item_code: 'certificate_type_approvar'
+    },
+    certificate_type_cooperator: { // 证书类型 - 协调员.
+      dict_code: 'certificate_type',
+      dict_item_code: 'certificate_type_cooperator'
+    },
   }
 }
