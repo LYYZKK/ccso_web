@@ -36,6 +36,15 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
+          label="资料类型">
+          <a-radio-group v-model="type">
+            <a-radio value="1">现场评审资料</a-radio>
+            <a-radio value="2">其他</a-radio>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
           label="文件大小">
           <a-input-number v-decorator="['size', validatorRules.size]"/>
         </a-form-item>
@@ -48,7 +57,6 @@
 <script>
   import {httpAction} from '@/api/manage'
   import pick from 'lodash.pick'
-  import moment from "moment"
 
   export default {
     name: "InformationModal",
@@ -85,6 +93,7 @@
           name: {rules: [{required: true, message: '请输入文件名!'}]},
           size: {rules: [{required: true, message: '请输入文件大小!'}]},
         },
+        type: '',
       }
     },
     created() {
@@ -107,7 +116,6 @@
           this.form.setFieldsValue(pick(this.model, 'no', 'name', 'format', 'size'))
           //时间格式化
         });
-
       },
       close() {
         this.$emit('close');
@@ -133,13 +141,14 @@
                 this.formatResult += i + ','
               }
             }
-            var suffix = this.formatResult.substring(this.formatResult.length-1, this.formatResult.length)
-            if (suffix===',') {
-              this.formatResult = this.formatResult.substring(0, this.formatResult.length-1)
+            var suffix = this.formatResult.substring(this.formatResult.length - 1, this.formatResult.length)
+            if (suffix === ',') {
+              this.formatResult = this.formatResult.substring(0, this.formatResult.length - 1)
             }
             values.format = this.formatResult
             let formData = Object.assign(this.model, values);
             //时间格式化
+            formData.type = this.type
             httpAction(httpurl, formData, method).then((res) => {
               if (res.success) {
                 that.$message.success(res.message);

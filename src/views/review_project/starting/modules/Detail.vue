@@ -242,10 +242,9 @@
         <span slot="action" slot-scope="text, record">
           <a-upload
             name="file"
-            :action="FILE_INFORMATION_UPLOAD_ACTION"
+            :action="url.uploadInformationFileUrl"
             :headers="FILE_UPLOAD_HEADERS"
-            :data="{'reviewInformationId':record.informationId, 'reviewProjectId':reviewProjectId,
-            'reviewInformationFileId': record.reviewInformationFileId}"
+            :data="{'reviewInformationId':record.informationId, 'reviewProjectId':reviewProjectId, 'type': 2, 'reviewInformationFileId': record.reviewInformationFileId}"
             @change="handleUploadChange">
             <a-button>
                 <a-icon type="upload"/>
@@ -290,6 +289,7 @@
         form: this.$form.createForm(this),
         validatorRules: {},
         url: {
+          uploadInformationFileUrl: `${window._CONFIG['domainURL']}/review/information/file/upload`,
           getResponsibleUrl: '/review/responsible/queryByEnterpriseId',
           getReviewObjectUrl: '/review/object/queryByEnterpriseId',
           getByProjectAndRoleCode: '/review/projectUser/queryByProjectAndRoleCode',
@@ -533,7 +533,7 @@
 
       getInformation(id) {
         // 得到评审资料信息
-        getAction(this.url.list, {reviewProjectId: id}).then((res) => {
+        getAction(this.url.list, {reviewProjectId: id, type: 2}).then((res) => {
           if (res.success) {
             this.dataSource = res.result
           }
