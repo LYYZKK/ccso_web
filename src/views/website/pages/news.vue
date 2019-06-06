@@ -21,7 +21,7 @@
           <div class="detail">
             <div v-for="(item, idx) in articles" :key="idx" v-if="changeArticle" v-show="active[idx]">
               <div class="newsTitle">{{ item.title }}</div>
-              <div class="newsTime">【发布时间】{{ item.createTime }}</div>
+              <div class="newsTime">【发布时间】{{ item.updateTime }}</div>
               <div class="newsContent" v-html="item.text"></div>
             </div>
           </div>

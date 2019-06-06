@@ -237,7 +237,6 @@
       },
       handleTableChange(pagination, filters, sorter){
         //分页、排序、筛选变化时触发
-        console.log(sorter);
         //TODO 筛选
         if (Object.keys(sorter).length>0){
           this.isorter.column = sorter.field;

@@ -21,7 +21,7 @@
           <div class="detail">
             <div v-for="(item, idx) in articles" :key="idx" v-if="changeArticle" v-show="active[idx]">
               <div class="newsTitle">{{ item.title }}</div>
-              <div class="newsTime">【发布时间】{{ item.createTime }}</div>
+              <div class="newsTime">【发布时间】{{ item.updateTime }}</div>
               <div class="newsContent" v-html="item.text"></div>
             </div>
           </div>
@@ -72,7 +72,7 @@ export default {
       this.refresh()
     },
     getArticle(param = {}) {
-      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1, ...param }).then(res => {
+      getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1, ...param, field: 'id,title,text' }).then(res => {
         if (res.code === 0) {
           this.articles = res.result.records
           if (this.articles.length > 0) {
