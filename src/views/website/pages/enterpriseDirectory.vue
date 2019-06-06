@@ -78,6 +78,7 @@ export default {
         }
       },
       (err, result) => {
+        console.log(result)
         if (!err) {
           result.enterprises.forEach(v => {
             if (v.enterpriseType === result.enterprise_type_review) {

@@ -16,165 +16,85 @@
         <div class="title">
           <span>专家委员会</span>
         </div>
-        <div class="detail">
-          <div>
-            <div style="display:flex; align-items: flex-end;font-size:12px;">
-              <img
-                src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-                alt
-              >
-              <div>
-                <span>专家委员-甲</span>
-                <span>2018-12-12</span>
+        <!-- 专家委员会 -->
+        <div>
+          <a-carousel arrows autoplay>
+            <div slot="prevArrow" class="custom-slick-arrow" style="left: 10px;zIndex: 1">
+              <a-icon type="left-circle"/>
+            </div>
+            <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
+              <a-icon type="right-circle"/>
+            </div>
+            <div class="moveItem" v-for="(a,i) in arr" :key="i">
+              <div v-for="(item,index) in a" :key="index">
+                <div
+                  style="display:flex; align-items: flex-end;justify-content: center;font-size:12px;"
+                >
+                  <img src alt>
+                  <div style="margin-left:10px;">
+                    <span>{{item.name}}</span>
+                    <br>
+                    <span>{{item.time}}</span>
+                  </div>
+                </div>
+                <div style="margin-top:10px;text-align:center;">{{item.text}}</div>
               </div>
             </div>
-            <div>
-              <p>第一行第一行第一行第一</p>
-            </div>
-          </div>
-          <div>
-            <div style="display:flex; align-items: flex-end;font-size:12px;">
-              <img
-                src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-                alt
-              >
-              <div>
-                <span>专家委员-甲</span>
-                <span>2018-12-12</span>
-              </div>
-            </div>
-            <div>
-              <p>第一行第一行第一行第一</p>
-            </div>
-          </div>
-          <div>
-            <div style="display:flex; align-items: flex-end;font-size:12px;">
-              <img
-                src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-                alt
-              >
-              <div>
-                <span>专家委员-甲</span>
-                <span>2018-12-12</span>
-              </div>
-            </div>
-            <div>
-              <p>第一行第一行第一行第一</p>
-            </div>
-          </div>
-          <div>
-            <div style="display:flex; align-items: flex-end;font-size:12px;">
-              <img
-                src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-                alt
-              >
-              <div>
-                <span>专家委员-甲</span>
-                <span>2018-12-12</span>
-              </div>
-            </div>
-            <div>
-              <p>第一行第一行第一行第一</p>
-            </div>
-          </div>
+          </a-carousel>
         </div>
         <div class="title">
           <span>注册评审员</span>
         </div>
-        <div class="qiye">
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt
-            >
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第...
+        <!-- 注册评审员 -->
+        <div>
+          <a-carousel arrows autoplay>
+            <div slot="prevArrow" class="custom-slick-arrow" style="left: 10px;zIndex: 1">
+              <a-icon type="left-circle"/>
             </div>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt
-            >
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第...
+            <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
+              <a-icon type="right-circle"/>
             </div>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt
-            >
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第...
+            <div class="moveItem" v-for="(d,m) in arr" :key="m">
+              <div v-for="(item,index) in d" :key="index" class="item">
+                <img src alt>
+                <div>
+                  <p>{{item.name}}</p>
+                </div>
+                <div>
+                  <p>
+                    {{item.text}}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt
-            >
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第...
-            </div>
-          </div>
+          </a-carousel>
         </div>
         <div class="title">
           <span>注册协调员</span>
         </div>
-        <div class="qiye">
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt
-            >
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第...
+        <!-- 注册协调员 -->
+        <div>
+          <a-carousel arrows autoplay>
+            <div slot="prevArrow" class="custom-slick-arrow" style="left: 10px;zIndex: 1">
+              <a-icon type="left-circle"/>
             </div>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt
-            >
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第...
+            <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
+              <a-icon type="right-circle"/>
             </div>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt
-            >
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第...
+            <div class="moveItem" v-for="(b,k) in arr" :key="k">
+              <div v-for="(item,index) in b" :key="index" class="item">
+                <img src alt>
+                <div>
+                  <p>{{ item.name }}</p>
+                </div>
+                <div>
+                  <p>
+                    {{item.text}}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div>
-            <img
-              src="http://chinaccso.org.cn:8090/upload/company/123456789012345678901234567890_logoFile_2016_03_31_16_34_20.png"
-              alt
-            >
-            <div>注册合作企业</div>
-            <div>
-              第一行第一行第一行第一行第一行第一行第二行第二行第二行第二行第二行第二行
-              第三行第三行第三行第三行第...
-            </div>
-          </div>
+          </a-carousel>
         </div>
       </div>
     </div>
@@ -192,16 +112,34 @@ export default {
   mixins: [constantCfgMixin],
   data() {
     return {
-      certificate: [],
       professor: [],
       approvar: [],
       cooperator: [],
+      allArr: [
+        { name: 1, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 2, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 3, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 4, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 5, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 6, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 7, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 8, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 9, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 10, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 11, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
+        { name: 12, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' }
+      ],
+      arr:[],
       url: 'sys/personnel/list'
     }
   },
-  methods: {
-    getArticle(param = {}) {
-      async.serise({
+  mounted() {
+    async.series(
+      {
+        surfaceShow: async cb => {
+          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
+          cb(null, res.itemValue)
+        },
         certificate_type_professor: async cb => {
           const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_professor })
           cb(null, res.itemValue)
@@ -213,37 +151,33 @@ export default {
         certificate_type_cooperator: async cb => {
           const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_cooperator })
           cb(null, res.itemValue)
-        },
-        certificate: async cb => {
-          const res = await getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1, ...param })
-          if (res.code === 0) {
-            this.certificate = res.result.records
-          }
-          cb(null, this.certificate)
-        }
-      })
-    }
-  },
-  mounted() {
-    async.series(
-      {
-        surfaceShow: async cb => {
-          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
-          cb(null, res.itemValue)
         }
       },
-      (err, result) => {
+      async (err, result) => {
         if (!err) {
-          console.log(result)
-          result.certificate.forEach(v => {
-            if (v.enterpriseType === result.certificate_type_professor) {
-              this.professor.push(v)
-            } else if (v.enterpriseType === result.certificate_type_approvar) {
-              this.approvar.push(v)
-            } else if (v.enterpriseType === result.certificate_type_cooperator) {
-              this.cooperator.push(v)
-            }
+          console.log('result = ', result)
+          const res = await getAction(`${window._CONFIG['domainURL']}/${this.url}`, {
+            pageSize: -1,
+            surfaceShow: result.surfaceShow
           })
+          if (res.code === 0) {
+            const records = res.result.records
+            // records.forEach(v => {
+            //   if (v.certificateType === result.certificate_type_professor) {
+            //     this.professor.push(v)
+            //   }
+            //   if (v.certificateType === result.certificate_type_approvar) {
+            //     this.approvar.push(v)
+            //   }
+            //   if (v.certificateType === result.certificate_type_cooperator) {
+            //     this.cooperator.push(v)
+            //   }
+            // })
+            this.professor = this.approvar = this.cooperator = this.allArr
+            for (let i = 0; i < this.allArr.length; i += 4) {
+              this.arr.push(this.professor.slice(i, i + 4))
+            }
+          }
         }
       }
     )
@@ -252,36 +186,53 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../common.scss';
+// 轮播
 .expert {
-  margin: 20px 0;
-}
-.detail {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 10px 0;
-}
-.detail > div {
-  width: 20%;
-}
-.detail img {
-  width: 70px;
-  height: 100px;
-  margin-right: 20px;
-}
-.qiye {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin: 10px 0;
-}
-.qiye img {
-  width: 100%;
-}
-.qiye > div {
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  .ant-carousel .custom-slick-arrow {
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+    color: #aaa;
+  }
+  .ant-carousel .custom-slick-arrow:before {
+    display: none;
+  }
+  .ant-carousel .custom-slick-arrow:hover {
+    opacity: 0.5;
+  }
+  /deep/ .ant-carousel .slick-dots li button {
+    background: #000;
+  }
+  /deep/ .ant-carousel .slick-dots li.slick-active button {
+    background: #95cff8;
+  }
+  .moveItem {
+    padding: 20px 0 0 0;
+    display: flex !important;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    & > div {
+      width: 20%;
+      margin-bottom: 20px;
+      min-width: 180px;
+    }
+    .item {
+      font-size: 12px;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      p {
+        margin: 5px 0;
+      }
+    }
+    img {
+      width: 80px;
+      height: 100px;
+      display: inline-block;
+      border: 1px solid #deeffb;
+    }
+  }
 }
 </style>
