@@ -197,7 +197,7 @@
           list: '/sys/enterprise/list',
           delete: '/sys/enterprise/delete',
           deleteBatch: '/sys/enterprise/deleteBatch',
-          edit: '/sys/enterprise/edit',
+          edit: '/sys/enterprise/cooperateEdit',
         },
         enterpriseTypeDictOptions: [],
         registeredCapitalDictOptions: [],
