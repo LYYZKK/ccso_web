@@ -46,7 +46,12 @@
           label="权限标识">
           <a-input placeholder="请输入权限标识" v-decorator="['permissionSid', validatorRules.permissionSid]" />
         </a-form-item>
-
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="排序值">
+          <a-input-number :min="1" v-decorator="['rank', {'initialValue': 1}]"/>
+        </a-form-item>
       </a-form>
     </a-spin>
   </a-modal>

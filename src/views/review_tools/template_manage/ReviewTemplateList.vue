@@ -151,6 +151,11 @@ export default {
           dataIndex: 'permissionSid'
         },
         {
+          title: '排序值',
+          align: 'center',
+          dataIndex: 'rank'
+        },
+        {
           title: '操作',
           dataIndex: 'action',
           align: 'center',
@@ -163,12 +168,16 @@ export default {
         deleteBatch: '/review/reviewTemplate/deleteBatch',
         exportXlsUrl: 'review/reviewTemplate/exportXls',
         importExcelUrl: 'review/reviewTemplate/importExcel'
-      }
+      },
+      isorter:{
+        column: 'rank',
+        order: 'asc',
+      },
     }
   },
   computed: {
     importExcelUrl () {
-      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+      return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`
     }
   },
   methods: {}
