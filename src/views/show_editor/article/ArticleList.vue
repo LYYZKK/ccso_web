@@ -221,7 +221,11 @@
             align: 'center',
             dataIndex: 'surfaceShow',
             customRender: text => {
-              return this.DICT_SHOW_RENDER(filterDictOptionByText(this.isTrueDictOptions, text))
+              if (text) {
+                return this.DICT_SHOW_RENDER(filterDictOptionByText(this.isTrueDictOptions, text))
+              } else {
+                return (<a-tag color="red">否</a-tag>)
+              }
             }
           },
           {

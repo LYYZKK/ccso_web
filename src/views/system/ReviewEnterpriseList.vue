@@ -176,6 +176,18 @@
             dataIndex: 'businessLicenseNo'
           },
           {
+            title: '是否前台展示',
+            align: 'center',
+            dataIndex: 'surfaceShow',
+            customRender: text => {
+              if (text) {
+                return this.DICT_SHOW_RENDER(filterDictOptionByText(this.surfaceShowDictOptions, text))
+              } else {
+                return (<a-tag color="red">否</a-tag>)
+              }
+            }
+          },
+          {
             title: '修改人',
             align: 'center',
             dataIndex: 'updateBy'
@@ -200,6 +212,7 @@
           edit: '/sys/enterprise/cooperateEdit',
         },
         enterpriseTypeDictOptions: [],
+        surfaceShowDictOptions: [],
         surfaceShowTrueDictValue: '',
         surfaceShowFlaseDictValue: '',
         confirmLoading: false,
@@ -221,6 +234,12 @@
         initDictOptions('enterprise_type').then(res => {
           if (res.success) {
             this.enterpriseTypeDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 前台是否显示
+        initDictOptions('is_true').then(res => {
+          if (res.success) {
+            this.surfaceShowDictOptions = res.result
           }
         })
         // 初始化字典 - 前台显示值

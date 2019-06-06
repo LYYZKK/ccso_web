@@ -104,19 +104,10 @@
           <a @click="handleEdit(record)">编辑</a>
 
           <a-divider type="vertical"/>
-          <a-dropdown>
-            <a class="ant-dropdown-link">
-              更多
-              <a-icon type="down"/>
-            </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                  <a>删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
+          <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
+            <a>删除</a>
+          </a-popconfirm>
+
         </span>
       </a-table>
     </div>
@@ -134,13 +125,15 @@ import { getAction } from '@/api/manage'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 import constantCfgMixin from '@/mixins/constant.cfg'
 
+import JEllipsis from '@/components/jeecg/JEllipsis'
 import EntryModal from './modules/EntryModal'
 
 export default {
   name: 'EntryList',
   mixins: [JeecgListMixin, constantCfgMixin],
   components: {
-    EntryModal
+    EntryModal,
+    JEllipsis
   },
   data() {
     return {
@@ -189,7 +182,10 @@ export default {
         {
           title: '评审需求',
           align: 'center',
-          dataIndex: 'requirements'
+          dataIndex: 'requirements',
+          customRender: text => {
+            return (<j-ellipsis value={text} length={20}/>)
+          }
         },
         {
           title: '评审类别',
@@ -221,6 +217,7 @@ export default {
           title: '操作',
           dataIndex: 'action',
           align: 'center',
+          width: 100,
           scopedSlots: { customRender: 'action' }
         }
       ],

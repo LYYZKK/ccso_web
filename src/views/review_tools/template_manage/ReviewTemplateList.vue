@@ -138,14 +138,22 @@ export default {
           dataIndex: 'description'
         },
         {
-          title: '文件地址',
+          title: '文件',
           align: 'center',
-          dataIndex: 'downloadUrl'
+          dataIndex: 'downloadUrl',
+          customRender: text => {
+            return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text)}>下载文件</a>)
+          }
         },
         {
           title: '权限标识',
           align: 'center',
           dataIndex: 'permissionSid'
+        },
+        {
+          title: '排序值',
+          align: 'center',
+          dataIndex: 'rank'
         },
         {
           title: '操作',
@@ -160,12 +168,16 @@ export default {
         deleteBatch: '/review/reviewTemplate/deleteBatch',
         exportXlsUrl: 'review/reviewTemplate/exportXls',
         importExcelUrl: 'review/reviewTemplate/importExcel'
-      }
+      },
+      isorter:{
+        column: 'rank',
+        order: 'asc',
+      },
     }
   },
   computed: {
     importExcelUrl () {
-      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
+      return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`
     }
   },
   methods: {}

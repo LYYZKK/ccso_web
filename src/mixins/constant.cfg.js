@@ -1,4 +1,5 @@
 import filter from 'lodash.filter'
+import isFunction from 'lodash.isfunction'
 import Vue from 'vue'
 
 import { ACCESS_TOKEN } from "@/store/mutation-types"
@@ -6,6 +7,7 @@ import { ACCESS_TOKEN } from "@/store/mutation-types"
 export default {
   data() {
     return {
+      files: {},
       DICT_SHOW_COLORS: [
         {value: 'pink', description: '粉红色'},
         {value: 'red', description: '红色'},
@@ -22,23 +24,33 @@ export default {
       DICT_SHOW_RENDER: ({text, show_type, show_color}) => {
         return filter(this.DICT_SHOW_TYPES, {value: show_type || 'text'})[0].render({text, show_color})
       },
-      UPLOAD_CHANGE_HANDLER: (input, fieldName) => {
-        if (input.file.status === 'uploading') {
-          this.uploadLoading = true
+      UPLOAD_CHANGE_HANDLER: ({info, fieldName, callback, uploadLoading = 'uploadLoading'}) => {
+        this.files = this.files || {}
+        if (info.file.status === 'uploading') {
+          this[uploadLoading] = true
           return
         }
-        if (input.file.status === 'done') {
-          var response = input.file.response;
-          this.uploadLoading = false;
+        if (info.file.status === 'done') {
+          this[uploadLoading] = false
+          const response = info.file.response
           if (response.success) {
-            this.model[fieldName] = response.message;
+            if (fieldName) {
+              this.model[fieldName] = response.message
+              this.files[fieldName] = response.message
+            }
+            if (isFunction(callback)) callback({info, files: this.files})
           } else {
-            this.$message.warning(response.message);
+            this.$message.warning(response.message)
           }
+        } else if (info.file.status === 'error') {
+          this.$message.error(`上传失败！`);
         }
       },
       FILE_UPLOAD_HEADERS: {
         'X-Access-Token': Vue.ls.get(ACCESS_TOKEN)
+      },
+      BEFORE_UPLOAD: (file) => {
+        return true
       },
       FILE_UPLOAD_URL: `${window._CONFIG['domainURL']}/sys/common/upload`,
       FILE_UPLOAD_ACTION: () => {
@@ -50,7 +62,11 @@ export default {
       },
       FILE_DOWNLOAD_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/download`,
       FILE_DOWNLOAD_URL_RENDER: (filePathSuffix, originalFileName) => {
-        return `${this.FILE_DOWNLOAD_BASE_URL}?filePath=${filePathSuffix}&originalFileName=${originalFileName}`
+        let downloadUrl = `${this.FILE_DOWNLOAD_BASE_URL}?filePath=${filePathSuffix}`
+        if (originalFileName) {
+          downloadUrl += `&originalFileName=${originalFileName}`
+        }
+        return downloadUrl
       },
       BEFORE_FILE_UPLOAD_ACTION: (file) => {
 

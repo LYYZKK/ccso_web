@@ -409,21 +409,12 @@
         }
         //TODO 验证文件大小
       },
-
       handleUploadChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-          if (info.file.response.success) {
-            this.$message.success('上传成功！');
-            this.getInformation(this.reviewProjectId);
-          } else {
-            this.$message.error(info.file.response.message);
-          }
-        } else if (info.file.status === 'error') {
-          this.$message.error(`上传失败！`);
-        }
+        this.UPLOAD_CHANGE_HANDLER({
+          info,
+          fieldName: 'logo',
+          callback: () => { this.getInformation(this.reviewProjectId) }}
+        )
       },
 
       edit(record, judge) {
@@ -441,21 +432,13 @@
           // 得到评审企业信息
           this.form.setFieldsValue(copy2NewKeyObjeect(this.model.sysEnterprise, ['id', 'name', 'businessLicenseNo', 'logo', 'registeredCapital',
             'sitesLinks', 'briefIntroduction', 'industry'], {
-            id: 'sysEnterpriseId',
-            name: 'name',
-            businessLicenseNo: 'businessLicenseNo',
-            logo: 'logo',
-            registeredCapital: 'registeredCapital',
-            sitesLinks: 'sitesLinks',
-            briefIntroduction: 'briefIntroduction',
-            industry: 'industry'
+            id: 'sysEnterpriseId'
           }))
           // 得到评审负责人信息
           getAction(this.url.getResponsibleUrl, {enterpriseId: record.sysEnterprise.id}).then((res) => {
             if (res.success) {
               this.form.setFieldsValue(copy2NewKeyObjeect(res.result, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
-                id: 'responsibleId', name: 'responsibleName', email: 'email', tel: 'tel', position: 'position',
-                sex: 'sex'
+                id: 'responsibleId', name: 'responsibleName'
               }))
               this.form.setFieldsValue({birthYear: res.result.birthYear ? moment(res.result.birthYear) : null})
               this.model.reviewResponsible = res.result
@@ -468,10 +451,7 @@
                 res.result, ['id', 'name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
                 {
                   id: 'objectId',
-                  name: 'objectName',
-                  establishingSite: 'establishingSite',
-                  licenseNo: 'licenseNo',
-                  positionSize: 'positionSize'
+                  name: 'objectName'
                 }))
               this.form.setFieldsValue({establishingYear: res.result.establishingYear ? moment(res.result.establishingYear) : null})
               this.businessType = res.result.businessType

@@ -176,6 +176,18 @@
             dataIndex: 'businessLicenseNo'
           },
           {
+            title: '是否前台展示',
+            align: 'center',
+            dataIndex: 'surfaceShow',
+            customRender: text => {
+              if (text) {
+                return this.DICT_SHOW_RENDER(filterDictOptionByText(this.surfaceShowDictOptions, text))
+              } else {
+                return (<a-tag color="red">否</a-tag>)
+              }
+            }
+          },
+          {
             title: '修改人',
             align: 'center',
             dataIndex: 'updateBy'

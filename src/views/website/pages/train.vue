@@ -13,7 +13,7 @@
           <div class="title">标准培训</div>
           <div class="list">
             <div v-for="(item, idx) in articles" :key="idx" @click="showArticle(idx)" :class="activeClasses[idx]">
-              <j-ellipsis :value="item.title" :length="10"/>
+              <j-ellipsis :withTooltip="isDesktop() ? true : false" :value="item.title" :length="8"/>
             </div>
           </div>
         </div>
@@ -21,7 +21,7 @@
           <div class="detail">
             <div v-for="(item, idx) in articles" :key="idx" v-if="changeArticle" v-show="active[idx]">
               <div class="newsTitle">{{ item.title }}</div>
-              <div class="newsTime">【发布时间】{{ item.createTime }}</div>
+              <div class="newsTime">【发布时间】{{ item.updateTime }}</div>
               <div class="newsContent" v-html="item.text"></div>
             </div>
           </div>
@@ -37,6 +37,7 @@ import async from 'async'
 import { getAction } from '@/api/manage'
 import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
 import ConstConfig from '@/config/constant.config'
+import { mixinDevice } from '@/utils/mixin.js'
 
 import JEllipsis from '@/components/jeecg/JEllipsis'
 
@@ -44,6 +45,7 @@ export default {
   components: {
     JEllipsis
   },
+  mixins: [mixinDevice],
   data() {
     return {
       articles: [],

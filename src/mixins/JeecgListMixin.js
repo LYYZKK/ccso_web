@@ -124,11 +124,11 @@ export const JeecgListMixin = {
     },
     getQueryField() {
       //TODO 字段权限控制
-      var str = "id,";
-      this.columns.forEach(function (value) {
-        str += "," + value.dataIndex;
-      });
-      return str;
+      var str = "id"
+      this.columns.forEach(value => {
+        if (value.dataIndex) str += "," + value.dataIndex
+      })
+      return str
     },
     onSelectChange(selectedRowKeys, selectionRows) {
       this.selectedRowKeys = selectedRowKeys;

@@ -130,34 +130,10 @@
     },
     methods: {
       handleChange_1(info) {
-        if (info.file.status === 'uploading') {
-          this.uploadLoading = true
-          return
-        }
-        if (info.file.status === 'done') {
-          var response = info.file.response;
-          this.uploadLoading = false;
-          if (response.success) {
-            this.model.logo = response.message;
-          } else {
-            this.$message.warning(response.message);
-          }
-        }
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'logo'})
       },
       handleChange_2(info) {
-        if (info.file.status === 'uploading') {
-          this.uploadLoading = true
-          return
-        }
-        if (info.file.status === 'done') {
-          var response = info.file.response;
-          this.uploadLoading = false;
-          if (response.success) {
-            this.model.businessLicenseFile = response.message;
-          } else {
-            this.$message.warning(response.message);
-          }
-        }
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'businessLicenseFile'})
       },
       beforeUpload: function (file) {
         var fileType = file.type;
@@ -166,7 +142,6 @@
           return false;
         }
       },
-
       add() {
         this.edit({})
       },
@@ -197,7 +172,7 @@
               httpurl += this.url.edit
               method = 'put'
             }
-            let formData = Object.assign(this.model, values)
+            let formData = Object.assign(this.model, values, this.files)
             //时间格式化
             console.log('send request with formData =', formData)
             httpAction(httpurl, formData, method).then((res) => {

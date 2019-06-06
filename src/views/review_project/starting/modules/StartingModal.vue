@@ -277,22 +277,8 @@
     ,
     methods: {
       handleChange(info) {
-        if (info.file.status === 'uploading') {
-          this.uploadLoading = true
-          return
-        }
-        if (info.file.status === 'done') {
-          var response = info.file.response
-          this.uploadLoading = false
-          console.log(response)
-          if (response.success) {
-            this.model.logo = response.message
-          } else {
-            this.$message.warning(response.message)
-          }
-        }
-      }
-      ,
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'logo'})
+      },
       beforeUpload: function (file) {
         var fileType = file.type
         if (fileType.indexOf('image') < 0) {
@@ -300,17 +286,14 @@
           return false
         }
         //TODO 验证文件大小
-      }
-      ,
+      },
       add() {
         this.visible = true
-      }
-      ,
+      },
       close() {
         this.$emit('close')
         this.visible = false
-      }
-      ,
+      },
       handleOk() {
         const that = this
         // 触发表单验证
@@ -325,7 +308,7 @@
               httpurl += this.url.edit
               method = 'put'
             }
-            let formData = Object.assign(this.model, values)
+            let formData = Object.assign(this.model, values, this.files)
             //时间格式化
             var selectedCoordinator = []
             for (var i = 0; i < this.targetKeys.length; i++) {
@@ -351,12 +334,10 @@
           this.confirmLoading = false
           this.$emit('error', {err})
         })
-      }
-      ,
+      },
       handleCancel() {
         this.close()
-      }
-      ,
+      },
       getPersonnel() {
         const dataSource = []
         getAction(this.url.getAccountByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
@@ -372,8 +353,7 @@
           }
         })
         this.personnel = dataSource
-      }
-      ,
+      },
       handleChange_coordinator(targetKeys) {
         this.targetKeys = targetKeys
       }

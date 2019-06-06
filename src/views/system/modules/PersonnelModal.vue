@@ -301,7 +301,7 @@
               httpurl += this.url.edit
               method = 'put'
             }
-            let formData = Object.assign(this.model, values)
+            let formData = Object.assign(this.model, values, this.files)
             //时间格式化
             formData.birthDate = formData.birthDate ? formData.birthDate.format() : null;
             formData.roleIds = this.selectedRole.length > 0 ? this.selectedRole.join(",") : ''
@@ -327,17 +327,17 @@
         this.close()
       },
 
-      handleChange_1(input) {
-        this.UPLOAD_CHANGE_HANDLER(input, 'personalPhoto')
+      handleChange_1(info) {
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'personalPhoto'})
       },
-      handleChange_2(input) {
-        this.UPLOAD_CHANGE_HANDLER(input, 'frontIdCardPhoto')
+      handleChange_2(info) {
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'frontIdCardPhoto'})
       },
-      handleChange_3(input) {
-        this.UPLOAD_CHANGE_HANDLER(input, 'reverseIdCardPhoto')
+      handleChange_3(info) {
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'reverseIdCardPhoto'})
       },
-      handleChange_4(input) {
-        this.UPLOAD_CHANGE_HANDLER(input, 'certificatePhoto')
+      handleChange_4(info) {
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'certificatePhoto'})
       },
     }
   }
