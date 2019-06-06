@@ -34,7 +34,10 @@ export default {
           this[uploadLoading] = false
           const response = info.file.response
           if (response.success) {
-            if (fieldName) this.files[fieldName] = response.message
+            if (fieldName) {
+              this.model[fieldName] = response.message
+              this.files[fieldName] = response.message
+            }
             if (isFunction(callback)) callback({info, files: this.files})
           } else {
             this.$message.warning(response.message)

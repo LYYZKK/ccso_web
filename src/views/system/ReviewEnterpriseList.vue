@@ -212,6 +212,7 @@
           edit: '/sys/enterprise/edit',
         },
         enterpriseTypeDictOptions: [],
+        surfaceShowDictOptions: [],
         surfaceShowTrueDictValue: '',
         surfaceShowFlaseDictValue: '',
         confirmLoading: false,
@@ -233,6 +234,12 @@
         initDictOptions('enterprise_type').then(res => {
           if (res.success) {
             this.enterpriseTypeDictOptions = res.result
+          }
+        })
+        // 初始化字典 - 前台是否显示
+        initDictOptions('is_true').then(res => {
+          if (res.success) {
+            this.surfaceShowDictOptions = res.result
           }
         })
         // 初始化字典 - 前台显示值
