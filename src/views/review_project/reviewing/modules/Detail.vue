@@ -1,10 +1,12 @@
 <template>
   <a-modal
     :title="title"
-    :width="1200"
+    :width="1500"
     :visible="visible"
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
+    :maskClosable="false"
+    :destroyOnClose="true"
     @ok="handleOk"
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
@@ -227,7 +229,7 @@
             size="middle"
             bordered
             rowKey="id"
-            :columns="columns"
+            :columns="columns_1"
             :dataSource="dataSource_1"
             :pagination=false
             :loading="loading"
@@ -293,7 +295,7 @@
             size="middle"
             bordered
             rowKey="id"
-            :columns="columns"
+            :columns="columns_1"
             :dataSource="dataSource_2"
             :pagination=false
             :loading="loading"
@@ -314,6 +316,44 @@
         </span>
           </a-table>
         </a-form-item>
+        <h3 class="devide-title">评审记录</h3>
+        <a-form-item>
+          <a-table
+            ref="table"
+            size="middle"
+            bordered
+            rowKey="id"
+            :columns="columns_2"
+            :dataSource="dataSource_3"
+            :pagination=false
+            :loading="loading"
+            :expandedRowKeys="expandedRowKeys"
+            :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+            @change="handleTableChange"
+            @expand="handleExpand">
+            <a-table
+              slot="expandedRowRender"
+              slot-scope="text"
+              :columns="columns_2_child"
+              :dataSource="dataSource_3_child"
+              size="middle"
+              bordered
+              rowKey="id"
+              :pagination="false"
+              :loading="loading"
+            >
+              <span slot="action" slot-scope="text, record">
+                <a>批注</a>
+                <a-divider/>
+                <a-radio-group defaultValue="1" :value="record.reviewEntryRecord!=null?record.reviewEntryRecord.isRight:'1'">
+                  <a-radio @click="saveUpdateReviewResult(record, 1)" value="1">符合</a-radio>
+                  <a-radio @click="saveUpdateReviewResult(record, 0)" value="0">不符合</a-radio>
+                  <a-radio @click="saveUpdateReviewResult(record, 2)" value="2">不适用</a-radio>
+                </a-radio-group>
+              </span>
+            </a-table>
+          </a-table>
+        </a-form-item>
       </a-form>
     </a-spin>
   </a-modal>
@@ -330,11 +370,12 @@
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import {httpAction} from '@/api/manage'
   import ATextarea from "ant-design-vue/es/input/TextArea";
+  import JEllipsis from '@/components/jeecg/JEllipsis'
 
 
   export default {
     name: 'Detail',
-    components: {ATextarea},
+    components: {ATextarea, JEllipsis},
     mixins: [antMixin, constantCfgMixin, JeecgListMixin],
     data() {
       return {
@@ -359,19 +400,29 @@
           getByProjectAndRoleCode: '/review/projectUser/queryByProjectAndRoleCode',
           list: '/review/information/getInformationAndFile',
           edit: '/review/project/edit',
-          getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
+          getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode',
+          getAllCategoryUrl: '/review/category/queryIdAndNameAll',
+          addOrUpdateUrl: '/review/entryRecord/addOrUpdate',
+          getEntryRecordUrl: '/review/entry/getEntryRecord',
+
         },
         FILE_INFORMATION_UPLOAD_URL: `${window._CONFIG['domainURL']}/review/information/file/upload`,
         businessType: '',
         isPay: '',
+        isRight: '',
         coordinator: [],
         targetKeys_1: [],
         targetKeys_2: [],
         reviewer: [],
         enterpriseType: '',
         uploading: false,
-        // 表头
-        columns: [
+        reviewResultFormData: {
+          id: '',
+          reviewEntryId: '',
+          isRight: ''
+        },
+        // 评审资料表头
+        columns_1: [
           {
             title: '#',
             dataIndex: '',
@@ -406,9 +457,11 @@
             dataIndex: 'path',
             customRender: (text, record) => {
               if (text != null) {
-                return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)}>下载文件</a>)
+                return ( < a
+                href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)} > 下载文件 < /a>)
               } else {
-                return (<span style="color: red;">未上传</span>)
+                return ( < span
+                style = "color: red;" > 未上传 < /span>)
               }
             }
           },
@@ -428,6 +481,110 @@
             align: 'center',
             scopedSlots: {customRender: 'action'},
           }
+        ],
+
+        // 评审记录父表表头
+        columns_2: [
+          {
+            title: '#',
+            dataIndex: '',
+            key: 'rowIndex',
+            width: 60,
+            align: 'center',
+            customRender: (t, r, index) => {
+              return parseInt(index) + 1
+            }
+          },
+          {
+            title: '编号',
+            align: 'center',
+            dataIndex: 'no'
+          },
+          {
+            title: '评审类别',
+            align: 'center',
+            dataIndex: 'name'
+          },
+          {
+            title: '达标百分比',
+            align: 'center',
+            dataIndex: 'standardValue'
+          },
+          {
+            title: '备注',
+            align: 'center',
+            dataIndex: 'remark'
+          },
+        ],
+
+
+        // 评审记录子表头
+        columns_2_child: [
+          {
+            title: '#',
+            dataIndex: '',
+            key: 'rowIndex',
+            width: 60,
+            align: 'center',
+            customRender: (t, r, index) => {
+              return parseInt(index) + 1
+            }
+          },
+          {
+            title: '编号',
+            align: 'center',
+            dataIndex: 'no'
+          },
+          {
+            title: '评审条目要求',
+            align: 'center',
+            dataIndex: 'requirements',
+            customRender: text => {
+              return ( < j-ellipsis
+              value = {text}
+              length = {10}
+              />)
+            }
+          },
+          {
+            title: '查看资料',
+            align: 'center',
+            dataIndex: 'path',
+            customRender: (text, record) => {
+              return ( < a
+              href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.reviewInformationFile.originalFileName)} > 下载文件 < /a>)
+            }
+          },
+          {
+            title: '评判时间',
+            align: 'center',
+            dataIndex: 'updateTime',
+            customRender: (text, record) => {
+              if (record.reviewEntryRecord != null) {
+                return record.reviewEntryRecord.updateTime
+              } else {
+                return '暂未评判'
+              }
+            }
+          },
+          {
+            title: '评审员',
+            align: 'center',
+            dataIndex: 'updateBy',
+            customRender: (text, record) => {
+              if (record.reviewEntryRecord != null) {
+                return record.reviewEntryRecord.updateBy
+              } else {
+                return '暂未评判'
+              }
+            }
+          },
+          {
+            title: '操作',
+            dataIndex: 'action',
+            align: 'center',
+            scopedSlots: {customRender: 'action'},
+          },
         ],
         reviewProjectId: '',
         selectdCoordinator: [],
@@ -457,7 +614,9 @@
           licenseNo: '',
           positionSize: '',
         },
-
+        entryRecordData: [],
+        dataSource_3_child: [],
+        expandedRowKeys: []
       }
     },
     methods: {
@@ -473,6 +632,26 @@
         //TODO 验证文件大小
       },
 
+      // 得到嵌套表格子表格数据
+      handleExpand(expanded, record) {
+        this.expandedRowKeys = [];
+        this.dataSource_3_child = [];
+        if (expanded === true) {
+          this.loading = true;
+          this.expandedRowKeys.push(record.id)
+          getAction(this.url.getEntryRecordUrl, {
+            reviewCategoryId: record.id,
+            reviewProjectId: this.reviewProjectId
+          }).then((res) => {
+            if (res.success) {
+              this.loading = false;
+              this.dataSource_3_child = res.result
+            }
+          });
+          this.loading = false;
+        }
+      },
+
       handleUploadChange(info) {
         this.UPLOAD_CHANGE_HANDLER({
           info,
@@ -482,12 +661,13 @@
 
       edit(record) {
         this.reviewProjectId = record.id
+        this.getSelectedPersonnelByRoleCode(record.id, "coordinator")
+        this.getSelectedPersonnelByRoleCode(record.id, "reviewer")
+        this.getAllCategory()
+        this.getInformation(record.id)
         this.form.resetFields()
         this.model = Object.assign({}, record)
         this.visible = true
-        this.getSelectedPersonnelByRoleCode(record.id, "coordinator")
-        this.getSelectedPersonnelByRoleCode(record.id, "reviewer")
-        this.getInformation(record.id)
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model, 'no', 'state', 'isPay', 'result', 'createTime'))
 
@@ -567,16 +747,25 @@
       },
 
       getInformation(id) {
-        // 得到评审资料信息
+        // 得到现场评审资料信息
+        getAction(this.url.list, {reviewProjectId: id, type: 1}).then((res) => {
+          if (res.success) {
+            this.dataSource_2 = res.result
+          }
+        })
+        // 得到其它评审资料信息
         getAction(this.url.list, {reviewProjectId: id, type: 2}).then((res) => {
           if (res.success) {
             this.dataSource_1 = res.result
           }
         })
-        // 得到评审资料信息
-        getAction(this.url.list, {reviewProjectId: id, type: 1}).then((res) => {
+      },
+
+      getAllCategory() {
+        // 得到评审记录信息
+        getAction(this.url.getAllCategoryUrl).then((res) => {
           if (res.success) {
-            this.dataSource_2 = res.result
+            this.dataSource_3 = res.result
           }
         })
       },
@@ -628,6 +817,25 @@
               this.reviewer = dataSource
             }
           }
+        })
+      },
+
+      saveUpdateReviewResult(record, selectedValue) {
+        this.reviewResultFormData.reviewEntryId = record.id
+        this.reviewResultFormData.isRight = selectedValue
+        if (record.reviewEntryRecord != null) {
+          this.reviewResultFormData.id = record.reviewEntryRecord.id
+        }
+        httpAction(this.url.addOrUpdateUrl, this.reviewResultFormData, 'post').then((res) => {
+          if (res.success) {
+            this.$message.success(res.message)
+            this.$emit('ok')
+          } else {
+            this.$message.warning(res.message)
+          }
+        }).finally(() => {
+          this.confirmLoading = false
+          this.close()
         })
       },
 
