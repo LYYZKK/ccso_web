@@ -474,7 +474,10 @@
       },
 
       handleUploadChange(info) {
-        this.UPLOAD_CHANGE_HANDLER(info, null, () => {this.getInformation(this.reviewProjectId)})
+        this.UPLOAD_CHANGE_HANDLER({
+          info,
+          callback: () => { this.getInformation(this.reviewProjectId) }}
+        )
       },
 
       edit(record) {

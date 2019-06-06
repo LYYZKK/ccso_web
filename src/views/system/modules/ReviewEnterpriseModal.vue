@@ -247,10 +247,10 @@
     },
     methods: {
       handleLogoChange(info) {
-        this.UPLOAD_CHANGE_HANDLER(info, 'logo')
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'logo'})
       },
       handleBusiLicenseFileChange(info) {
-        this.UPLOAD_CHANGE_HANDLER(info, 'businessLicenseFile')
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'businessLicenseFile'})
       },
       beforeUpload: function (file) {
         var fileType = file.type;

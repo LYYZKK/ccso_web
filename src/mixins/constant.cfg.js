@@ -24,7 +24,7 @@ export default {
       DICT_SHOW_RENDER: ({text, show_type, show_color}) => {
         return filter(this.DICT_SHOW_TYPES, {value: show_type || 'text'})[0].render({text, show_color})
       },
-      UPLOAD_CHANGE_HANDLER: (info, fieldName, callback, uploadLoading = 'uploadLoading') => {
+      UPLOAD_CHANGE_HANDLER: ({info, fieldName, callback, uploadLoading = 'uploadLoading'}) => {
         this.files = this.files || {}
         if (info.file.status === 'uploading') {
           this[uploadLoading] = true
@@ -35,7 +35,7 @@ export default {
           const response = info.file.response
           if (response.success) {
             if (fieldName) this.files[fieldName] = response.message
-            if (isFunction(callback)) callback(this.files)
+            if (isFunction(callback)) callback({info, files: this.files})
           } else {
             this.$message.warning(response.message)
           }
@@ -59,7 +59,11 @@ export default {
       },
       FILE_DOWNLOAD_BASE_URL: `${window._CONFIG['domainURL']}/sys/common/download`,
       FILE_DOWNLOAD_URL_RENDER: (filePathSuffix, originalFileName) => {
-        return `${this.FILE_DOWNLOAD_BASE_URL}?filePath=${filePathSuffix}&originalFileName=${originalFileName}`
+        let downloadUrl = `${this.FILE_DOWNLOAD_BASE_URL}?filePath=${filePathSuffix}`
+        if (originalFileName) {
+          downloadUrl += `&originalFileName=${originalFileName}`
+        }
+        return downloadUrl
       },
       BEFORE_FILE_UPLOAD_ACTION: (file) => {
 

@@ -26,7 +26,7 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="文件地址">
+          label="文件">
           <a-upload
             :action="FILE_UPLOAD_ACTION"
             :headers="FILE_UPLOAD_HEADERS"
@@ -91,7 +91,7 @@
     },
     methods: {
       handleFileChange(info) {
-        this.UPLOAD_CHANGE_HANDLER(info, 'downloadUrl')
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'downloadUrl'})
       },
       add() {
         this.edit({})

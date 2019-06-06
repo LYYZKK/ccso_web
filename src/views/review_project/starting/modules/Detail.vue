@@ -410,7 +410,11 @@
         //TODO 验证文件大小
       },
       handleUploadChange(info) {
-        this.UPLOAD_CHANGE_HANDLER(info, 'logo', () => {this.getInformation(this.reviewProjectId)})
+        this.UPLOAD_CHANGE_HANDLER({
+          info,
+          fieldName: 'logo',
+          callback: () => { this.getInformation(this.reviewProjectId) }}
+        )
       },
 
       edit(record, judge) {

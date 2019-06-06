@@ -277,7 +277,7 @@
     ,
     methods: {
       handleChange(info) {
-        this.UPLOAD_CHANGE_HANDLER(info, 'logo')
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'logo'})
       },
       beforeUpload: function (file) {
         var fileType = file.type
