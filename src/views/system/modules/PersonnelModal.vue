@@ -301,7 +301,7 @@
               httpurl += this.url.edit
               method = 'put'
             }
-            let formData = Object.assign(this.model, values)
+            let formData = Object.assign(this.model, values, this.files)
             //时间格式化
             formData.birthDate = formData.birthDate ? formData.birthDate.format() : null;
             formData.roleIds = this.selectedRole.length > 0 ? this.selectedRole.join(",") : ''

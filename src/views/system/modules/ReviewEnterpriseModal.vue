@@ -25,7 +25,7 @@
             :data="{'isup':1}"
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
-            @change="handleChange_1"
+            @change="handleLogoChange"
           >
             <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
                  style="height:104px;max-width:300px"/>
@@ -51,7 +51,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :data="{'isup':1}"
             v-decorator="['businessLicenseFile', validatorRules.businessLicenseFile]"
-            @change="handleChange_2">
+            @change="handleBusiLicenseFileChange">
             <a-button>
               <a-icon type="upload"/>
               选择文件
@@ -245,38 +245,12 @@
         businessType: '',
       }
     },
-
     methods: {
-      handleChange_2(info) {
-        if (info.file.status === 'uploading') {
-          this.uploadLoading = true
-          return
-        }
-        if (info.file.status === 'done') {
-          var response = info.file.response;
-          this.uploadLoading = false;
-          if (response.success) {
-            this.model.businessLicenseFile = response.message;
-          } else {
-            this.$message.warning(response.message);
-          }
-        }
+      handleLogoChange(info) {
+        this.UPLOAD_CHANGE_HANDLER(info, 'logo')
       },
-      handleChange_1(info) {
-        if (info.file.status === 'uploading') {
-          this.uploadLoading = true
-          return
-        }
-        if (info.file.status === 'done') {
-          var response = info.file.response;
-          this.uploadLoading = false;
-          console.log(response);
-          if (response.success) {
-            this.model.logo = response.message;
-          } else {
-            this.$message.warning(response.message);
-          }
-        }
+      handleBusiLicenseFileChange(info) {
+        this.UPLOAD_CHANGE_HANDLER(info, 'businessLicenseFile')
       },
       beforeUpload: function (file) {
         var fileType = file.type;
@@ -286,7 +260,6 @@
         }
         //TODO 验证文件大小
       },
-
       edit(record) {
         this.form.resetFields()
         this.model = Object.assign({}, record)
@@ -300,8 +273,7 @@
               this.form.setFieldsValue(copy2NewKeyObjeect(
                 res.result, ['name', 'email', 'tel', 'position', 'sex'],
                 {
-                  name: 'responsibleName', email: 'email', tel: 'tel', position: 'position',
-                  sex: 'sex'
+                  name: 'responsibleName'
                 }))
               this.form.setFieldsValue({birthYear: res.result.birthYear ? moment(res.result.birthYear) : null})
             }
@@ -311,17 +283,12 @@
               this.form.setFieldsValue(copy2NewKeyObjeect(
                 res.result, ['name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
                 {
-                  name: 'objectName',
-                  establishingSite: 'establishingSite',
-                  licenseNo: 'licenseNo',
-                  positionSize: 'positionSize'
+                  name: 'objectName'
                 }))
               this.form.setFieldsValue({establishingYear: res.result.establishingYear ? moment(res.result.establishingYear) : null})
               this.businessType = res.result.businessType
             }
           })
-
-          //时间格式化
         })
       },
       close() {
@@ -334,7 +301,7 @@
         this.form.validateFields((err, values) => {
           if (!err) {
             that.confirmLoading = true
-            let formData = Object.assign(this.model, values)
+            let formData = Object.assign(this.model, values, this.files)
             formData.businessType = this.businessType;
             //时间格式化
             console.log('send request with formData =', formData)

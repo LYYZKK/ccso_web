@@ -27,7 +27,18 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="文件地址">
-          <a-input placeholder="请输入文件地址" v-decorator="['downloadUrl', validatorRules.downloadUrl]" />
+          <a-upload
+            :action="FILE_UPLOAD_ACTION"
+            :headers="FILE_UPLOAD_HEADERS"
+            :beforeUpload="BEFORE_UPLOAD"
+            @change="handleFileChange"
+            v-decorator="['downloadUrl', validatorRules.downloadUrl]"
+          >
+            <a-button>
+              <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
+              选择文件
+            </a-button>
+          </a-upload>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -43,18 +54,19 @@
 
 <script>
   import pick from 'lodash.pick'
-  import moment from 'moment'
 
   import antMixin from '@/mixins/ant-mixin'
+  import constantCfgMixin from '@/mixins/constant.cfg'
   import { httpAction } from '@/api/manage'
 
   export default {
     name: 'ReviewTemplateModal',
-    mixins: [antMixin],
+    mixins: [antMixin, constantCfgMixin],
     data () {
       return {
         title: '操作',
         visible: false,
+        uploadLoading: false,
         model: {},
         labelCol: {
           xs: { span: 24 },
@@ -68,7 +80,7 @@
         form: this.$form.createForm(this),
         validatorRules: {
           name: {rules: [{required: true, message: '请输入模板名称!'}]},
-          downloadUrl: {rules: [{required: true, message: '请输入文件文件地址!'}]},
+          downloadUrl: {rules: [{required: true, message: '请上传模板文件!'}]},
           permissionSid: {rules: [{required: true, message: '请输入权限标识!'}]},
         },
         url: {
@@ -77,9 +89,10 @@
         }
       }
     },
-    created () {
-    },
     methods: {
+      handleFileChange(info) {
+        this.UPLOAD_CHANGE_HANDLER(info, 'downloadUrl')
+      },
       add() {
         this.edit({})
       },
@@ -110,7 +123,7 @@
               httpurl += this.url.edit
               method = 'put'
             }
-            let formData = Object.assign(this.model, values)
+            let formData = Object.assign(this.model, values, this.files)
             //时间格式化
 
             console.log('send request with formData =', formData)

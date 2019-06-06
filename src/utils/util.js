@@ -1,4 +1,5 @@
 import { isURL } from '@/utils/validate'
+import keys from 'lodash.keys'
 
 export function timeFix() {
   const time = new Date()
@@ -231,13 +232,21 @@ export function topNavScrollToSelectItem(doc) {
  *  @date 2019-04-08
  *  顶部导航栏滚动条位置滚动到选中的菜单处
  * @param orignal_obj 源对象
+ * @param old_keys 需要 copy 的属性
+ * @param diff_old_new_keyMap 需要特殊转换名称的新旧属性关系
+ *
  * @return 替换属性名称后返回的新对象
  */
-export function copy2NewKeyObjeect(orignal_obj = {}, old_keys = [], old_new_keyMap = {}) {
+export function copy2NewKeyObjeect(orignal_obj = {}, old_keys = [], diff_old_new_keyMap = {}) {
   const new_obj = {}
-  for(let old_key in orignal_obj) {
+  const diffOldKeys = keys(diff_old_new_keyMap)
+  for (let old_key in orignal_obj) {
     if (old_keys.includes(old_key)) {
-      new_obj[old_new_keyMap[old_key]] = orignal_obj[old_key]
+      if (diffOldKeys.includes(old_key)) {
+        new_obj[diff_old_new_keyMap[old_key]] = orignal_obj[old_key]
+      } else {
+        new_obj[old_key] = orignal_obj[old_key]
+      }
     }
   }
 
