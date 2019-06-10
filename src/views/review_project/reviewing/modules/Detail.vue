@@ -343,25 +343,26 @@
               :loading="loading"
             >
               <span slot="action" slot-scope="text, record">
-                <a>批注</a>
-                <a-divider/>
-                <a-radio-group defaultValue="1" :value="record.reviewEntryRecord!=null?record.reviewEntryRecord.isRight:'1'">
-                  <a-radio @click="saveUpdateReviewResult(record, 1)" value="1">符合</a-radio>
-                  <a-radio @click="saveUpdateReviewResult(record, 0)" value="0">不符合</a-radio>
-                  <a-radio @click="saveUpdateReviewResult(record, 2)" value="2">不适用</a-radio>
+                <a-radio-group :defaultValue="record.reviewEntryRecord.isRight">
+                  {{record.reviewEntryRecord.isRight}}
+                  <a-radio @click="saveUpdateEntryResult(record, 1)" value="1">符合</a-radio>
+                  <a-radio @click="saveUpdateEntryResult(record, 0)" value="0">不符合</a-radio>
+                  <a-radio @click="saveUpdateEntryResult(record, 2)" value="2">不适用</a-radio>
                 </a-radio-group>
+                <a-divider type="vertical"/>
+                <a @click="postil(record, record.reviewEntryRecord.isRight)" type="vertical">批注</a>
               </span>
             </a-table>
           </a-table>
         </a-form-item>
       </a-form>
     </a-spin>
+    <send-back_-postil ref="SendBack_Postil"/>
   </a-modal>
 </template>
 
 <script>
   import pick from 'lodash.pick'
-
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import moment from 'moment'
@@ -371,11 +372,12 @@
   import {httpAction} from '@/api/manage'
   import ATextarea from "ant-design-vue/es/input/TextArea";
   import JEllipsis from '@/components/jeecg/JEllipsis'
+  import SendBack_Postil from './SendBack_Postil'
 
 
   export default {
     name: 'Detail',
-    components: {ATextarea, JEllipsis},
+    components: {ATextarea, JEllipsis, SendBack_Postil},
     mixins: [antMixin, constantCfgMixin, JeecgListMixin],
     data() {
       return {
@@ -392,7 +394,9 @@
         },
         confirmLoading: false,
         form: this.$form.createForm(this),
-        validatorRules: {},
+        validatorRules: {
+          remark: {rules: [{required: true, message: '请输入批注信息！'}]},
+        },
         url: {
           uploadInformationFileUrl: `${window._CONFIG['domainURL']}/review/information/file/upload`,
           getResponsibleUrl: '/review/responsible/queryByEnterpriseId',
@@ -402,7 +406,7 @@
           edit: '/review/project/edit',
           getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode',
           getAllCategoryUrl: '/review/category/queryIdAndNameAll',
-          addOrUpdateUrl: '/review/entryRecord/addOrUpdate',
+          updateUrl: '/review/entryRecord/update',
           getEntryRecordUrl: '/review/entry/getEntryRecord',
 
         },
@@ -419,6 +423,7 @@
         reviewResultFormData: {
           id: '',
           reviewEntryId: '',
+          reviewProjectId: '',
           isRight: ''
         },
         // 评审资料表头
@@ -616,7 +621,7 @@
         },
         entryRecordData: [],
         dataSource_3_child: [],
-        expandedRowKeys: []
+        expandedRowKeys: [],
       }
     },
     methods: {
@@ -654,8 +659,11 @@
 
       handleUploadChange(info) {
         this.UPLOAD_CHANGE_HANDLER({
-          info,
-          callback: () => { this.getInformation(this.reviewProjectId) }}
+            info,
+            callback: () => {
+              this.getInformation(this.reviewProjectId)
+            }
+          }
         )
       },
 
@@ -702,6 +710,9 @@
               this.model.reviewObject = res.result
             }
           })
+
+
+
         })
       },
       handleOk() {
@@ -820,23 +831,23 @@
         })
       },
 
-      saveUpdateReviewResult(record, selectedValue) {
+      saveUpdateEntryResult(record, selectedValue) {
         this.reviewResultFormData.reviewEntryId = record.id
         this.reviewResultFormData.isRight = selectedValue
-        if (record.reviewEntryRecord != null) {
-          this.reviewResultFormData.id = record.reviewEntryRecord.id
-        }
-        httpAction(this.url.addOrUpdateUrl, this.reviewResultFormData, 'post').then((res) => {
+        this.reviewResultFormData.reviewProjectId = this.reviewProjectId
+        this.reviewResultFormData.id = record.reviewEntryRecord.id
+        httpAction(this.url.updateUrl, this.reviewResultFormData, 'post').then((res) => {
           if (res.success) {
             this.$message.success(res.message)
-            this.$emit('ok')
           } else {
             this.$message.warning(res.message)
           }
         }).finally(() => {
-          this.confirmLoading = false
-          this.close()
         })
+      },
+
+      postil(record, judgeResult) {
+        this.$refs.SendBack_Postil.editPostil(record, judgeResult, this.reviewProjectId);
       },
 
       handleChange_coordinator(targetKeys) {

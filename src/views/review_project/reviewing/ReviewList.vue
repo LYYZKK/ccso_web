@@ -70,7 +70,7 @@
 
     <!-- 表单区域 -->
     <detail ref="detail" />
-    <send-back ref="sendBack" />
+    <send-back_-postil ref="SendBack_Postil" />
   </a-card>
 
 </template>
@@ -80,14 +80,14 @@
   import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
   import Detail from './modules/Detail'
-  import SendBack from './modules/SendBack'
+  import SendBack_Postil from './modules/SendBack_Postil'
 
   export default {
     name: 'ReviewList',
     mixins: [JeecgListMixin, constantCfgMixin, antMixin],
     components: {
       Detail,
-      SendBack
+      SendBack_Postil
     },
     data() {
       return {
@@ -195,7 +195,7 @@
         this.$refs.detail.edit(record);
       },
       sendBack(id){
-        this.$refs.sendBack.edit(id);
+        this.$refs.SendBack_Postil.editSendBack(id);
       },
     }
   }
