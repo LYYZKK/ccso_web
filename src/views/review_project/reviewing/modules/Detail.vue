@@ -316,6 +316,44 @@
         </span>
           </a-table>
         </a-form-item>
+        <h3 class="devide-title">原评审记录</h3>
+        <a-form-item>
+          <a-table
+            ref="table"
+            size="middle"
+            bordered
+            rowKey="id"
+            :columns="columns_2"
+            :dataSource="dataSource_3"
+            :pagination=false
+            :loading="loading"
+            :expandedRowKeys="expandedRowKeys"
+            :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+            @change="handleTableChange"
+            @expand="handleExpand">
+            <a-table
+              slot="expandedRowRender"
+              slot-scope="text"
+              :columns="columns_2_child"
+              :dataSource="dataSource_3_child"
+              size="middle"
+              bordered
+              rowKey="id"
+              :pagination="false"
+              :loading="loading"
+            >
+              <span slot="action" slot-scope="text, record">
+                <a-radio-group :defaultValue="toString(record.reviewEntryRecord.isRight)">
+                  <a-radio @click="saveUpdateEntryResult(record, 1)" value="1">符合</a-radio>
+                  <a-radio @click="saveUpdateEntryResult(record, 0)" value="0">不符合</a-radio>
+                  <a-radio @click="saveUpdateEntryResult(record, 2)" value="2">不适用</a-radio>
+                </a-radio-group>
+                <a-divider type="vertical"/>
+                <a @click="postil(record, record.reviewEntryRecord.isRight)" type="vertical">批注</a>
+              </span>
+            </a-table>
+          </a-table>
+        </a-form-item>
         <h3 class="devide-title">评审记录</h3>
         <a-form-item>
           <a-table
@@ -343,8 +381,7 @@
               :loading="loading"
             >
               <span slot="action" slot-scope="text, record">
-                <a-radio-group :defaultValue="record.reviewEntryRecord.isRight">
-                  {{record.reviewEntryRecord.isRight}}
+                <a-radio-group :defaultValue="toString(record.reviewEntryRecord.isRight)">
                   <a-radio @click="saveUpdateEntryResult(record, 1)" value="1">符合</a-radio>
                   <a-radio @click="saveUpdateEntryResult(record, 0)" value="0">不符合</a-radio>
                   <a-radio @click="saveUpdateEntryResult(record, 2)" value="2">不适用</a-radio>
@@ -408,6 +445,7 @@
           getAllCategoryUrl: '/review/category/queryIdAndNameAll',
           updateUrl: '/review/entryRecord/update',
           getEntryRecordUrl: '/review/entry/getEntryRecord',
+          getOldReviewRecord: '/review/category/queryByReviewProjectAndNumber'
 
         },
         FILE_INFORMATION_UPLOAD_URL: `${window._CONFIG['domainURL']}/review/information/file/upload`,
@@ -545,10 +583,10 @@
             align: 'center',
             dataIndex: 'requirements',
             customRender: text => {
-              return ( < j-ellipsis
+              return /*( < j-ellipsis
               value = {text}
               length = {10}
-              />)
+              />)*/
             }
           },
           {
@@ -711,8 +749,11 @@
             }
           })
 
-
-
+          // 得到旧评审记录信息
+          getAction(this.url.getOldReviewRecord, {reviewProjectId: this.reviewProjectId}).then((res) => {
+            if (res.success) {
+            }
+          })
         })
       },
       handleOk() {
