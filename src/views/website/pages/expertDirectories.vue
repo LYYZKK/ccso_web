@@ -25,12 +25,12 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(a,i) in allArr" :key="i">
+            <div class="moveItem" v-for="(a,i) in professor" :key="i">
               <div v-for="(item,index) in a" :key="index">
                 <div
                   style="display:flex; align-items: flex-end;justify-content: center;font-size:12px;"
                 >
-                  <img src alt>
+                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片" />
                   <div style="margin-left:10px;">
                     <span>{{item.name}}</span>
                     <br>
@@ -54,9 +54,9 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(d,m) in allArr" :key="m">
+            <div class="moveItem" v-for="(d,m) in approvar" :key="m">
               <div v-for="(item,index) in d" :key="index" class="item">
-                <img src alt>
+                <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片" />
                 <div>
                   <p>{{item.name}}</p>
                 </div>
@@ -81,9 +81,9 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(b,k) in allArr" :key="k">
+            <div class="moveItem" v-for="(b,k) in cooperator" :key="k">
               <div v-for="(item,index) in b" :key="index" class="item">
-                <img src alt>
+                <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片" />
                 <div>
                   <p>{{ item.name }}</p>
                 </div>
@@ -115,21 +115,6 @@ export default {
       professor: [],
       approvar: [],
       cooperator: [],
-      allArr: [
-        { name: 1, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 2, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 3, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 4, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 5, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 6, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 7, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 8, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 9, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 10, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 11, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' },
-        { name: 12, time: '2018-1-1', logo: '123', text: '呵呵嘿嘿' }
-      ],
-      arr:[],
       url: 'sys/personnel/list'
     }
   },
@@ -162,18 +147,17 @@ export default {
           })
           if (res.code === 0) {
             const records = res.result.records
-            // records.forEach(v => {
-            //   if (v.certificateType === result.certificate_type_professor) {
-            //     this.professor.push(v)
-            //   }
-            //   if (v.certificateType === result.certificate_type_approvar) {
-            //     this.approvar.push(v)
-            //   }
-            //   if (v.certificateType === result.certificate_type_cooperator) {
-            //     this.cooperator.push(v)
-            //   }
-            // })
-            this.professor = this.approvar = this.cooperator = this.allArr
+            records.forEach(v => {
+              if (v.certificateType === result.certificate_type_professor) {
+                this.professor.push(v)
+              }
+              if (v.certificateType === result.certificate_type_approvar) {
+                this.approvar.push(v)
+              }
+              if (v.certificateType === result.certificate_type_cooperator) {
+                this.cooperator.push(v)
+              }
+            })
             for (let i = 0; i < this.allArr.length; i += 4) {
               this.arr.push(this.professor.slice(i, i + 4))
             }
