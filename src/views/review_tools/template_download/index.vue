@@ -12,17 +12,26 @@
   </a-list>
 </template>
 <script>
+import { getAction } from '@/api/manage'
+
 export default {
   data () {
     return {
-      templates: [
-        { name: '绩效数据模板', permissionSid: 'template:achievements' },
-        { name: '评审申请模板', permissionSid: 'template:review' },
-        { name: '现场访谈模板', permissionSid: 'template:interviews' },
-        { name: '现场确认模板', permissionSid: 'template:insure' },
-        { name: '现场试算模板', permissionSid: 'template:calculation' }
-      ]
+      url: '/review/reviewTemplate/list',
+      templates: [],
+      // templates: [
+      //   { name: '绩效数据模板', permissionSid: 'template:achievements' },
+      //   { name: '评审申请模板', permissionSid: 'template:review' },
+      //   { name: '现场访谈模板', permissionSid: 'template:interviews' },
+      //   { name: '现场确认模板', permissionSid: 'template:insure' },
+      //   { name: '现场试算模板', permissionSid: 'template:calculation' }
+      // ]
     }
+  },
+  mounted() {
+    getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1}).then(res => {
+      this.templates = res.result.records
+    })
   }
 }
 </script>
