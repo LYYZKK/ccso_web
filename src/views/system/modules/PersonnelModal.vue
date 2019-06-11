@@ -179,7 +179,12 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="个人简介">
+          <a-textarea placeholder="请输入个人简介" v-decorator="['keyText', {}]"/>
+        </a-form-item>
       </a-form>
     </a-spin>
   </a-modal>
@@ -193,9 +198,11 @@
   import constantCfgMixin from '@/mixins/constant.cfg'
   import {httpAction, getAction} from '@/api/manage'
   import {queryall} from '@/api/api'
+  import ATextarea from "ant-design-vue/es/input/TextArea";
 
   export default {
     name: 'PersonnelModal',
+    components: {ATextarea},
     mixins: [antMixin, constantCfgMixin],
     data() {
       return {
@@ -277,7 +284,7 @@
         this.model = Object.assign({}, record)
         this.visible = true
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'name', 'personalPhoto', 'idCard', 'frontIdCardPhoto', 'reverseIdCardPhoto', 'sex', 'email', 'phoneNum', 'certificateType', 'certificateNo', 'certificatePhoto', 'enterpriseId', 'roleIds'))
+          this.form.setFieldsValue(pick(this.model, 'name', 'personalPhoto', 'idCard', 'frontIdCardPhoto', 'reverseIdCardPhoto', 'sex', 'email', 'phoneNum', 'certificateType', 'certificateNo', 'certificatePhoto', 'enterpriseId', 'roleIds', 'keyText'))
           //时间格式化
           this.form.setFieldsValue({birthDate: this.model.birthDate ? moment(this.model.birthDate) : null})
           this.form.setFieldsValue({certificateDate: this.model.certificateDate ? moment(this.model.certificateDate) : null})
