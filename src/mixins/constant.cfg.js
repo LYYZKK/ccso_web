@@ -1,5 +1,8 @@
 import filter from 'lodash.filter'
 import isFunction from 'lodash.isfunction'
+import toNumber from 'lodash.tonumber'
+import toString from 'lodash.tostring'
+import isNAN from 'lodash.isnan'
 import Vue from 'vue'
 
 import { ACCESS_TOKEN } from "@/store/mutation-types"
@@ -70,6 +73,12 @@ export default {
       },
       BEFORE_FILE_UPLOAD_ACTION: (file) => {
 
+      },
+      toNumber(x) {
+        return isNAN(toNumber(x)) ? 0 : toNumber(x)
+      },
+      toString(x) {
+        return toString(x)
       }
     }
   }

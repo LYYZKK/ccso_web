@@ -8,12 +8,20 @@
     @cancel="handleCancel"
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
+      <a-form :form="form" v-if="judgeFunction=='sendBack'">
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="回退信息">
-          <a-textarea placeholder="请输入回退信息" v-decorator="['sendBackMsg', validatorRules.sendBackMsg]"/>
+          <a-textarea placeholder="请输入回退信息" v-decorator="['sendBackMsg', {required: true, message: '请输入回退信息！'}]"/>
+        </a-form-item>
+      </a-form>
+      <a-form :form="form" v-else-if="judgeFunction=='postil'">
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="批注信息">
+          <a-textarea placeholder="请输入批注信息" v-decorator="['remark', {required: true, message: '请输入批注信息！'}]"/>
         </a-form-item>
       </a-form>
     </a-spin>
@@ -28,13 +36,14 @@
   import ATextarea from "ant-design-vue/es/input/TextArea";
 
   export default {
-    name: 'SendBack',
+    name: 'SendBack_Postil',
     components: {ATextarea, AFormItem},
     mixins: [antMixin, constantCfgMixin],
     data() {
       return {
         title: '操作',
         visible: false,
+        judgeFunction: '',
         model: {},
         labelCol: {
           xs: {span: 24},
@@ -47,23 +56,37 @@
         confirmLoading: false,
         url: {
           add: '/review/sendBack/add',
+          update: '/review/entryRecord/update',
         },
         form: this.$form.createForm(this),
         reviewProjectId: '',
-        validatorRules: {
-          sendBackMsg: {rules: [{required: true, message: '请输入回退信息！'}]},
-        },
-        formData: {
+        entryRecordId: '',
+        judgeResult:'',
+        reviewEntryId:'',
+        entryRecordFormData: {
           id: '',
-          sendBackMsg: '',
-        }
+          reviewEntryId: '',
+          isRight: '',
+          reviewProjectId: '',
+          remark: '',
+        },
       }
     },
     methods: {
-      edit(id) {
+      editSendBack(id) {
+        this.judgeFunction = 'sendBack'
         this.reviewProjectId = id
         this.visible = true
       },
+      editPostil(record, judgeResult, reviewProjectId) {
+        this.entryRecordId = record.reviewEntryRecord.id
+        this.judgeResult = judgeResult;
+        this.reviewEntryId = record.id
+        this.reviewProjectId = reviewProjectId
+        this.judgeFunction = 'postil'
+        this.visible = true
+      },
+
       close() {
         this.$emit('close')
         this.visible = false
@@ -73,16 +96,28 @@
         const that = this
         this.form.validateFields((err, values) => {
           if (!err) {
-            httpAction(this.url.add, {
-              sendBackMsg: values.sendBackMsg,
-              reviewProjectId: this.reviewProjectId
-            }, 'post').then((res) => {
+            var url = ''
+            var param = {}
+            if (this.judgeFunction == 'sendBack') {
+              url = this.url.add
+              param = {sendBackMsg: values.sendBackMsg, reviewProjectId: this.reviewProjectId}
+            } else if (this.judgeFunction == 'postil') {
+              url = this.url.update
+              this.entryRecordFormData.reviewEntryId = this.reviewEntryId
+              this.entryRecordFormData.isRight = this.judgeResult
+              this.entryRecordFormData.reviewProjectId = this.reviewProjectId
+              this.entryRecordFormData.remark = values.remark
+              this.entryRecordFormData.id = this.entryRecordId
+              param = this.entryRecordFormData
+            }
+            httpAction(url, param, 'post').then((res) => {
               if (res.success) {
                 that.$message.success(res.message)
                 that.$emit('ok')
               } else {
                 that.$message.warning(res.message)
               }
+              this.form = ''
             }).finally(() => {
               that.confirmLoading = false
               that.close()
