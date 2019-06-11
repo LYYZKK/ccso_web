@@ -5947,6 +5947,11 @@ lodash.isfunction@^3.0.9:
   resolved "https://registry.npm.taobao.org/lodash.isfunction/download/lodash.isfunction-3.0.9.tgz#06de25df4db327ac931981d1bdb067e5af68d051"
   integrity sha1-Bt4l302zJ6yTGYHRvbBn5a9o0FE=
 
+lodash.isnan@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.npm.taobao.org/lodash.isnan/download/lodash.isnan-3.0.2.tgz#82ed04a5f9ea8bd6226d0c26af0cac32f4507745"
+  integrity sha1-gu0Epfnqi9YibQwmrwysMvRQd0U=
+
 lodash.kebabcase@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/lodash.kebabcase/-/lodash.kebabcase-4.1.1.tgz#8489b1cb0d29ff88195cceca448ff6d6cc295c36"
@@ -5981,6 +5986,11 @@ lodash.tail@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.tail/-/lodash.tail-4.1.1.tgz#d2333a36d9e7717c8ad2f7cacafec7c32b444664"
   integrity sha1-0jM6NtnncXyK0vfKyv7HwytERmQ=
+
+lodash.tonumber@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.npm.taobao.org/lodash.tonumber/download/lodash.tonumber-4.0.3.tgz#0b96b31b35672793eb7f5a63ee791f1b9e9025d9"
+  integrity sha1-C5azGzVnJ5Prf1pj7nkfG56QJdk=
 
 lodash.tostring@^4.1.4:
   version "4.1.4"
