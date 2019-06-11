@@ -25,7 +25,7 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(a,i) in arr" :key="i">
+            <div class="moveItem" v-for="(a,i) in allArr" :key="i">
               <div v-for="(item,index) in a" :key="index">
                 <div
                   style="display:flex; align-items: flex-end;justify-content: center;font-size:12px;"
@@ -54,7 +54,7 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(d,m) in arr" :key="m">
+            <div class="moveItem" v-for="(d,m) in allArr" :key="m">
               <div v-for="(item,index) in d" :key="index" class="item">
                 <img src alt>
                 <div>
@@ -81,7 +81,7 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(b,k) in arr" :key="k">
+            <div class="moveItem" v-for="(b,k) in allArr" :key="k">
               <div v-for="(item,index) in b" :key="index" class="item">
                 <img src alt>
                 <div>
