@@ -60,10 +60,12 @@
         <span slot="action" slot-scope="text, record">
           <a @click="detail(record)" v-if="record.isAssign==1 && record.isRecord==1">查看评审</a>
           <a @click="detail(record)" v-else>分配评审员</a>
-          <a-divider type="vertical"/>
-          <a @click="reviewProjectSubmit(record.id)">提交</a>
-          <a-divider type="vertical"/>
-          <a @click="sendBack(record.id)">回退</a>
+          <span v-show="record.isAssign==0 || record.isRecord==0">
+            <a-divider type="vertical"/>
+            <a @click="reviewProjectSubmit(record.id)">提交</a>
+            <a-divider type="vertical"/>
+            <a @click="sendBack(record.id)">回退</a>
+          </span>
         </span>
       </a-table>
     </div>
@@ -198,7 +200,7 @@
       sendBack(id) {
         this.$refs.Submit.editSendBack(id);
       },
-      reviewProjectSubmit(id){
+      reviewProjectSubmit(id) {
         this.$refs.Submit.editReviewProjectSubmit(id);
       }
     }

@@ -585,10 +585,10 @@
             align: 'center',
             dataIndex: 'requirements',
             customRender: text => {
-              return /*( < j-ellipsis
+              return ( < j-ellipsis
               value = {text}
               length = {10}
-              />)*/
+              />)
             }
           },
           {
