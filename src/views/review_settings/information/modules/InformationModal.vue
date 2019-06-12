@@ -114,6 +114,7 @@
         this.visible = true;
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model, 'no', 'name', 'format', 'size'))
+          this.type = this.model.type
           //时间格式化
         });
       },

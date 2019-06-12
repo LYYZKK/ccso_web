@@ -128,6 +128,7 @@
           edit: '/sys/enterprise/cooperateEdit',
         },
         uploadLoading: false,
+        enterpriseType: '',
       }
     },
     methods: {
@@ -144,7 +145,8 @@
           return false;
         }
       },
-      add() {
+      customAdd(enterpriseType) {
+        this.enterpriseType = enterpriseType;
         this.edit({})
       },
       edit(record) {
@@ -175,6 +177,7 @@
               method = 'put'
             }
             let formData = Object.assign(this.model, values, this.files)
+            formData.enterpriseType = this.enterpriseType
             //时间格式化
             console.log('send request with formData =', formData)
             httpAction(httpurl, formData, method).then((res) => {

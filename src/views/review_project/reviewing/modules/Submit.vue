@@ -134,7 +134,7 @@
               } else {
                 that.$message.warning(res.message)
               }
-              this.form = ''
+              this.form = this.$form.createForm(this)
             }).finally(() => {
               that.confirmLoading = false
               that.close()
