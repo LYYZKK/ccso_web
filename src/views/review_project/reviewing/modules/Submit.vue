@@ -21,7 +21,15 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="批注信息">
-          <a-textarea placeholder="请输入批注信息" v-decorator="['remark', {required: true, message: '请输入批注信息！'}]"/>
+          <a-textarea placeholder="请输入批注信息" v-decorator="['postilRemark', {required: true, message: '请输入批注信息！'}]"/>
+        </a-form-item>
+      </a-form>
+      <a-form :form="form" v-else-if="judgeFunction=='reviewProjectSubmit'">
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="备注信息">
+          <a-textarea placeholder="请输入备注信息" v-decorator="['submitRemark', {required: true, message: '请输入备注信息！'}]"/>
         </a-form-item>
       </a-form>
     </a-spin>
@@ -36,7 +44,7 @@
   import ATextarea from "ant-design-vue/es/input/TextArea";
 
   export default {
-    name: 'SendBack_Postil',
+    name: 'Submit',
     components: {ATextarea, AFormItem},
     mixins: [antMixin, constantCfgMixin],
     data() {
@@ -57,12 +65,13 @@
         url: {
           add: '/review/sendBack/add',
           update: '/review/entryRecord/update',
+          reviewSubmit: '/review/project/submitReview',
         },
         form: this.$form.createForm(this),
         reviewProjectId: '',
         entryRecordId: '',
-        judgeResult:'',
-        reviewEntryId:'',
+        judgeResult: '',
+        reviewEntryId: '',
         entryRecordFormData: {
           id: '',
           reviewEntryId: '',
@@ -86,6 +95,11 @@
         this.judgeFunction = 'postil'
         this.visible = true
       },
+      editReviewProjectSubmit(id) {
+        this.judgeFunction = 'reviewProjectSubmit'
+        this.reviewProjectId = id
+        this.visible = true
+      },
 
       close() {
         this.$emit('close')
@@ -106,9 +120,12 @@
               this.entryRecordFormData.reviewEntryId = this.reviewEntryId
               this.entryRecordFormData.isRight = this.judgeResult
               this.entryRecordFormData.reviewProjectId = this.reviewProjectId
-              this.entryRecordFormData.remark = values.remark
+              this.entryRecordFormData.remark = values.postilRemark
               this.entryRecordFormData.id = this.entryRecordId
               param = this.entryRecordFormData
+            } else if (this.judgeFunction == 'reviewProjectSubmit') {
+              url = this.url.reviewSubmit
+              param = {remark: values.submitRemark, id: this.reviewProjectId}
             }
             httpAction(url, param, 'post').then((res) => {
               if (res.success) {

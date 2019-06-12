@@ -58,6 +58,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleUploadChange"
+            v-decorator="['logo', {}]"
           >
             <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="LOGO"
                  class="logo-img"/>
@@ -294,7 +295,7 @@
           getReviewObjectUrl: '/review/object/queryByEnterpriseId',
           getByProjectAndRoleCode: '/review/projectUser/queryByProjectAndRoleCode',
           list: '/review/information/getInformationAndFile',
-          edit: '/review/project/edit',
+          edit: '/review/project/startingEdit',
           getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode',
           getSendBackByReviewProjectUrl: '/review/sendBack/getSendBackByReviewProject'
         },
@@ -341,9 +342,11 @@
             dataIndex: 'path',
             customRender: (text, record) => {
               if (text != null) {
-                return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)}>下载文件</a>)
+                return ( < a
+                href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)} > 下载文件 < /a>)
               } else {
-                return (<span style="color: red;">未上传</span>)
+                return ( < span
+                style = "color: red;" > 未上传 < /span>)
               }
             }
           },
@@ -411,9 +414,12 @@
       },
       handleUploadChange(info) {
         this.UPLOAD_CHANGE_HANDLER({
-          info,
-          fieldName: 'logo',
-          callback: () => { this.getInformation(this.reviewProjectId) }}
+            info,
+            fieldName: 'logo',
+            callback: () => {
+              this.getInformation(this.reviewProjectId)
+            }
+          }
         )
       },
 
@@ -475,7 +481,9 @@
             let formData = Object.assign(this.model, values)
             formData.sysEnterprise = Object.assign(this.model.sysEnterprise, values)
             formData.reviewResponsible = Object.assign(this.model.reviewResponsible, values)
+            formData.reviewResponsible.name = values.responsibleName
             formData.reviewObject = Object.assign(this.model.reviewObject, values)
+            formData.reviewObject.name = values.objectName
             //时间格式化
             console.log('send request with formData =', formData)
             formData.businessTypes = this.businessType

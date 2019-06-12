@@ -26,6 +26,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleLogoChange"
+            v-decorator="['logo', {}]"
           >
             <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
                  style="height:104px;max-width:300px"/>

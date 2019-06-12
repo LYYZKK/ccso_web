@@ -53,6 +53,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleUploadChange"
+            v-decorator="['logo', {}]"
           >
             <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="LOGO"
                  class="logo-img"/>
@@ -252,25 +253,25 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="资料评审计划开始">
-          <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY-MM"/>
+          <a-date-picker v-decorator="[ 'informationBeginTime', {}]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="资料评审计划结束">
-          <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY-MM"/>
+          <a-date-picker v-decorator="[ 'informationEndTime', {}]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="现场评审计划开始">
-          <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY-MM"/>
+          <a-date-picker v-decorator="[ 'sceneBeginTime', {}]" format="YYYY-MM-DD"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="现场评审计划结束">
-          <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY-MM"/>
+          <a-date-picker v-decorator="[ 'sceneEndTime', {}]"/>
         </a-form-item>
         <h3 class="devide-title">请选择评审员</h3>
         <a-form-item
@@ -394,7 +395,7 @@
         </a-form-item>
       </a-form>
     </a-spin>
-    <send-back_-postil ref="SendBack_Postil"/>
+    <submit ref="Submit"/>
   </a-modal>
 </template>
 
@@ -409,12 +410,12 @@
   import {httpAction} from '@/api/manage'
   import ATextarea from "ant-design-vue/es/input/TextArea";
   import JEllipsis from '@/components/jeecg/JEllipsis'
-  import SendBack_Postil from './SendBack_Postil'
+  import Submit from './Submit'
 
 
   export default {
     name: 'Detail',
-    components: {ATextarea, JEllipsis, SendBack_Postil},
+    components: {ATextarea, JEllipsis, Submit},
     mixins: [antMixin, constantCfgMixin, JeecgListMixin],
     data() {
       return {
@@ -440,12 +441,13 @@
           getReviewObjectUrl: '/review/object/queryByEnterpriseId',
           getByProjectAndRoleCode: '/review/projectUser/queryByProjectAndRoleCode',
           list: '/review/information/getInformationAndFile',
-          edit: '/review/project/edit',
+          edit: '/review/project/editReviewing',
           getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode',
           getAllCategoryUrl: '/review/category/queryIdAndNameAll',
           updateUrl: '/review/entryRecord/update',
           getEntryRecordUrl: '/review/entry/getEntryRecord',
-          getOldReviewRecord: '/review/category/queryByReviewProjectAndNumber'
+          getOldReviewRecord: '/review/category/queryByReviewProjectAndNumber',
+          getReviewTime: '/review/time/queryByReviewProject'
 
         },
         FILE_INFORMATION_UPLOAD_URL: `${window._CONFIG['domainURL']}/review/information/file/upload`,
@@ -660,6 +662,7 @@
         entryRecordData: [],
         dataSource_3_child: [],
         expandedRowKeys: [],
+        oldEnrtyRecord: []
       }
     },
     methods: {
@@ -730,7 +733,6 @@
                 id: 'responsibleId', name: 'responsibleName'
               }))
               this.form.setFieldsValue({birthYear: res.result.birthYear ? moment(res.result.birthYear) : null})
-              this.model.reviewResponsible = res.result
             }
           })
           // 得到评审主体信息
@@ -745,13 +747,23 @@
               this.form.setFieldsValue({establishingYear: res.result.establishingYear ? moment(res.result.establishingYear) : null})
               this.businessType = res.result.businessType
               this.isPay = record.isPay
-              this.model.reviewObject = res.result
             }
           })
 
           // 得到旧评审记录信息
           getAction(this.url.getOldReviewRecord, {reviewProjectId: this.reviewProjectId}).then((res) => {
             if (res.success) {
+              this.oldEnrtyRecord = res.result
+            }
+          })
+
+          // 得到评审时间计划
+          getAction(this.url.getReviewTime, {reviewProjectId: this.reviewProjectId}).then((res) => {
+            if (res.success) {
+              this.form.setFieldsValue({informationBeginTime: res.result.informationBeginTime ? moment(res.result.informationBeginTime) : null})
+              this.form.setFieldsValue({informationEndTime: res.result.informationEndTime ? moment(res.result.informationEndTime) : null})
+              this.form.setFieldsValue({sceneBeginTime: res.result.sceneBeginTime ? moment(res.result.sceneBeginTime) : null})
+              this.form.setFieldsValue({sceneEndTime: res.result.sceneEndTime ? moment(res.result.sceneEndTime) : null})
             }
           })
         })
@@ -762,20 +774,21 @@
         this.form.validateFields((err, values) => {
           if (!err) {
             that.confirmLoading = true
-            let formData = Object.assign(this.model, values)
-            formData.sysEnterprise = Object.assign(this.model.sysEnterprise, values)
-            formData.reviewResponsible = Object.assign(this.model.reviewResponsible, values)
-            formData.reviewObject = Object.assign(this.model.reviewObject, values)
+            let formData = {}
             //时间格式化
-            console.log('send request with formData =', formData)
-            formData.businessTypes = this.businessType
-            formData.reviewProjectId = this.reviewProjectId
-            var selectedCoordinator = []
-            for (var i = 0; i < this.targetKeys_1.length; i++) {
-              selectedCoordinator.push(this.coordinator[this.targetKeys_1[i]].userId)
+            formData.reviewTime = {
+              informationBeginTime: values.informationBeginTime ? values.informationBeginTime.format('YYYY-MM-DD HH:mm:ss') : null,
+              informationEndTime: values.informationEndTime ? values.informationEndTime.format('YYYY-MM-DD HH:mm:ss') : null,
+              sceneBeginTime: values.sceneBeginTime ? values.sceneBeginTime.format('YYYY-MM-DD HH:mm:ss') : null,
+              sceneEndTime: values.sceneEndTime ? values.sceneEndTime.format('YYYY-MM-DD HH:mm:ss') : null,
             }
-            formData.coordinatorIds = selectedCoordinator.join(',')
-            formData.isPay = this.isPay;
+            formData.updateBy = values.updateBy
+            formData.reviewProjectId = this.reviewProjectId
+            var selectedReviewer = []
+            for (var i = 0; i < this.targetKeys_2.length; i++) {
+              selectedReviewer.push(this.reviewer[this.targetKeys_2[i]].userId)
+            }
+            formData.reviewerIds = selectedReviewer.join(',')
             httpAction(this.url.edit, formData, 'put').then((res) => {
               if (res.success) {
                 that.$message.success(res.message)
@@ -888,7 +901,7 @@
       },
 
       postil(record, judgeResult) {
-        this.$refs.SendBack_Postil.editPostil(record, judgeResult, this.reviewProjectId);
+        this.$refs.Submit.editPostil(record, judgeResult, this.reviewProjectId);
       },
 
       handleChange_coordinator(targetKeys) {

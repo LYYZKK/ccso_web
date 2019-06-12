@@ -61,16 +61,17 @@
           <a @click="detail(record)" v-if="record.isAssign==1 && record.isRecord==1">查看评审</a>
           <a @click="detail(record)" v-else>分配评审员</a>
           <a-divider type="vertical"/>
+          <a @click="reviewProjectSubmit(record.id)">提交</a>
+          <a-divider type="vertical"/>
           <a @click="sendBack(record.id)">回退</a>
         </span>
-
       </a-table>
     </div>
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <detail ref="detail" />
-    <send-back_-postil ref="SendBack_Postil" />
+    <detail ref="detail"/>
+    <submit ref="Submit"/>
   </a-card>
 
 </template>
@@ -80,14 +81,14 @@
   import constantCfgMixin from '@/mixins/constant.cfg'
   import antMixin from '@/mixins/ant-mixin'
   import Detail from './modules/Detail'
-  import SendBack_Postil from './modules/SendBack_Postil'
+  import Submit from './modules/Submit'
 
   export default {
     name: 'ReviewList',
     mixins: [JeecgListMixin, constantCfgMixin, antMixin],
     components: {
       Detail,
-      SendBack_Postil
+      Submit
     },
     data() {
       return {
@@ -191,12 +192,15 @@
       }
     },
     methods: {
-      detail(record){
+      detail(record) {
         this.$refs.detail.edit(record);
       },
-      sendBack(id){
-        this.$refs.SendBack_Postil.editSendBack(id);
+      sendBack(id) {
+        this.$refs.Submit.editSendBack(id);
       },
+      reviewProjectSubmit(id){
+        this.$refs.Submit.editReviewProjectSubmit(id);
+      }
     }
   }
 </script>

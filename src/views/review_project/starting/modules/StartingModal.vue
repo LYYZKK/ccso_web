@@ -26,6 +26,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange"
+            v-decorator="['logo', {}]"
           >
             <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="LOGO"
                  class="logo-img"/>
@@ -45,8 +46,18 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="营业执照文件">
-          <a-input placeholder="请上传营业执照文件"
-                   v-decorator="['businessLicenseFile', validatorRules.businessLicenseFile]"/>
+          <a-upload
+            name="file"
+            :action="FILE_UPLOAD_ACTION"
+            :headers="FILE_UPLOAD_HEADERS"
+            :data="{'isup':1}"
+            v-decorator="['businessLicenseFile', validatorRules.businessLicenseFile]"
+            @change="handleChange_2">
+            <a-button>
+              <a-icon type="upload"/>
+              选择文件
+            </a-button>
+          </a-upload>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
