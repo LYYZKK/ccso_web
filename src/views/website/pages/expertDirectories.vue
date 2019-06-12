@@ -9,7 +9,12 @@
           </div>
         </div>
         <div class="search">
-          <a-input-search placeholder="请输入姓名/编号" style="width: 200px"/>
+          <a-input-search
+            placeholder="请输入姓名/编号"
+            style="width: 200px"
+            v-model="keyText"
+            @change="getData"
+          />
         </div>
       </div>
       <div class="expert">
@@ -25,19 +30,19 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(a,i) in professor" :key="i">
+            <div class="moveItem" v-for="(a,i) in professorAll" :key="i">
               <div v-for="(item,index) in a" :key="index">
                 <div
                   style="display:flex; align-items: flex-end;justify-content: center;font-size:12px;"
                 >
-                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片" />
+                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
                   <div style="margin-left:10px;">
                     <span>{{item.name}}</span>
                     <br>
-                    <span>{{item.time}}</span>
+                    <span>{{item.birthDate}}</span>
                   </div>
                 </div>
-                <div style="margin-top:10px;text-align:center;">{{item.text}}</div>
+                <div style="margin-top:10px;text-align:center;">{{item.individualResume}}</div>
               </div>
             </div>
           </a-carousel>
@@ -54,16 +59,14 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(d,m) in approvar" :key="m">
+            <div class="moveItem" v-for="(d,m) in approvarAll" :key="m">
               <div v-for="(item,index) in d" :key="index" class="item">
-                <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片" />
+                <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
                 <div>
                   <p>{{item.name}}</p>
                 </div>
                 <div>
-                  <p>
-                    {{item.text}}
-                  </p>
+                  <p>{{item.individualResume}}</p>
                 </div>
               </div>
             </div>
@@ -81,16 +84,14 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(b,k) in cooperator" :key="k">
+            <div class="moveItem" v-for="(b,k) in cooperatorAll" :key="k">
               <div v-for="(item,index) in b" :key="index" class="item">
-                <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片" />
+                <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
                 <div>
                   <p>{{ item.name }}</p>
                 </div>
                 <div>
-                  <p>
-                    {{item.text}}
-                  </p>
+                  <p>{{item.individualResume}}</p>
                 </div>
               </div>
             </div>
@@ -115,56 +116,74 @@ export default {
       professor: [],
       approvar: [],
       cooperator: [],
+      professorAll: [],
+      approvarAll: [],
+      cooperatorAll: [],
+      keyText: '',
       url: 'sys/personnel/list'
     }
   },
-  mounted() {
-    async.series(
-      {
-        surfaceShow: async cb => {
-          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
-          cb(null, res.itemValue)
+  methods: {
+    getData() {
+      async.series(
+        {
+          surfaceShow: async cb => {
+            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
+            cb(null, res.itemValue)
+          },
+          certificate_type_professor: async cb => {
+            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_professor })
+            cb(null, res.itemValue)
+          },
+          certificate_type_approvar: async cb => {
+            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_approvar })
+            cb(null, res.itemValue)
+          },
+          certificate_type_cooperator: async cb => {
+            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_cooperator })
+            cb(null, res.itemValue)
+          }
         },
-        certificate_type_professor: async cb => {
-          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_professor })
-          cb(null, res.itemValue)
-        },
-        certificate_type_approvar: async cb => {
-          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_approvar })
-          cb(null, res.itemValue)
-        },
-        certificate_type_cooperator: async cb => {
-          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_cooperator })
-          cb(null, res.itemValue)
-        }
-      },
-      async (err, result) => {
-        if (!err) {
-          console.log('result = ', result)
-          const res = await getAction(`${window._CONFIG['domainURL']}/${this.url}`, {
-            pageSize: -1,
-            surfaceShow: result.surfaceShow
-          })
-          if (res.code === 0) {
-            const records = res.result.records
-            records.forEach(v => {
-              if (v.certificateType === result.certificate_type_professor) {
-                this.professor.push(v)
-              }
-              if (v.certificateType === result.certificate_type_approvar) {
-                this.approvar.push(v)
-              }
-              if (v.certificateType === result.certificate_type_cooperator) {
-                this.cooperator.push(v)
-              }
+        async (err, result) => {
+          if (!err) {
+            const res = await getAction(`${window._CONFIG['domainURL']}/${this.url}`, {
+              pageSize: -1,
+              surfaceShow: result.surfaceShow,
+              keyText: this.keyText
             })
-            for (let i = 0; i < this.allArr.length; i += 4) {
-              this.arr.push(this.professor.slice(i, i + 4))
+            if (res.code === 0) {
+              this.professorAll = []
+              this.approvarAll = []
+              this.cooperatorAll = []
+              const records = res.result.records
+              records.forEach(v => {
+                if (v.certificateType === result.certificate_type_professor) {
+                  this.professor.push(v)
+                }
+                if (v.certificateType === result.certificate_type_approvar) {
+                  this.approvar.push(v)
+                }
+                if (v.certificateType === result.certificate_type_cooperator) {
+                  this.cooperator.push(v)
+                }
+              })
+              for (let m = 0; m < this.professor.length; m + 4) {
+                this.professorAll.push(this.professor.splice(m, m + 4))
+              }
+              for (let m = 0; m < this.approvar.length; m + 4) {
+                this.approvarAll.push(this.approvar.splice(m, m + 4))
+              }
+              for (let m = 0; m < this.cooperator.length; m + 4) {
+                this.cooperatorAll.push(this.cooperator.splice(m, m + 4))
+              }
             }
           }
         }
-      }
-    )
+      )
+    }
+  },
+  mounted() {
+    this.getData()
   }
 }
 </script>
@@ -193,7 +212,7 @@ export default {
   .moveItem {
     padding: 20px 0 0 0;
     display: flex !important;
-    justify-content: center;
+    justify-content: space-around;
     flex-wrap: wrap;
     align-items: center;
     & > div {
