@@ -181,10 +181,7 @@
           {
             title: '企业名称',
             align: 'center',
-            dataIndex: 'sysEnterprises',
-            customRender: (text, record) => {
-              return record.sysEnterprises.name
-            }
+            dataIndex: 'enterpriseName'
           },
           {
             title: '登录账号',
@@ -202,7 +199,8 @@
               if (text) {
                 return this.DICT_SHOW_RENDER(filterDictOptionByText(this.surfaceShowDictOptions, text))
               } else {
-                return (<a-tag color="red">否</a-tag>)
+                return ( < a-tag
+                color = "red" > 否 < /a-tag>)
               }
             }
           },

@@ -26,7 +26,7 @@
             ref="personalPhotoUpload"
             :beforeUpload="beforeUpload"
             @change="handleChange_1"
-            v-decorator="['name', validatorRules.personalPhoto]"
+            v-decorator="['personalPhoto', validatorRules.personalPhoto]"
           >
             <img v-if="model.personalPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.personalPhoto)" alt="个人照片"
                  style="height:104px;max-width:300px"/>
@@ -51,7 +51,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange_2"
-            v-decorator="['name', validatorRules.frontIdCardPhoto]"
+            v-decorator="['frontIdCardPhoto', validatorRules.frontIdCardPhoto]"
           >
             <img v-if="model.frontIdCardPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.frontIdCardPhoto)" alt="证件照正面"
                  style="height:104px;max-width:300px"/>
@@ -70,7 +70,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange_3"
-            v-decorator="['name', validatorRules.reverseIdCardPhoto]"
+            v-decorator="['reverseIdCardPhoto', validatorRules.reverseIdCardPhoto]"
           >
             <img v-if="model.reverseIdCardPhoto" :src="IMAGE_REVIEW_URL_RENDER(model.reverseIdCardPhoto)" alt="证件照反面"
                  style="height:104px;max-width:300px"/>
@@ -141,6 +141,7 @@
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
             @change="handleChange_4"
+            v-decorator="['certificatePhoto', {}]"
           >
             <img v-if="model.certificatePhoto" :src="IMAGE_REVIEW_URL_RENDER(model.certificatePhoto)" alt="证书照片"
                  style="height:104px;max-width:300px"/>
@@ -153,8 +154,8 @@
 
         <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="所属企业">
           <a-select
-            v-model="model.enterpriseId"
             showSearch
+            :value="model.enterpriseId"
             :filterOption="filterSelectOption"
             placeholder="请选择所属企业"
             v-decorator="['enterpriseId', validatorRules.enterpriseId]"
@@ -164,8 +165,7 @@
               v-for="(_type, key) in enterpriseData"
               :key="key"
               :value="_type.id"
-            >{{ _type.name }}
-            </a-select-option>
+            >{{ _type.name }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="角色分配" :labelCol="labelCol" :wrapperCol="wrapperCol">
@@ -193,7 +193,7 @@
 <script>
   import pick from 'lodash.pick'
   import moment from 'moment'
-
+  import {copy2NewKeyObjeect} from '@/utils/util'
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import {httpAction, getAction} from '@/api/manage'
@@ -239,7 +239,7 @@
           personalPhoto: {rules: [{required: true, message: '请选择个人照片!'}]},
           frontIdCardPhoto: {rules: [{required: true, message: '请选择身份证正面照!'}]},
           reverseIdCardPhoto: {rules: [{required: true, message: '请选择身份证反面照!'}]},
-          enterpriseId: {rules: [{required: true, message: '请选择企业!'}]}
+          enterpriseId: {rules: [{required: true, message: '请选择企业!'}]},
         },
       }
     },
@@ -284,7 +284,8 @@
         this.model = Object.assign({}, record)
         this.visible = true
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model, 'name', 'personalPhoto', 'idCard', 'frontIdCardPhoto', 'reverseIdCardPhoto', 'sex', 'email', 'phoneNum', 'certificateType', 'certificateNo', 'certificatePhoto', 'enterpriseId', 'roleIds', 'individualResume'))
+          this.form.setFieldsValue(pick(this.model, 'name', 'personalPhoto', 'idCard', 'frontIdCardPhoto', 'reverseIdCardPhoto', 'sex', 'email', 'phoneNum', 'certificateType', 'certificateNo', 'certificatePhoto', 'enterpriseId', 'roleIds', 'individualResume', 'enterpriseId'))
+          // this.form.setFieldsValue(copy2NewKeyObjeect(this.model.sysEnterprises, ['id'], {id: 'enterpriseId'}))
           //时间格式化
           this.form.setFieldsValue({birthDate: this.model.birthDate ? moment(this.model.birthDate) : null})
           this.form.setFieldsValue({certificateDate: this.model.certificateDate ? moment(this.model.certificateDate) : null})
