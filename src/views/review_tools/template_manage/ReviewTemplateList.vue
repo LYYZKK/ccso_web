@@ -141,9 +141,14 @@ export default {
           title: '文件',
           align: 'center',
           dataIndex: 'downloadUrl',
-          customRender: text => {
-            return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text)}>下载文件</a>)
+          customRender: (t, r, idx) => {
+            return (<a href={this.FILE_DOWNLOAD_URL_RENDER(t, r.downloadFileName)}>下载文件</a>)
           }
+        },
+        {
+          title: '下载文件名',
+          align: 'center',
+          dataIndex: 'downloadFileName',
         },
         {
           title: '权限标识',

@@ -6,30 +6,25 @@
   >
     <a-list-item slot="renderItem" slot-scope="item, index" class="card-list-item">
       <a-card :title="item.name" :bordered="false" v-has="item.permissionSid">
-        <a-button type="primary">点击下载</a-button>
+        <a :href="FILE_DOWNLOAD_URL_RENDER(item.downloadUrl, item.downloadFileName)"><a-button type="primary">点击下载</a-button></a>
       </a-card>
     </a-list-item>
   </a-list>
 </template>
 <script>
 import { getAction } from '@/api/manage'
+import constantCfgMixin from '@/mixins/constant.cfg'
 
 export default {
+  mixins: [constantCfgMixin],
   data () {
     return {
       url: '/review/reviewTemplate/list',
       templates: [],
-      // templates: [
-      //   { name: '绩效数据模板', permissionSid: 'template:achievements' },
-      //   { name: '评审申请模板', permissionSid: 'template:review' },
-      //   { name: '现场访谈模板', permissionSid: 'template:interviews' },
-      //   { name: '现场确认模板', permissionSid: 'template:insure' },
-      //   { name: '现场试算模板', permissionSid: 'template:calculation' }
-      // ]
     }
   },
   mounted() {
-    getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1}).then(res => {
+    getAction(`${window._CONFIG['domainURL']}/${this.url}`, { pageSize: -1, column: 'rank', order: 'asc',}).then(res => {
       this.templates = res.result.records
     })
   }
