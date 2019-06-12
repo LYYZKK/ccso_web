@@ -317,7 +317,7 @@
         </span>
           </a-table>
         </a-form-item>
-        <h3 class="devide-title">原评审记录</h3>
+        <!--<h3 class="devide-title">原评审记录</h3>
         <a-form-item>
           <a-table
             ref="table"
@@ -354,7 +354,7 @@
               </span>
             </a-table>
           </a-table>
-        </a-form-item>
+        </a-form-item>-->
         <h3 class="devide-title">评审记录</h3>
         <a-form-item>
           <a-table
@@ -383,9 +383,9 @@
             >
               <span slot="action" slot-scope="text, record">
                 <a-radio-group :defaultValue="toString(record.reviewEntryRecord.isRight)">
-                  <a-radio @click="saveUpdateEntryResult(record, 1)" value="1">符合</a-radio>
-                  <a-radio @click="saveUpdateEntryResult(record, 0)" value="0">不符合</a-radio>
-                  <a-radio @click="saveUpdateEntryResult(record, 2)" value="2">不适用</a-radio>
+                  <a-radio @click="updateEntryResult(record, 1)" value="1">符合</a-radio>
+                  <a-radio @click="updateEntryResult(record, 0)" value="0">不符合</a-radio>
+                  <a-radio @click="updateEntryResult(record, 2)" value="2">不适用</a-radio>
                 </a-radio-group>
                 <a-divider type="vertical"/>
                 <a @click="postil(record, record.reviewEntryRecord.isRight)" type="vertical">批注</a>
@@ -660,6 +660,9 @@
           positionSize: '',
         },
         entryRecordData: [],
+        dataSource_1:[],
+        dataSource_2:[],
+        dataSource_3:[],
         dataSource_3_child: [],
         expandedRowKeys: [],
         oldEnrtyRecord: []
@@ -885,7 +888,7 @@
         })
       },
 
-      saveUpdateEntryResult(record, selectedValue) {
+      updateEntryResult(record, selectedValue) {
         this.reviewResultFormData.reviewEntryId = record.id
         this.reviewResultFormData.isRight = selectedValue
         this.reviewResultFormData.reviewProjectId = this.reviewProjectId

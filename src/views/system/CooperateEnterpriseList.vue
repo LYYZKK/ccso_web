@@ -29,7 +29,7 @@
 
       <!-- 操作按钮区域 -->
       <div class="table-operator">
-        <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
+        <a-button @click="customAdd(queryParam.enterpriseType)" type="primary" icon="plus">新增</a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <a-menu slot="overlay">
             <a-menu-item key="1" @click="batchDel">
@@ -70,7 +70,8 @@
           <a @click="jumpUserList(record.id)">账户管理</a>
 
           <a-divider type="vertical"/>
-          <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)" v-if="record.surfaceShow === surfaceShowTrueDictValue && record.surfaceShow!==''">
+          <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)"
+                        v-if="record.surfaceShow === surfaceShowTrueDictValue && record.surfaceShow!==''">
             <a><font color="#dc143c">取消展示</font></a>
           </a-popconfirm>
           <a-popconfirm title="确定前台展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowTrueDictValue)" v-else>
@@ -183,7 +184,8 @@
               if (text) {
                 return this.DICT_SHOW_RENDER(filterDictOptionByText(this.surfaceShowDictOptions, text))
               } else {
-                return (<a-tag color="red">否</a-tag>)
+                return ( < a-tag
+                color = "red" > 否 < /a-tag>)
               }
             }
           },
@@ -293,6 +295,9 @@
           path: '/isystem/user',
           params: {enterpriseId: id}
         })
+      },
+      customAdd(enterpriseType) {
+        this.$refs.modalForm.customAdd(enterpriseType);
       }
     }
   }
