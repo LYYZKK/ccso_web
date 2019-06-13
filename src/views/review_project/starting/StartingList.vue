@@ -71,8 +71,8 @@
 
     <!-- 表单区域 -->
     <starting-modal ref="modalForm" @ok="modalFormOk"></starting-modal>
-    <detail ref="detail"></detail>
-    <start ref="start"></start>
+    <detail ref="detail" @ok="modalFormOk"></detail>
+    <start ref="start" @ok="modalFormOk"></start>
   </a-card>
 
 </template>

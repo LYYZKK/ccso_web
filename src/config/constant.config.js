@@ -44,5 +44,6 @@ export default {
       dict_code: 'certificate_type',
       dict_item_code: 'certificate_type_cooperator'
     },
-  }
+  },
+  sendbackTimeLimit: 1
 }

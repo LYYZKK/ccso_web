@@ -13,7 +13,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="回退信息">
-          <a-textarea placeholder="请输入回退信息" v-decorator="['sendBackMsg', {required: true, message: '请输入回退信息！'}]"/>
+          <a-textarea placeholder="请输入回退信息" v-decorator="['sendBackMsg', validatorRules.sendBackMsg]"/>
         </a-form-item>
       </a-form>
       <a-form :form="form" v-else-if="judgeFunction=='postil'">
@@ -30,7 +30,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="批注信息">
-          <a-textarea placeholder="请输入批注信息" v-decorator="['postilRemark', {required: true, message: '请输入批注信息！'}]"/>
+          <a-textarea placeholder="请输入批注信息" v-decorator="['postilRemark', validatorRules.postilRemark]"/>
         </a-form-item>
       </a-form>
       <a-form :form="form" v-else-if="judgeFunction=='projectSubmit'">
@@ -38,7 +38,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="备注信息">
-          <a-textarea placeholder="请输入备注信息" v-decorator="['submitRemark', {required: true, message: '请输入备注信息！'}]"/>
+          <a-textarea placeholder="请输入备注信息" v-decorator="['submitRemark', validatorRules.submitRemark]"/>
         </a-form-item>
       </a-form>
     </a-spin>
@@ -90,6 +90,11 @@
           remark: '',
         },
         postilText: '',
+        validatorRules: {
+          sendBackMsg: {rules: [{required: true, message: '请输入回退信息!'}]},
+          postilRemark: {rules: [{required: true, message: '请输入批注信息!'}]},
+          submitRemark: {rules: [{required: true, message: '请输入备注信息!'}]},
+        },
       }
     },
     methods: {

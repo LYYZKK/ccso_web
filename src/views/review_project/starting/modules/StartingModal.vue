@@ -4,6 +4,7 @@
     :width="800"
     :visible="visible"
     :confirmLoading="confirmLoading"
+    :destroyOnClose="true"
     @ok="handleOk"
     @cancel="handleCancel"
     cancelText="关闭">
@@ -266,7 +267,7 @@
           getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
         },
         businessType: '',
-        isPay: '',
+        isPay: '0',
         personnel: [],
         targetKeys: [],
         uploadLoading: false,

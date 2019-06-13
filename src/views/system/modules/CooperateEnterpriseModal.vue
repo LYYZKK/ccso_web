@@ -28,8 +28,8 @@
             @change="handleChange_1"
             v-decorator="['logo', {}]"
           >
-            <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
-                 style="height:104px;max-width:300px"/>
+            <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="LOGO"
+                 class="logo-img"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
               <div class="ant-upload-text">上传</div>
@@ -202,5 +202,8 @@
 </script>
 
 <style scoped>
-
+  .logo-img {
+    height: 104px;
+    max-width: 300px;
+  }
 </style>

@@ -6,6 +6,7 @@
     :confirmLoading="confirmLoading"
     @cancel="handleCancel"
     @ok="handleOk"
+    :destroyOnClose="true"
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
@@ -398,11 +399,15 @@
         isShow: '0',
         sendBackMsg: '-1',
         sendBackNum: '-1',
+        uploadLoading: false,
       }
     },
     methods: {
       FILE_INFORMATION_UPLOAD_ACTION: () => {
         return this.FILE_INFORMATION_UPLOAD_URL
+      },
+      handleChange(info) {
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'logo'})
       },
       beforeUpload: function (file) {
         var fileType = file.type
@@ -415,7 +420,6 @@
       handleUploadChange(info) {
         this.UPLOAD_CHANGE_HANDLER({
             info,
-            fieldName: 'logo',
             callback: () => {
               this.getInformation(this.reviewProjectId)
             }
@@ -427,6 +431,8 @@
         if (judge == '1') {
           this.isShow = judge
         }
+        this.personnel = []
+        this.targetKeys = []
         this.reviewProjectId = record.id
         this.form.resetFields()
         this.model = Object.assign({}, record)
@@ -440,6 +446,7 @@
             'sitesLinks', 'briefIntroduction', 'industry'], {
             id: 'sysEnterpriseId'
           }))
+          this.model.logo = this.model.sysEnterprise.logo
           // 得到评审负责人信息
           getAction(this.url.getResponsibleUrl, {enterpriseId: record.sysEnterprise.id}).then((res) => {
             if (res.success) {
@@ -480,12 +487,19 @@
             that.confirmLoading = true
             let formData = Object.assign(this.model, values)
             formData.sysEnterprise = Object.assign(this.model.sysEnterprise, values)
+            if (values.logo != null) {
+              if (values.logo.file != null) {
+                formData.sysEnterprise.logo = values.logo.file.response.message
+              } else {
+                formData.sysEnterprise.logo = values.logo
+              }
+            }
+            formData.logo = null
             formData.reviewResponsible = Object.assign(this.model.reviewResponsible, values)
             formData.reviewResponsible.name = values.responsibleName
             formData.reviewObject = Object.assign(this.model.reviewObject, values)
             formData.reviewObject.name = values.objectName
             //时间格式化
-            console.log('send request with formData =', formData)
             formData.businessTypes = this.businessType
             formData.reviewProjectId = this.reviewProjectId
             var selectedCoordinator = []
@@ -588,5 +602,10 @@
 
   .devide-title {
     margin-bottom: 20px;
+  }
+
+  .logo-img {
+    height: 104px;
+    max-width: 300px;
   }
 </style>
