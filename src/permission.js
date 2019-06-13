@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
       next({ path: '/dashboard/analysis' })
       NProgress.done()
     } else {
-      if (store.getters.permissionList.length === 0) {
+      if (!whiteList.includes(to.path) && store.getters.permissionList.length === 0) { // 如果是跳到非白名单路由, 才请求菜单.
         store.dispatch('GetPermissionList').then(res => {
           const menuData = res.result;
           if (menuData === null || menuData === "" || menuData === undefined) {
@@ -70,7 +70,7 @@ router.beforeEach((to, from, next) => {
         next()
       }
     }
-  } else { // 没有 token.
+  } else { // no token.
     if (!whiteList.includes(from.path)) { // 从非白名单跳转而来又没有 token, 原因是 token 失败, 直接进入登录页.
       next({ path: '/user/login', query: { redirect: to.fullPath } })
       NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
