@@ -86,7 +86,8 @@ export default {
       reviewEnterprisesAll: [],
       cooperateEnterprises: [],
       cooperateEnterprisesAll: [],
-      keyText: '',
+      keyText: "",
+      fuzzySearchFields: ",name,briefIntroduction,",   
       url: 'sys/enterprise/list'
     }
   },
@@ -112,11 +113,12 @@ export default {
             const res = await getAction(`${window._CONFIG['domainURL']}/${this.url}`, {
               pageSize: -1,
               surfaceShow: result.surfaceShow,
-              keyText: this.keyText
+              keyText: this.keyText,
+              fuzzySearchFields: this.fuzzySearchFields
             })
             if (res.code === 0) {
-              this.reviewEnterprises = []
-              this.cooperateEnterprises = []
+              this.reviewEnterprisesAll = []
+              this.cooperateEnterprisesAll = []
               const records = res.result.records
               records.forEach(v => {
                 if (v.enterpriseType === result.enterprise_type_review) {
@@ -149,7 +151,9 @@ export default {
 <style lang="scss" scoped>
 @import '../common.scss';
 .enterprise {
-  margin: 20px 0;
+  .title{
+    margin-bottom: 20px;
+  }
   .ant-carousel .custom-slick-arrow {
     width: 25px;
     height: 25px;

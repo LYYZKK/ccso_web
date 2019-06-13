@@ -191,6 +191,9 @@ export default {
 @import '../common.scss';
 // 轮播
 .expert {
+  .title{
+    margin-bottom: 20px;
+  }
   .ant-carousel .custom-slick-arrow {
     width: 25px;
     height: 25px;
