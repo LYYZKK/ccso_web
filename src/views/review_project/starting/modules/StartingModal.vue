@@ -287,6 +287,9 @@
     }
     ,
     methods: {
+      handleChange_2(info) {
+        this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'businessLicenseFile'})
+      },
       handleChange(info) {
         this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'logo'})
       },

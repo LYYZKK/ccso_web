@@ -58,11 +58,15 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a @click="detail(record)" v-if="record.isAssign==1 && record.isRecord==1">查看评审</a>
+          <span v-if="record.isAssign==1 && record.isRecord==1">
+            <a @click="detail(record)">查看评审</a>
+            <a-divider type="vertical"/>
+            <a @click="submitArchive(record.id)">归档</a>
+          </span>
           <a @click="detail(record)" v-else>分配评审员</a>
           <span v-show="record.isAssign==0 || record.isRecord==0">
             <a-divider type="vertical"/>
-            <a @click="reviewProjectSubmit(record.id)">提交</a>
+            <a @click="projectSubmit(record.id)">提交</a>
             <a-divider type="vertical"/>
             <a @click="sendBack(record.id)">回退</a>
           </span>
@@ -73,7 +77,8 @@
 
     <!-- 表单区域 -->
     <detail ref="detail"/>
-    <submit ref="Submit"/>
+    <submit ref="submit"/>
+    <submit-archive ref="submitArchive" />
   </a-card>
 
 </template>
@@ -84,13 +89,15 @@
   import antMixin from '@/mixins/ant-mixin'
   import Detail from './modules/Detail'
   import Submit from './modules/Submit'
+  import SubmitArchive from  './modules/SubmitArchive'
 
   export default {
     name: 'ReviewList',
     mixins: [JeecgListMixin, constantCfgMixin, antMixin],
     components: {
       Detail,
-      Submit
+      Submit,
+      SubmitArchive
     },
     data() {
       return {
@@ -198,10 +205,13 @@
         this.$refs.detail.edit(record);
       },
       sendBack(id) {
-        this.$refs.Submit.editSendBack(id);
+        this.$refs.submit.editSendBack(id);
       },
-      reviewProjectSubmit(id) {
-        this.$refs.Submit.editReviewProjectSubmit(id);
+      projectSubmit(id) {
+        this.$refs.submit.editProjectSubmit(id);
+      },
+      submitArchive(id){
+        this.$refs.submitArchive.edit(id)
       }
     }
   }

@@ -57,13 +57,13 @@
             :data="{'isup':1}"
             :headers="FILE_UPLOAD_HEADERS"
             :beforeUpload="beforeUpload"
-            @change="handleUploadChange"
+            @change="handleChange"
             v-decorator="['logo', {}]"
           >
             <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="LOGO"
                  class="logo-img"/>
             <div v-else>
-              <a-icon :type="uploading ? 'loading' : 'plus'"/>
+              <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
               <div class="ant-upload-text">上传</div>
             </div>
           </a-upload>

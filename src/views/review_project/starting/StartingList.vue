@@ -145,9 +145,13 @@
             dataIndex: 'realName',
             customRender: (text, record) => {
               const realNames = []
-              record.sysPersonnels.forEach((v) => {
-                realNames.push(v.name)
-              })
+              for (var i = 0; i < record.personnelRoleResultModels.length; i++) {
+                record.personnelRoleResultModels[i].sysRoles.forEach((sr) => {
+                  if (sr.roleCode == 'coordinator') {
+                    realNames.push(record.personnelRoleResultModels[i].name)
+                  }
+                })
+              }
               return realNames.join("，")
             }
           },
