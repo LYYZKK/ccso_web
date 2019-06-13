@@ -317,7 +317,7 @@
         </span>
           </a-table>
         </a-form-item>
-        <!--<h3 class="devide-title">原评审记录</h3>
+        <h3 class="devide-title">原评审记录</h3>
         <a-form-item>
           <a-table
             ref="table"
@@ -354,7 +354,7 @@
               </span>
             </a-table>
           </a-table>
-        </a-form-item>-->
+        </a-form-item>
         <h3 class="devide-title">评审记录</h3>
         <a-form-item>
           <a-table
@@ -411,7 +411,6 @@
   import ATextarea from "ant-design-vue/es/input/TextArea";
   import JEllipsis from '@/components/jeecg/JEllipsis'
   import Submit from './Submit'
-
 
   export default {
     name: 'Detail',
@@ -713,6 +712,7 @@
 
       edit(record) {
         this.reviewProjectId = record.id
+        this.dataSource_3_child = []
         this.getSelectedPersonnelByRoleCode(record.id, "coordinator")
         this.getSelectedPersonnelByRoleCode(record.id, "reviewer")
         this.getAllCategory()

@@ -76,9 +76,9 @@
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <detail ref="detail"/>
-    <submit ref="submit"/>
-    <submit-archive ref="submitArchive" />
+    <detail ref="detail" @ok="modalFormOk"/>
+    <submit ref="submit" @ok="modalFormOk"/>
+    <submit-archive ref="submitArchive" @ok="modalFormOk"/>
   </a-card>
 
 </template>
@@ -89,7 +89,7 @@
   import antMixin from '@/mixins/ant-mixin'
   import Detail from './modules/Detail'
   import Submit from './modules/Submit'
-  import SubmitArchive from  './modules/SubmitArchive'
+  import SubmitArchive from './modules/SubmitArchive'
 
   export default {
     name: 'ReviewList',
@@ -210,7 +210,7 @@
       projectSubmit(id) {
         this.$refs.submit.editProjectSubmit(id);
       },
-      submitArchive(id){
+      submitArchive(id) {
         this.$refs.submitArchive.edit(id)
       }
     }
