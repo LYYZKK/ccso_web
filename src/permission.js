@@ -31,20 +31,12 @@ router.beforeEach((to, from, next) => {
   if (Vue.ls.get(ACCESS_TOKEN)) {
     /* has token */
     if (to.path === '/user/login') {
-      // next({ path: '/dashboard/workplace' })
       next({ path: '/dashboard/analysis' })
       NProgress.done()
     } else {
-      if (whiteList.includes(from.path)) { // 从白名单跳转到首页.
-        if (to.path === '/') {
-          next({ path: '/website'})
-        } else if (whiteList.indexOf(to.path) !== -1) { // 从白名单跳转到白名单, 直接进入.
-          next()
-        }
-      } else if (store.getters.permissionList.length === 0) {
+      if (store.getters.permissionList.length === 0) {
         store.dispatch('GetPermissionList').then(res => {
           const menuData = res.result;
-          console.log(res.message)
           if (menuData === null || menuData === "" || menuData === undefined) {
             return;
           }
