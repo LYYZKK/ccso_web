@@ -22,9 +22,9 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="原批注信息">
-            <a-tooltip title="prompt text">
-              <span>{{postilText}}</span>
-            </a-tooltip>
+          <a-tooltip title="prompt text">
+            <span>{{postilText}}</span>
+          </a-tooltip>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -33,7 +33,7 @@
           <a-textarea placeholder="请输入批注信息" v-decorator="['postilRemark', {required: true, message: '请输入批注信息！'}]"/>
         </a-form-item>
       </a-form>
-      <a-form :form="form" v-else-if="judgeFunction=='reviewProjectSubmit'">
+      <a-form :form="form" v-else-if="judgeFunction=='projectSubmit'">
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -112,11 +112,10 @@
           if (res.success) {
             this.postilText = res.result.records[0].remark
           }
-          console.log("postilText：" + this.postilText)
         })
       },
-      editReviewProjectSubmit(id) {
-        this.judgeFunction = 'reviewProjectSubmit'
+      editProjectSubmit(id) {
+        this.judgeFunction = 'projectSubmit'
         this.reviewProjectId = id
         this.visible = true
       },
@@ -143,7 +142,7 @@
               this.entryRecordFormData.remark = values.postilRemark
               this.entryRecordFormData.id = this.entryRecordId
               param = this.entryRecordFormData
-            } else if (this.judgeFunction == 'reviewProjectSubmit') {
+            } else if (this.judgeFunction == 'projectSubmit') {
               url = this.url.reviewSubmit
               param = {remark: values.submitRemark, id: this.reviewProjectId}
             }
