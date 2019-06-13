@@ -18,6 +18,15 @@
       </a-form>
       <a-form :form="form" v-else-if="judgeFunction=='postil'">
         <a-form-item
+          v-show="postilText!=null"
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="原批注信息">
+            <a-tooltip title="prompt text">
+              <span>{{postilText}}</span>
+            </a-tooltip>
+        </a-form-item>
+        <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="批注信息">
@@ -39,7 +48,7 @@
 <script>
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
-  import {httpAction} from '@/api/manage'
+  import {httpAction, getAction} from '@/api/manage'
   import AFormItem from "ant-design-vue/es/form/FormItem";
   import ATextarea from "ant-design-vue/es/input/TextArea";
 
@@ -66,6 +75,7 @@
           add: '/review/sendBack/add',
           update: '/review/entryRecord/update',
           reviewSubmit: '/review/project/submitReview',
+          getPostil: '/review/entryRecord/list',
         },
         form: this.$form.createForm(this),
         reviewProjectId: '',
@@ -79,6 +89,7 @@
           reviewProjectId: '',
           remark: '',
         },
+        postilText: '',
       }
     },
     methods: {
@@ -94,6 +105,15 @@
         this.reviewProjectId = reviewProjectId
         this.judgeFunction = 'postil'
         this.visible = true
+        getAction(this.url.getPostil, {
+          id: record.reviewEntryRecord.id,
+          number: record.reviewEntryRecord.number
+        }).then(res => {
+          if (res.success) {
+            this.postilText = res.result.records[0].remark
+          }
+          console.log("postilText：" + this.postilText)
+        })
       },
       editReviewProjectSubmit(id) {
         this.judgeFunction = 'reviewProjectSubmit'
