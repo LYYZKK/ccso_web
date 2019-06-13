@@ -37,12 +37,12 @@
                 >
                   <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
                   <div style="margin-left:10px;">
-                    <span>{{item.name}}</span>
+                    <span class="name">{{item.name}}</span>
                     <br>
-                    <span>{{item.birthDate}}</span>
+                    <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
                   </div>
                 </div>
-                <div style="margin-top:10px;text-align:center;">{{item.individualResume}}</div>
+                <div style="margin-top:10px;text-align:center;" class="brief">{{item.individualResume}}</div>
               </div>
             </div>
           </a-carousel>
@@ -63,10 +63,10 @@
               <div v-for="(item,index) in d" :key="index" class="item">
                 <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
                 <div>
-                  <p>{{item.name}}</p>
+                  <p class="name">{{item.name}}</p>
                 </div>
                 <div>
-                  <p>{{item.individualResume}}</p>
+                  <p class="brief">{{item.individualResume}}</p>
                 </div>
               </div>
             </div>
@@ -88,10 +88,10 @@
               <div v-for="(item,index) in b" :key="index" class="item">
                 <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
                 <div>
-                  <p>{{ item.name }}</p>
+                  <p class="name">{{ item.name }}</p>
                 </div>
                 <div>
-                  <p>{{item.individualResume}}</p>
+                  <p class="brief">{{item.individualResume}}</p>
                 </div>
               </div>
             </div>
@@ -193,6 +193,18 @@ export default {
 .expert {
   .title{
     margin-bottom: 20px;
+  }
+  .name {
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .date {
+    color: #737373;
+    font-size: 12px;
+  }
+  .brief {
+    color: #737373;
+    font-size: 13px;
   }
   .ant-carousel .custom-slick-arrow {
     width: 25px;

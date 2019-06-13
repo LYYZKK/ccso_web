@@ -35,11 +35,12 @@
                 <div
                   style="display:flex;flex-direction: column;align-items: center;font-size: 12px;margin-top:10px;"
                 >
-                  <span>{{item.name}}</span>
+                  <span class="name">{{item.name}}</span>
                   <span
                     style="cursor:pointer"
                   >{{item.businessLicenseNo}}</span>
-                  <span>{{item.updateTime}}</span>
+                  <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
+                  <span class="brief">{{item.briefIntroduction}}</span>
                 </div>
               </div>
             </div>
@@ -59,9 +60,10 @@
             <div class="moveItem" v-for="(b,k) in cooperateEnterprisesAll" :key="k">
               <div v-for="(item,index) in b" :key="index" class="item">
                 <img :src="IMAGE_REVIEW_URL_RENDER(item.logo)" alt="LOGO">
-                <div style="text-align:center;margin-top:10px;">
-                  <span>afdsfsf</span>
-                  <span>{{item.name}}</span>
+                <div style="display:flex;flex-direction: column;align-items: center;font-size: 12px;margin-top:10px;">
+                  <span class="name">{{item.name}}</span>
+                  <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
+                  <span class="brief">{{item.briefIntroduction}}</span>
                 </div>
               </div>
             </div>
@@ -87,7 +89,7 @@ export default {
       cooperateEnterprises: [],
       cooperateEnterprisesAll: [],
       keyText: "",
-      fuzzySearchFields: ",name,briefIntroduction,",   
+      fuzzySearchFields: ",name,briefIntroduction,",
       url: 'sys/enterprise/list'
     }
   },
@@ -153,6 +155,18 @@ export default {
 .enterprise {
   .title{
     margin-bottom: 20px;
+  }
+  .name {
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .date {
+    color: #737373;
+    font-size: 12px;
+  }
+  .brief {
+    color: #737373;
+    font-size: 13px;
   }
   .ant-carousel .custom-slick-arrow {
     width: 25px;

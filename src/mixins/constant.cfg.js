@@ -3,6 +3,7 @@ import isFunction from 'lodash.isfunction'
 import toNumber from 'lodash.tonumber'
 import toString from 'lodash.tostring'
 import isNAN from 'lodash.isnan'
+import moment from 'dayjs'
 import Vue from 'vue'
 
 import { ACCESS_TOKEN } from "@/store/mutation-types"
@@ -79,6 +80,9 @@ export default {
       },
       toString(x) {
         return toString(x)
+      },
+      formatDateTime(x, format = 'YYYY-MM-DD HH:mm:ss') {
+        return moment(x).format(format)
       }
     }
   }
