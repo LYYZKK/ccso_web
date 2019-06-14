@@ -37,6 +37,7 @@ router.beforeEach((to, from, next) => {
       if (whiteList.includes(to.path)) { // 有 token 时跳转到白名单直接进入.
         if (to.path === '/') next({ path: '/website'}) // 解决 windows chrome 中进到根目录时无法自动跳转到首页.
         next()
+        NProgress.done()
       } else if (store.getters.permissionList.length === 0) { // 如果是跳到非白名单路由, 才请求菜单.
         store.dispatch('GetPermissionList').then(res => {
           const menuData = res.result
@@ -56,6 +57,7 @@ router.beforeEach((to, from, next) => {
             } else {
               // 跳转到目的路由
               next({ path: redirect })
+              NProgress.done()
             }
           })
         })
@@ -66,10 +68,12 @@ router.beforeEach((to, from, next) => {
           })
           store.dispatch('Logout').then(() => {
             next({ path: '/user/login', query: { redirect: to.fullPath } })
+            NProgress.done()
           })
         })
       } else {
         next()
+        NProgress.done()
       }
     }
   } else { // no token.
@@ -79,8 +83,10 @@ router.beforeEach((to, from, next) => {
     } else { // 从白名单菜单跳转而来.
       if (to.path === '/') { // 从白名单跳转到首页.
         next({ path: '/website'})
+        NProgress.done()
       } else if (whiteList.indexOf(to.path) !== -1) { // 从白名单跳转到白名单, 直接进入.
         next()
+        NProgress.done()
       }
     }
   }
