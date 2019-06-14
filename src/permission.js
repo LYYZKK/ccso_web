@@ -38,12 +38,11 @@ router.beforeEach((to, from, next) => {
         next()
       } else if (store.getters.permissionList.length === 0) { // 如果是跳到非白名单路由, 才请求菜单.
         store.dispatch('GetPermissionList').then(res => {
-          const menuData = res.result;
+          const menuData = res.result
           if (menuData === null || menuData === "" || menuData === undefined) {
-            return;
+            return
           }
-          let constRoutes = [];
-          constRoutes = generateIndexRouter(menuData);
+          let constRoutes = generateIndexRouter(menuData)
           // 添加主界面路由
           store.dispatch('UpdateAppRouter',  { constRoutes }).then(() => {
             // 根据roles权限生成可访问的路由表
