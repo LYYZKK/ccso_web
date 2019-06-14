@@ -34,7 +34,9 @@ router.beforeEach((to, from, next) => {
       next({ path: '/dashboard/analysis' })
       NProgress.done()
     } else {
-      if (!whiteList.includes(to.path) && store.getters.permissionList.length === 0) { // 如果是跳到非白名单路由, 才请求菜单.
+      if (whiteList.includes(to.path)) { // 有 token 时跳转到白名单直接进入.
+        next()
+      } else if (store.getters.permissionList.length === 0) { // 如果是跳到非白名单路由, 才请求菜单.
         store.dispatch('GetPermissionList').then(res => {
           const menuData = res.result;
           if (menuData === null || menuData === "" || menuData === undefined) {
