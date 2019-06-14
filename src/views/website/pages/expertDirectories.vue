@@ -24,25 +24,23 @@
         <!-- 专家委员会 -->
         <div>
           <a-carousel arrows autoplay>
-            <div slot="prevArrow" class="custom-slick-arrow" style="left: 10px;zIndex: 1">
+            <div slot="prevArrow" class="custom-slick-arrow" style="left: 10px; zIndex: 1">
               <a-icon type="left-circle"/>
             </div>
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(a,i) in professorAll" :key="i">
-              <div v-for="(item,index) in a" :key="index">
-                <div
-                  style="display:flex; align-items: flex-end;justify-content: center;font-size:12px;"
-                >
+            <div class="moveItem" v-for="(a, i) in professorAll" :key="i">
+              <div v-for="(item, index) in a" :key="index">
+                <div class="img-container">
                   <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
-                  <div style="margin-left:10px;">
+                  <div class="name-container">
                     <span class="name">{{item.name}}</span>
                     <br>
                     <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
                   </div>
                 </div>
-                <div style="margin-top:10px;text-align:center;" class="brief">{{item.individualResume}}</div>
+                <div class="brief">{{item.individualResume}}</div>
               </div>
             </div>
           </a-carousel>
@@ -59,15 +57,17 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(d,m) in approvarAll" :key="m">
-              <div v-for="(item,index) in d" :key="index" class="item">
-                <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
-                <div>
-                  <p class="name">{{item.name}}</p>
+            <div class="moveItem" v-for="(a, i) in approvarAll" :key="i">
+              <div v-for="(item, index) in a" :key="index">
+                <div class="img-container">
+                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
+                  <div class="name-container">
+                    <span class="name">{{item.name}}</span>
+                    <br>
+                    <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
+                  </div>
                 </div>
-                <div>
-                  <p class="brief">{{item.individualResume}}</p>
-                </div>
+                <div class="brief">{{item.individualResume}}</div>
               </div>
             </div>
           </a-carousel>
@@ -84,15 +84,17 @@
             <div slot="nextArrow" class="custom-slick-arrow" style="right: 10px">
               <a-icon type="right-circle"/>
             </div>
-            <div class="moveItem" v-for="(b,k) in cooperatorAll" :key="k">
-              <div v-for="(item,index) in b" :key="index" class="item">
-                <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
-                <div>
-                  <p class="name">{{ item.name }}</p>
+            <div class="moveItem" v-for="(a, i) in cooperatorAll" :key="i">
+              <div v-for="(item, index) in a" :key="index">
+                <div class="img-container">
+                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
+                  <div class="name-container">
+                    <span class="name">{{item.name}}</span>
+                    <br>
+                    <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
+                  </div>
                 </div>
-                <div>
-                  <p class="brief">{{item.individualResume}}</p>
-                </div>
+                <div class="brief">{{item.individualResume}}</div>
               </div>
             </div>
           </a-carousel>
@@ -191,6 +193,15 @@ export default {
 @import '../common.scss';
 // 轮播
 .expert {
+  .img-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    font-size: 12px;
+  }
+  .name-container {
+    margin-left: 10px;
+  }
   .title{
     margin-bottom: 20px;
   }
@@ -205,6 +216,8 @@ export default {
   .brief {
     color: #737373;
     font-size: 13px;
+    margin-top: 10px;
+    text-align: center;
   }
   .ant-carousel .custom-slick-arrow {
     width: 25px;
