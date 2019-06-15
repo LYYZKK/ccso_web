@@ -66,7 +66,7 @@
         <span slot="action" slot-scope="text, record">
           <a-popconfirm title="确定生成账号吗?" @confirm="() => generateAccount(record)"
                         v-if="record.sysUserId == '-1'">
-            <a><font color="#dc143c">生成账号</font></a>
+            <a>生成账号</a>
             <a-divider type="vertical"/>
           </a-popconfirm>
 
