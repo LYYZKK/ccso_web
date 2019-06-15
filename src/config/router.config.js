@@ -133,12 +133,6 @@ export const asyncRouterMap = [
       },
     ]
   },
-  // {
-  //   path: '/website',
-  //   name: 'website',
-  //   component: () => import('@/views/website/index'),
-  //   meta: { title: '官网',keepAlive: true, permission: [ 'dashboard' ] }
-  // },
   {
     path: '*', redirect: '/404', hidden: true
   },
@@ -208,6 +202,11 @@ export const constantRouterMap = [
         path: 'register-result',
         name: 'registerResult',
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult')
+      },
+      {
+        path: 'active-result',
+        name: 'activeResult',
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/ActiveResult')
       },
     ],
   },

@@ -6,7 +6,7 @@
     :description="description">
 
     <template slot="action">
-      <a-button size="large" style="margin-left: 8px" @click="goHomeHandle">现在登录</a-button>
+      <a-button size="large" @click="goHomeHandle">现在登录</a-button>
     </template>
 
   </result>

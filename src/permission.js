@@ -22,6 +22,7 @@ const whiteList = [
   '/user/login',
   '/user/register',
   '/user/register-result',
+  '/user/active-result',
   '/user/forgot-password'
 ] // no redirect whitelist
 
