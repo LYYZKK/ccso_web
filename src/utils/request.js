@@ -37,7 +37,8 @@ const err = (error) => {
                 store.dispatch('Logout').then(() => {
                   Vue.ls.remove(ACCESS_TOKEN)
                   token_expired_error_showed = false
-                  if (window.location.href !== 'user/login') {
+
+                  if (window.location.href !== '/user/login') {
                     window.location.href = '/user/login'
                   }
                 })
