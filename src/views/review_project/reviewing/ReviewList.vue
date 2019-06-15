@@ -67,8 +67,10 @@
           <span v-show="record.isAssign==0 || record.isRecord==0">
             <a-divider type="vertical"/>
             <a @click="projectSubmit(record.id)">提交</a>
-            <a-divider type="vertical"/>
-            <a @click="sendBack(record.id)">回退</a>
+            <!--<span v-show="toNumber(record.sendBackNum)<=sendbackTimeLimit">
+              <a-divider type="vertical"/>
+              <a @click="sendBack(record.id)">回退</a>
+            </span>-->
           </span>
         </span>
       </a-table>
@@ -192,7 +194,8 @@
           deleteBatch: 'review/project/deleteBatch',
           exportXlsUrl: 'review/project/exportXls',
           importExcelUrl: 'review/project/importExcel',
-        }
+          getSendBackByProject: '/review/sendBack/getSendBackByReviewProject'
+        },
       }
     },
     computed: {
@@ -200,6 +203,7 @@
         return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
       }
     },
+
     methods: {
       detail(record) {
         this.$refs.detail.edit(record);

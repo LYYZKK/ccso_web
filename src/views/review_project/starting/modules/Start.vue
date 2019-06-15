@@ -23,7 +23,7 @@
 <script>
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
-  import {httpAction} from '@/api/manage'
+  import {postAction} from '@/api/manage'
   import AFormItem from "ant-design-vue/es/form/FormItem";
   import ATextarea from "ant-design-vue/es/input/TextArea";
 
@@ -66,10 +66,10 @@
         const that = this
         this.form.validateFields((err, values) => {
           let formData = Object.assign(this.model, values)
-          httpAction(this.url.startUrl, {
+          postAction(this.url.startUrl, {
             remark: formData.remark,
             id: this.reviewProjectId
-          }, 'post').then((res) => {
+          }).then((res) => {
             if (res.success) {
               that.$message.success(res.message)
               that.$emit('ok')

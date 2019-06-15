@@ -51,8 +51,6 @@
             :action="FILE_UPLOAD_ACTION"
             :data="{'isup':1}"
             :headers="FILE_UPLOAD_HEADERS"
-            :beforeUpload="beforeUpload"
-            @change="handleChange_1"
             v-decorator="['logo', {}]"
           >
             <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
@@ -302,20 +300,20 @@
             :loading="loading"
             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
             @change="handleTableChange">
-        <span slot="action" slot-scope="text, record">
-          <a-upload
-            name="file"
-            :action="url.uploadInformationFileUrl"
-            :headers="FILE_UPLOAD_HEADERS"
-            :data="{'reviewInformationId':record.informationId, 'reviewProjectId':reviewProjectId,'type':1, 'reviewInformationFileId': record.reviewInformationFileId}"
-            @change="handleUploadChange">
-            <a-button>
-                <a-icon type="upload"/>
-                选择文件
-            </a-button>
-          </a-upload>
-        </span>
-          </a-table>
+          <span slot="action" slot-scope="text, record">
+            <a-upload
+              name="file"
+              :action="url.uploadInformationFileUrl"
+              :headers="FILE_UPLOAD_HEADERS"
+              :data="{'reviewInformationId':record.informationId, 'reviewProjectId':reviewProjectId,'type':1, 'reviewInformationFileId': record.reviewInformationFileId}"
+              @change="handleUploadChange">
+              <a-button>
+                  <a-icon type="upload"/>
+                  选择文件
+              </a-button>
+            </a-upload>
+          </span>
+        </a-table>
         </a-form-item>
         <h3 class="devide-title">原评审记录</h3>
         <a-form-item>
@@ -664,20 +662,13 @@
         dataSource_3: [],
         dataSource_3_child: [],
         expandedRowKeys: [],
-        oldEnrtyRecord: []
+        oldEnrtyRecord: [],
+        uploadLoading: false
       }
     },
     methods: {
       FILE_INFORMATION_UPLOAD_ACTION: () => {
         return this.FILE_INFORMATION_UPLOAD_URL
-      },
-      beforeUpload: function (file) {
-        var fileType = file.type
-        if (fileType.indexOf('image') < 0) {
-          this.$message.warning('请上传图片')
-          return false
-        }
-        //TODO 验证文件大小
       },
 
       // 得到嵌套表格子表格数据
