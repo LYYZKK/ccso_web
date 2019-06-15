@@ -144,17 +144,6 @@ export const asyncRouterMap = [
   },
 ]
 
-/**
- * 基础路由
- * @type { *[] }
- */
-import home from '@/views/website/pages/home'
-import news from '@/views/website/pages/news'
-import guide from '@/views/website/pages/guide'
-import train from '@/views/website/pages/train'
-import expertDirectories from '@/views/website/pages/expertDirectories'
-import enterpriseDirectory from '@/views/website/pages/enterpriseDirectory'
-
 export const constantRouterMap = [
   {
     path: '/website',
@@ -165,32 +154,32 @@ export const constantRouterMap = [
       {
         path: 'home',
         name: 'home',
-        component: home
+        component: () => import(/* webpackChunkName: "website" */ '@/views/website/pages/home')
       },
       {
         path: 'news',
         name: 'news',
-        component: news
+        component: () => import(/* webpackChunkName: "website" */ '@/views/website/pages/news')
       },
       {
         path: 'guide',
         name: 'guide',
-        component: guide
+        component: () => import(/* webpackChunkName: "website" */ '@/views/website/pages/train')
       },
       {
         path: 'train',
         name: 'train',
-        component: train
+        component: () => import(/* webpackChunkName: "website" */ '@/views/website/pages/train')
       },
       {
-        path: 'expertDirectories',
-        name: 'expertDirectories',
-        component: expertDirectories
+        path: 'expert-directory',
+        name: 'expertDirectory',
+        component: () => import(/* webpackChunkName: "website" */ '@/views/website/pages/expertDirectory')
       },
       {
-        path: 'enterpriseDirectory',
+        path: 'enterprise-directory',
         name: 'enterpriseDirectory',
-        component: enterpriseDirectory
+        component: () => import(/* webpackChunkName: "website" */ '@/views/website/pages/enterpriseDirectory')
       },
     ]
   },

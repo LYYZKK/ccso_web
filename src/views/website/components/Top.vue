@@ -4,26 +4,25 @@
       <img src="../../../../static/images/top.jpg" alt="" />
     </div>
     <div class="navBar">
-      <div @click="goto('/website/home')" :class="{on:'/website/home'===$route.path}">
+      <div @click="goto('/website/home')" :class="{on:'/website/home' === $route.path}">
         <span>网站首页</span>
       </div>
-      <div @click="goto('/website/news')" :class="{on:'/website/news'===$route.path}">
+      <div @click="goto('/website/news')" :class="{on:'/website/news' === $route.path}">
         <span>新闻资讯</span>
       </div>
-      <div @click="goto('/website/guide')" :class="{on:'/website/guide'===$route.path}">
+      <div @click="goto('/website/guide')" :class="{on:'/website/guide' === $route.path}">
         <span>标准指引</span>
       </div>
-      <div @click="goto('/website/train')" :class="{on:'/website/train'===$route.path}">
+      <div @click="goto('/website/train')" :class="{on:'/website/train' === $route.path}">
         <span>标准培训</span>
       </div>
-      <div @click="goto('/website/enterpriseDirectory')" :class="{on:'/website/enterpriseDirectory'===$route.path}">
+      <div @click="goto('/website/enterprise-directory')" :class="{on:'/website/enterprise-directory' === $route.path}">
         <span>企业名录</span>
       </div>
-      <div @click="goto('/website/expertDirectories')" :class="{on:'/website/expertDirectories'===$route.path}">
+      <div @click="goto('/website/expert-directory')" :class="{on:'/website/expert-directory' === $route.path}">
         <span>专家名录</span>
       </div>
       <div>
-        <!-- <a href="http://chinaccso.org.cn:8090/login.jsp">评审登陆</a> -->
         <router-link to="/user/login" >评审登陆</router-link>
       </div>
     </div>
@@ -38,32 +37,32 @@ export default {
     return {
       navs:[
         {
-          name:'新闻资讯',
-          path:'/news'
+          name:'网站首页',
+          path:'/website/home'
         },
         {
           name:'新闻资讯',
-          path:'/news'
+          path:'/website/news'
         },
         {
           name:'标准指引',
-          path:'/guide'
+          path:'/website/guide'
         },
         {
           name:'标准培训',
-          path:'/train'
+          path:'/website/train'
         },
         {
           name:'企业名录',
-          path:'/enterpriseDirectory'
+          path:'/website/enterprise-directory'
         },
         {
           name:'专家名录',
-          path:'/expertDirectories'
+          path:'/website/expert-directory'
         },
         {
           name:'评审登录',
-          path:'/expertDirectories'
+          path:'/user/login'
         },
       ]
     };

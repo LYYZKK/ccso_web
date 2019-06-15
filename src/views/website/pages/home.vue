@@ -39,12 +39,12 @@ export default {
         {
           name: '企业名录',
           img: img4,
-          path: '/website/enterpriseDirectory'
+          path: '/website/enterprise-directory'
         },
         {
           name: '专家名录',
           img: img5,
-          path: '/website/expertDirectories'
+          path: '/website/expert-directory'
         },
         {
           name: '评审登录',
