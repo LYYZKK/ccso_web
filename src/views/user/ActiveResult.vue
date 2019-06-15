@@ -24,7 +24,6 @@
       return {
         query: {},
         activeSuccess: true,
-        activeTitle: '激活成功',
         url: '/sys/user/activateAccount'
       }
     },
