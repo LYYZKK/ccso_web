@@ -153,7 +153,7 @@
       .ant-layout-content {
 
         .content {
-          margin: 24px 0 0;
+          margin: 15px 0 0;
         }
       }
 
@@ -230,7 +230,7 @@
       &.content-width-Fluid {
         .header-index-wide {
           max-width: unset;
-          margin-left: 24px;
+          margin-left: 15px;
         }
 
         .page-header-index-wide {
@@ -467,7 +467,7 @@
 
     // 内容区
     .layout-content {
-      margin: 24px 24px 0px;
+      margin: 15px 15px 0px;
       height: 64px;
       padding: 0 12px 0 0;
     }
@@ -634,4 +634,6 @@
       margin-left: 8px;
     }
   }
+
+  @import '../../assets/less/common.css';
 </style>

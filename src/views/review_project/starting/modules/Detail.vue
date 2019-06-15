@@ -71,6 +71,7 @@
             <a-col class="gutter-row" :span="12">
               <a-form-item label="LOGO" :labelCol="labelCol" :wrapperCol="wrapperCol">
                 <a-upload
+                  class="logo-img"
                   listType="picture-card"
                   :showUploadList="false"
                   :action="FILE_UPLOAD_ACTION"
@@ -289,45 +290,59 @@
           </a-row>
         </a-card>
 
-        <h3 class="devide-title">请选择协调员</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          class="coordinator-form-item">
-          <a-transfer
-            :dataSource="personnel"
-            :filterOption="filterTransferOption"
-            :targetKeys="targetKeys"
-            showSearch
-            @change="handleChange_coordinator"
-            :titles="['可选协调员', '已选协调员']"
-            :render="item => item.title"
-          >
-          </a-transfer>
-        </a-form-item>
-        <h3 class="devide-title">请选择支付信息</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="支付状态">
-          <a-radio-group v-model="isPay">
-            <a-radio value="0">未支付</a-radio>
-            <a-radio value="1">已支付</a-radio>
-          </a-radio-group>
-        </a-form-item>
+        <a-card title="请选择协调员" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="15">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                class="coordinator-form-item">
+                <a-transfer
+                  :dataSource="personnel"
+                  :filterOption="filterTransferOption"
+                  :targetKeys="targetKeys"
+                  showSearch
+                  @change="handleChange_coordinator"
+                  :titles="['可选协调员', '已选协调员']"
+                  :render="item => item.title"
+                >
+                </a-transfer>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="9"></a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="请选择支付信息" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="支付状态">
+                <a-radio-group v-model="isPay">
+                  <a-radio value="0">未支付</a-radio>
+                  <a-radio value="1">已支付</a-radio>
+                </a-radio-group>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12"></a-col>
+          </a-row>
+        </a-card>
       </a-form>
-      <h3 class="devide-title">评审资料</h3>
-      <a-table
-        ref="table"
-        size="middle"
-        bordered
-        rowKey="id"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination=false
-        :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-        @change="handleTableChange">
+
+      <a-card title="评审资料" :bordered="false">
+        <a-table
+          ref="table"
+          size="middle"
+          bordered
+          rowKey="id"
+          :columns="columns"
+          :dataSource="dataSource"
+          :pagination=false
+          :loading="loading"
+          :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+          @change="handleTableChange">
         <span slot="action" slot-scope="text, record">
           <a-upload
             name="file"
@@ -341,7 +356,8 @@
             </a-button>
           </a-upload>
         </span>
-      </a-table>
+        </a-table>
+      </a-card>
     </a-spin>
   </a-modal>
 </template>
@@ -685,10 +701,6 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-  }
-
-  .devide-title {
-    margin-bottom: 20px;
   }
 
   .logo-img {

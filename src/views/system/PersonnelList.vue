@@ -64,10 +64,12 @@
           @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <span v-show="record.sysUserId == '-1'">
-            <a @click="generateAccount(record)">生成账号</a>
+          <a-popconfirm title="确定生成账号吗?" @confirm="() => generateAccount(record)"
+                        v-if="record.sysUserId == '-1'">
+            <a><font color="#dc143c">生成账号</font></a>
             <a-divider type="vertical"/>
-          </span>
+          </a-popconfirm>
+
           <a-popconfirm title="确定取消展示吗?" @confirm="() => updateSurfaceShow(record.id, surfaceShowFlaseDictValue)"
                         v-if="record.surfaceShow === surfaceShowTrueDictValue && record.surfaceShow!==''">
             <a><font color="#dc143c">取消展示</font></a>

@@ -86,7 +86,7 @@
 
 <style lang="scss" scoped>
   .content {
-    margin: 24px 24px 0;
+    margin: 15px 15px 0;
 
     .link {
       margin-top: 16px;
