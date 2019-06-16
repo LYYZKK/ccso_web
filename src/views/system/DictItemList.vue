@@ -28,7 +28,7 @@
                   <a-input style="width: 120px;" placeholder="请输入编码" v-model="queryParam.itemCode"></a-input>
                 </a-form-item>
               </a-col>
-              <a-col :md="9" :sm="24">
+              <a-col :md="8" :sm="12">
                 <a-form-item label="状态" style="width: 170px" :labelCol="labelCol" :wrapperCol="wrapperCol">
                   <a-select
                     placeholder="请选择"
@@ -253,10 +253,10 @@
       // 抽屉的宽度随着屏幕大小来改变
       resetScreenSize() {
         let screenWidth = document.body.clientWidth;
-        if (screenWidth < 600) {
+        if (screenWidth < 850) {
           this.screenWidth = screenWidth;
         } else {
-          this.screenWidth = 600;
+          this.screenWidth = 850;
         }
       },
     }
