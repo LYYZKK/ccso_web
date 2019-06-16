@@ -16,7 +16,7 @@
   import Result from '@/views/result/Result'
 
   export default {
-    name: "RegisterResult",
+    name: "ActiveResult",
     components: {
       Result
     },
