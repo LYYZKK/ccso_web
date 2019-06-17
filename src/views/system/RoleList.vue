@@ -12,11 +12,6 @@
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="8">
-            <a-form-item label="创建时间" :labelCol="{span: 5}" :wrapperCol="{span: 18, offset: 1}">
-              <a-range-picker @change="onChangeDate" v-model="queryParam.createTimeIsRange"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
             <span class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload">重置</a-button>
@@ -110,7 +105,9 @@
           roleName: 'like'
         },
         // 查询条件
-        queryParam: {roleName:'',createTimeIsRange:[]},
+        queryParam: {
+          roleName: ''
+        },
         // 表头
         columns: [
           {

@@ -273,14 +273,17 @@
         height: 100%;
 
         .setting-drawer {
-          font-size: 20px !important;
+          font-size: 14px !important;
         }
 
         .action {
           cursor: pointer;
-          padding: 0 10px;
+          padding: 0 14px;
           display: inline-block;
           transition: all .3s;
+
+          height: 70%;
+          line-height: 46px;
 
           &.action-full {
             height: 100%;
@@ -291,7 +294,7 @@
           }
 
           .avatar {
-            margin: 15px 10px 15px 0;
+            margin: 15px 10px 20px 0;
             color: #1890ff;
             background: hsla(0, 0%, 100%, .85);
             vertical-align: middle;
