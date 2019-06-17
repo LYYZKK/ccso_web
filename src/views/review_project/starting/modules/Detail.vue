@@ -11,7 +11,7 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <div v-if="sendBackNum > 0">
-          <a-alert message="注意" type="warning"  >
+          <a-alert message="注意" type="warning">
             <span slot="description">
               项目已被回退，回退原因：<span style="color: red">{{sendBackMsg}}</span>。
             </span>
@@ -535,7 +535,6 @@
           this.isShow = judge
         }
         this.personnel = []
-        this.targetKeys = []
         this.reviewProjectId = record.id
         this.form.resetFields()
         this.model = Object.assign({}, record)
@@ -648,6 +647,9 @@
       },
 
       getAccountByRoleCode(id) {
+        this.targetKeys = []
+        this.personnel = []
+        this.selectdCoordinator = []
         const dataSource = [];
         const targetKeys = [];
         // 得到选中的
@@ -672,9 +674,11 @@
                     title: res.result[i].name,
                     userId: res.result[i].id
                   }
+                  //a17f574d849f5b678f4dcc646d26c212
                   for (var j = 0; j < this.selectdCoordinator.length; j++) {
                     if (this.selectdCoordinator[j].userId == res.result[i].id) {
                       // 已选
+                      console.log("userId：" + res.result[i].id)
                       targetKeys.push(data.key)
                     }
                   }
