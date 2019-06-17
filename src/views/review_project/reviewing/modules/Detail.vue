@@ -326,41 +326,46 @@
         </a-form-item>
         <h3 class="devide-title">原评审记录</h3>
         <a-form-item>
-          <a-table
-            ref="table"
-            size="middle"
-            bordered
-            rowKey="id"
-            :columns="columns_2"
-            :dataSource="dataSource_3"
-            :pagination=false
-            :loading="loading"
-            :expandedRowKeys="expandedRowKeys"
-            :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-            @change="handleTableChange"
-            @expand="handleExpand">
+          <span v-for="(value, index) in oldEnrtyRecord">
+            <label>第{{index+1}}次原评审记录</label>
             <a-table
-              slot="expandedRowRender"
-              slot-scope="text"
-              :columns="columns_2_child"
-              :dataSource="dataSource_3_child"
+              ref="table"
               size="middle"
               bordered
               rowKey="id"
-              :pagination="false"
+              :columns="columns_2"
+              :dataSource="value"
+              :pagination=false
               :loading="loading"
-            >
-              <span slot="action" slot-scope="text, record">
-                <a-radio-group :defaultValue="toString(record.reviewEntryRecord.isRight)">
-                  <a-radio @click="saveUpdateEntryResult(record, 1)" value="1">符合</a-radio>
-                  <a-radio @click="saveUpdateEntryResult(record, 0)" value="0">不符合</a-radio>
-                  <a-radio @click="saveUpdateEntryResult(record, 2)" value="2">不适用</a-radio>
-                </a-radio-group>
-                <a-divider type="vertical"/>
-                <a @click="postil(record, record.reviewEntryRecord.isRight)" type="vertical">批注</a>
-              </span>
+              :expandedRowKeys="expandedRowKeys"
+              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+              @change="handleTableChange"
+              @expand="handleExpand"
+              >
+              <a-table
+                slot="expandedRowRender"
+                slot-scope="text"
+                :columns="columns_2_child"
+                :dataSource="dataSource_3_child"
+                size="middle"
+                bordered
+                rowKey="id"
+                :pagination="false"
+                :loading="loading"
+              >
+                <span slot="action" slot-scope="text, record">
+                  <a-radio-group :defaultValue="toString(record.reviewEntryRecord.isRight)">
+                    <a-radio @click="saveUpdateEntryResult(record, 1)" value="1">符合</a-radio>
+                    <a-radio @click="saveUpdateEntryResult(record, 0)" value="0">不符合</a-radio>
+                    <a-radio @click="saveUpdateEntryResult(record, 2)" value="2">不适用</a-radio>
+                  </a-radio-group>
+                  <a-divider type="vertical"/>
+                  <a @click="postil(record, record.reviewEntryRecord.isRight)" type="vertical">批注</a>
+                </span>
+              </a-table>
             </a-table>
-          </a-table>
+            <br />
+          </span>
         </a-form-item>
         <h3 class="devide-title">评审记录</h3>
         <a-form-item>
