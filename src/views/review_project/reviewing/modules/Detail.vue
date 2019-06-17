@@ -11,6 +11,15 @@
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
+        <div v-if="sendBackNum > 0">
+          <a-alert message="注意" type="warning">
+            <span slot="description">
+              项目已被回退补审，补审原因：<span style="color: red">{{sendBackMsg}}</span>。
+            </span>
+          </a-alert>
+          <a-divider/>
+        </div>
+
         <h3>项目信息</h3>
         <a-form-item
           :labelCol="labelCol"
@@ -313,7 +322,7 @@
               </a-button>
             </a-upload>
           </span>
-        </a-table>
+          </a-table>
         </a-form-item>
         <h3 class="devide-title">原评审记录</h3>
         <a-form-item>
@@ -444,7 +453,8 @@
           updateUrl: '/review/entryRecord/update',
           getEntryRecordUrl: '/review/entry/getEntryRecord',
           getOldReviewRecord: '/review/category/queryByReviewProjectAndNumber',
-          getReviewTime: '/review/time/queryByReviewProject'
+          getReviewTime: '/review/time/queryByReviewProject',
+          getSendBackByReviewProjectUrl: '/review/sendBack/getSendBackByReviewProject'
 
         },
         FILE_INFORMATION_UPLOAD_URL: `${window._CONFIG['domainURL']}/review/information/file/upload`,
@@ -457,6 +467,8 @@
         reviewer: [],
         enterpriseType: '',
         uploading: false,
+        sendBackMsg: '',
+        sendBackNum: '-1',
         reviewResultFormData: {
           id: '',
           reviewEntryId: '',
@@ -629,7 +641,7 @@
           },
         ],
         reviewProjectId: '',
-        selectdCoordinator: [],
+        selectdRolePersonnel: [],
         sysEnterprise: {
           id: '',
           name: '',
@@ -760,6 +772,12 @@
               this.form.setFieldsValue({sceneEndTime: res.result.sceneEndTime ? moment(res.result.sceneEndTime) : null})
             }
           })
+
+          // 得到回退信息
+          getAction(this.url.getSendBackByReviewProjectUrl, {reviewProjectId: record.id}).then((res) => {
+            this.sendBackMsg = res.result.sendBackMsg
+            this.sendBackNum = res.result.sendBackNum
+          })
         })
       },
       handleOk() {
@@ -832,6 +850,7 @@
       getSelectedPersonnelByRoleCode(id, roleCode) {
         const dataSource = [];
         const targetKeys = [];
+        this.selectdRolePersonnel = []
         // 得到选中的
         getAction(this.url.getByProjectAndRoleCode, {
           roleCode: roleCode,
@@ -843,7 +862,7 @@
                 key: i.toString(),
                 userId: res.result[i].userId
               }
-              this.selectdCoordinator.push(data)
+              this.selectdRolePersonnel.push(data)
             }
             this.getAllByRoleCode(roleCode, dataSource, targetKeys)
           }
@@ -860,8 +879,8 @@
                 title: res.result[i].name,
                 userId: res.result[i].id
               }
-              for (var j = 0; j < this.selectdCoordinator.length; j++) {
-                if (this.selectdCoordinator[j].userId == res.result[i].id) {
+              for (var j = 0; j < this.selectdRolePersonnel.length; j++) {
+                if (this.selectdRolePersonnel[j].userId == res.result[i].id) {
                   // 已选
                   targetKeys.push(data.key)
                 }

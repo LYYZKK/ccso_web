@@ -13,7 +13,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="回退信息">
-          <a-textarea placeholder="请输入回退信息" v-decorator="['sendBackMsg', validatorRules.sendBackMsg]"/>
+          <a-textarea placeholder="请输入评审回退信息或补审回退信息" v-decorator="['sendBackMsg', validatorRules.sendBackMsg]"/>
         </a-form-item>
       </a-form>
       <a-form :form="form" v-else-if="judgeFunction=='postil'">
@@ -91,15 +91,17 @@
         },
         postilText: '',
         validatorRules: {
-          sendBackMsg: {rules: [{required: true, message: '请输入回退信息!'}]},
+          sendBackMsg: {rules: [{required: true, message: '请输入评审回退或补审信息!'}]},
           postilRemark: {rules: [{required: true, message: '请输入批注信息!'}]},
           submitRemark: {rules: [{required: true, message: '请输入备注信息!'}]},
         },
+        type: '',
       }
     },
     methods: {
-      editSendBack(id) {
+      editSendBack(id, type) {
         this.judgeFunction = 'sendBack'
+        this.type = type
         this.reviewProjectId = id
         this.visible = true
       },
@@ -138,7 +140,7 @@
             var param = {}
             if (this.judgeFunction == 'sendBack') {
               url = this.url.add
-              param = {sendBackMsg: values.sendBackMsg, reviewProjectId: this.reviewProjectId}
+              param = {sendBackMsg: values.sendBackMsg, reviewProjectId: this.reviewProjectId, type: this.type}
             } else if (this.judgeFunction == 'postil') {
               url = this.url.update
               this.entryRecordFormData.reviewEntryId = this.reviewEntryId

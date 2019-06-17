@@ -62,6 +62,8 @@
             <a @click="detail(record)">查看评审</a>
             <a-divider type="vertical"/>
             <a @click="submitArchive(record.id)">归档</a>
+            <a-divider type="vertical" />
+            <a @click="sendBack(record.id, 2)">补审</a>
           </span>
           <a @click="detail(record)" v-else>分配评审员</a>
           <span v-show="record.isAssign==0 || record.isRecord==0">
@@ -69,8 +71,10 @@
             <a @click="projectSubmit(record.id)">提交</a>
             <!--<span v-show="toNumber(record.sendBackNum)<=sendbackTimeLimit">
               <a-divider type="vertical"/>
-              <a @click="sendBack(record.id)">回退</a>
+              <a @click="sendBack(record.id, 1)">回退</a>
             </span>-->
+            <a-divider type="vertical"/>
+              <a @click="sendBack(record.id, 1)">回退</a>
           </span>
         </span>
       </a-table>
@@ -208,8 +212,8 @@
       detail(record) {
         this.$refs.detail.edit(record);
       },
-      sendBack(id) {
-        this.$refs.submit.editSendBack(id);
+      sendBack(id, type) {
+        this.$refs.submit.editSendBack(id, type);
       },
       projectSubmit(id) {
         this.$refs.submit.editProjectSubmit(id);

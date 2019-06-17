@@ -114,12 +114,7 @@
             align: 'center',
             dataIndex: 'enterpriseName',
             customRender: (text, record) => {
-              const enterpriseNames = []
-              record.sysEnterprises.forEach((v) => {
-                enterpriseNames.push(v.name)
-              })
-              console.log("enterpriseNames：" + enterpriseNames)
-              return enterpriseNames
+              return record.sysEnterprise.name
             }
           },
           {
@@ -145,7 +140,15 @@
           {
             title: '证书编号',
             align: 'center',
-            dataIndex: 'certificateNo'
+            dataIndex: 'certificateNo',
+            customRender: text => {
+              if (text == null) {
+                return ( < label
+                style = "color:red" > 未上传 < /label>)
+              } else {
+                return text
+              }
+            }
           },
           {
             title: '修改人',
