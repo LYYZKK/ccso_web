@@ -158,7 +158,7 @@ export const constantRouterMap = [
       {
         path: 'guide',
         name: 'guide',
-        component: () => import(/* webpackChunkName: "website" */ '@/views/website/pages/train')
+        component: () => import(/* webpackChunkName: "website" */ '@/views/website/pages/guide')
       },
       {
         path: 'train',

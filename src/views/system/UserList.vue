@@ -13,15 +13,6 @@
             </a-col>
             <a-col :md="6" :sm="8">
               <a-form-item label="状态">
-                <!--<j-dict-select-tag
-                  v-model="queryParam.status"
-                  :triggerChange="true"
-                  placeholder="请选择"
-                  emptyOptionText="全部"
-                  dictCode="user_status"
-                />-->
-
-
                 <a-select
                   showSearch
                   v-model="queryParam.status"
