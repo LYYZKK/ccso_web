@@ -194,7 +194,7 @@
 <script>
   import pick from 'lodash.pick'
   import moment from 'moment'
-  import {copy2NewKeyObjeect} from '@/utils/util'
+  import {copy2NewKeyObject} from '@/utils/util'
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import {httpAction, getAction} from '@/api/manage'
@@ -287,7 +287,7 @@
         this.visible = true
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model, 'name', 'personalPhoto', 'idCard', 'frontIdCardPhoto', 'reverseIdCardPhoto', 'sex', 'email', 'phoneNum', 'certificateType', 'certificateNo', 'certificatePhoto', 'enterpriseId', 'roleIds', 'individualResume', 'enterpriseId'))
-          // this.form.setFieldsValue(copy2NewKeyObjeect(this.model.sysEnterprises, ['id'], {id: 'enterpriseId'}))
+          // this.form.setFieldsValue(copy2NewKeyObject(this.model.sysEnterprises, ['id'], {id: 'enterpriseId'}))
           //时间格式化
           this.form.setFieldsValue({birthDate: this.model.birthDate ? moment(this.model.birthDate) : null})
           this.form.setFieldsValue({certificateDate: this.model.certificateDate ? moment(this.model.certificateDate) : null})

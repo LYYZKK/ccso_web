@@ -52,12 +52,9 @@
         })
       },
       handleInput(val) {
-        console.log('into handleInput with val =', val)
         if(this.triggerChange){
-          console.log('into if')
           this.$emit('change', val)
         } else {
-          console.log('into else')
           this.$emit('input', val)
         }
       }

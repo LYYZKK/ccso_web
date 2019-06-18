@@ -23,7 +23,7 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
+      <a-button @click="handleAdd" type="primary" icon="plus" v-has="permissions.add">新增</a-button>
       <!--<a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel">
@@ -190,6 +190,9 @@
           deleteBatch: 'review/project/deleteBatch',
           exportXlsUrl: 'review/project/exportXls',
           importExcelUrl: 'review/project/importExcel',
+        },
+        permissions: {
+          add: 'starting_review_project:add'
         }
       }
     },

@@ -203,7 +203,7 @@
   import constantCfgMixin from '@/mixins/constant.cfg'
   import {httpAction, getAction} from '@/api/manage'
   import ARadioGroup from "ant-design-vue/es/radio/Group"
-  import {copy2NewKeyObjeect} from '@/utils/util'
+  import {copy2NewKeyObject} from '@/utils/util'
 
   export default {
     name: 'ReviewEnterpriseModal',
@@ -272,7 +272,7 @@
             'registeredCapital', 'sitesLinks', 'briefIntroduction', 'industry'))
           getAction(this.url.getResponsible, {enterpriseId: record.id}).then((res) => {
             if (res.success) {
-              this.form.setFieldsValue(copy2NewKeyObjeect(
+              this.form.setFieldsValue(copy2NewKeyObject(
                 res.result, ['name', 'email', 'tel', 'position', 'sex'],
                 {
                   name: 'responsibleName'
@@ -282,7 +282,7 @@
           })
           getAction(this.url.getReviewObject, {enterpriseId: record.id}).then((res) => {
             if (res.success) {
-              this.form.setFieldsValue(copy2NewKeyObjeect(
+              this.form.setFieldsValue(copy2NewKeyObject(
                 res.result, ['name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
                 {
                   name: 'objectName'

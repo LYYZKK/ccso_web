@@ -416,7 +416,7 @@
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
   import moment from 'moment'
-  import {copy2NewKeyObjeect} from '@/utils/util'
+  import {copy2NewKeyObject} from '@/utils/util'
   import {getAction} from '@/api/manage'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
   import {httpAction} from '@/api/manage'
@@ -732,7 +732,7 @@
           this.form.setFieldsValue(pick(this.model, 'no', 'state', 'isPay', 'result', 'createTime'))
 
           // 得到评审企业信息
-          this.form.setFieldsValue(copy2NewKeyObjeect(this.model.sysEnterprise, ['id', 'name', 'businessLicenseNo', 'logo', 'registeredCapital',
+          this.form.setFieldsValue(copy2NewKeyObject(this.model.sysEnterprise, ['id', 'name', 'businessLicenseNo', 'logo', 'registeredCapital',
             'sitesLinks', 'briefIntroduction', 'industry'], {
             id: 'sysEnterpriseId'
           }))
@@ -740,7 +740,7 @@
           // 得到评审负责人信息
           getAction(this.url.getResponsibleUrl, {enterpriseId: record.sysEnterprise.id}).then((res) => {
             if (res.success) {
-              this.form.setFieldsValue(copy2NewKeyObjeect(res.result, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
+              this.form.setFieldsValue(copy2NewKeyObject(res.result, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
                 id: 'responsibleId', name: 'responsibleName'
               }))
               this.form.setFieldsValue({birthYear: res.result.birthYear ? moment(res.result.birthYear) : null})
@@ -749,7 +749,7 @@
           // 得到评审主体信息
           getAction(this.url.getReviewObjectUrl, {enterpriseId: record.sysEnterprise.id}).then((res) => {
             if (res.success) {
-              this.form.setFieldsValue(copy2NewKeyObjeect(
+              this.form.setFieldsValue(copy2NewKeyObject(
                 res.result, ['id', 'name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
                 {
                   id: 'objectId',
