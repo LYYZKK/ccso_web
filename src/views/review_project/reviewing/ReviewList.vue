@@ -62,19 +62,17 @@
             <a @click="showOperateModal(record, 'view')">查看评审</a>
             <a-divider type="vertical"/>
             <a @click="submitArchive(record.id)">归档</a>
-            <a-divider type="vertical" />
+            <a-divider type="vertical"/>
             <a @click="sendBack(record.id, 2)">补审</a>
           </span>
           <a @click="showOperateModal(record, 'allocateReviewer')" v-else>分配评审员</a>
           <span v-show="record.isAssign==0 || record.isRecord==0">
             <a-divider type="vertical"/>
             <a @click="projectSubmit(record.id)">提交</a>
-            <!--<span v-show="toNumber(record.sendBackNum)<=sendbackTimeLimit">
+            <span v-show="toNumber(record.sendBackNum)<2">
               <a-divider type="vertical"/>
               <a @click="sendBack(record.id, 1)">回退</a>
-            </span>-->
-            <a-divider type="vertical"/>
-              <a @click="sendBack(record.id, 1)">回退</a>
+            </span>
           </span>
         </span>
       </a-table>
@@ -148,7 +146,8 @@
             align: 'center',
             dataIndex: 'state',
             customRender: text => {
-              return (<a-tag color="green">评审中</a-tag>)
+              return ( < a - tag
+              color = "green" > 评审中 < /a-tag>)
             }
           },
           {
@@ -157,9 +156,11 @@
             dataIndex: 'isAssign',
             customRender: text => {
               if (text == 0) {
-                return (<a-tag color="orange">未排配</a-tag>)
+                return ( < a - tag
+                color = "orange" > 未排配 < /a-tag>)
               } else {
-                return (<a-tag color="green">已排配</a-tag>)
+                return ( < a - tag
+                color = "green" > 已排配 < /a-tag>)
               }
             }
           },
@@ -169,9 +170,11 @@
             dataIndex: 'isRecord',
             customRender: text => {
               if (text == 0) {
-                return (<a-tag color="orange">未提交</a-tag>)
+                return ( < a - tag
+                color = "orange" > 未提交 < /a-tag>)
               } else {
-                return (<a-tag color="green">已提交</a-tag>)
+                return ( < a - tag
+                color = "green" > 已提交 < /a-tag>)
               }
             }
           },
