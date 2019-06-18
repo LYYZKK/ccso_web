@@ -122,7 +122,7 @@
             align: 'center',
             dataIndex: 'state',
             customRender: text => {
-              return '已归档'
+              return (<a-tag color="green">已归档</a-tag>)
             }
           },
           {
@@ -131,9 +131,9 @@
             dataIndex: 'result',
             customRender: text => {
               if (text == 0) {
-                return '未通过'
+                return (<a-tag color="orange">未通过</a-tag>)
               } else {
-                return '通过'
+                return (<a-tag color="green">通过</a-tag>)
               }
             }
           },

@@ -136,7 +136,7 @@
             align: 'center',
             dataIndex: 'state',
             customRender: text => {
-              return '启动中'
+              return (<a-tag color="green">启动中</a-tag>)
             }
           },
           {
@@ -161,9 +161,9 @@
             dataIndex: 'isPay',
             customRender: text => {
               if (text == 0) {
-                return '未支付'
+                return (<a-tag color="orange">未支付</a-tag>)
               } else {
-                return '已支付'
+                return (<a-tag color="green">已支付</a-tag>)
               }
             }
           },

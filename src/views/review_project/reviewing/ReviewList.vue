@@ -148,7 +148,7 @@
             align: 'center',
             dataIndex: 'state',
             customRender: text => {
-              return '评审中'
+              return (<a-tag color="green">评审中</a-tag>)
             }
           },
           {
@@ -157,9 +157,9 @@
             dataIndex: 'isAssign',
             customRender: text => {
               if (text == 0) {
-                return '未排配'
+                return (<a-tag color="orange">未排配</a-tag>)
               } else {
-                return '已排配'
+                return (<a-tag color="green">已排配</a-tag>)
               }
             }
           },
@@ -169,9 +169,9 @@
             dataIndex: 'isRecord',
             customRender: text => {
               if (text == 0) {
-                return '未提交'
+                return (<a-tag color="orange">未提交</a-tag>)
               } else {
-                return '已提交'
+                return (<a-tag color="green">已提交</a-tag>)
               }
             }
           },
