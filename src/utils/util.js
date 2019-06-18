@@ -236,7 +236,7 @@ export function topNavScrollToSelectItem(doc) {
  *
  * @return 替换属性名称后返回的新对象
  */
-export function copy2NewKeyObjeect(orignal_obj = {}, old_keys = [], diff_old_new_keyMap = {}) {
+export function copy2NewKeyObject(orignal_obj = {}, old_keys = [], diff_old_new_keyMap = {}) {
   const new_obj = {}
   const diffOldKeys = keys(diff_old_new_keyMap)
   for (let old_key in orignal_obj) {
