@@ -2,7 +2,7 @@
   <div class="account-settings-info-view">
     <a-row :gutter="16">
       <a-col :md="24" :lg="16">
-        <a-form :form="form">
+        <a-form layout="vertical" :form="form">
           <a-card title="企业信息" :bordered="false">
             <a-form-item
               label="企业名称">

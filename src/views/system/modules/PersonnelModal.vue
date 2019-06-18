@@ -264,8 +264,6 @@
         queryall().then((res) => {
           if (res.success) {
             this.roleList = res.result;
-          } else {
-            console.log(res.message);
           }
         });
       },

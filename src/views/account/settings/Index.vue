@@ -17,7 +17,7 @@
             </a-menu-item>
             <a-menu-item key="/account/settings/user">
               <router-link :to="{ name: 'account-settings-user' }">
-                帐号信息
+                用户信息
               </router-link>
             </a-menu-item>
           </a-menu>

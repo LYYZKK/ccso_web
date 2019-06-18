@@ -10,14 +10,20 @@
       </span>
       <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
         <a-menu-item key="0">
-          <router-link :to="{ name: 'account-center' }">
+          <router-link :to="{ name: 'account-settings-enterprise' }">
             <a-icon type="user"/>
-            <span>个人中心</span>
+            <span>修改企业信息</span>
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="1">
+          <router-link :to="{ name: 'account-settings-user' }">
+            <a-icon type="user"/>
+            <span>修改用户信息</span>
           </router-link>
         </a-menu-item>
         <a-menu-item key="2" @click="updatePassword">
           <a-icon type="setting"/>
-          <span>密码修改</span>
+          <span>修改密码</span>
         </a-menu-item>
         <!-- <a-menu-item key="2" disabled>
            <a-icon type="setting"/>
