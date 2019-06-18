@@ -69,12 +69,10 @@
           <span v-show="record.isAssign==0 || record.isRecord==0">
             <a-divider type="vertical"/>
             <a @click="projectSubmit(record.id)">提交</a>
-            <!--<span v-show="toNumber(record.sendBackNum)<=sendbackTimeLimit">
+            <span v-show="toNumber(record.sendBackNum)<2">
               <a-divider type="vertical"/>
               <a @click="sendBack(record.id, 1)">回退</a>
-            </span>-->
-            <a-divider type="vertical"/>
-              <a @click="sendBack(record.id, 1)">回退</a>
+            </span>
           </span>
         </span>
       </a-table>
