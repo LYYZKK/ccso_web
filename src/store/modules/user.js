@@ -12,7 +12,8 @@ const user = {
     welcome: '',
     avatar: '',
     permissionList: [],
-    info: {}
+    info: {},
+    roleCodes: []
   },
 
   mutations: {
@@ -33,6 +34,9 @@ const user = {
     SET_INFO: (state, info) => {
       state.info = info
     },
+    SET_ROLECODES: (state, info) => {
+      state.roleCodes = info
+    },
   },
 
   actions: {
@@ -46,8 +50,10 @@ const user = {
             Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
             Vue.ls.set(USER_NAME, userInfo.username, 7 * 24 * 60 * 60 * 1000)
             Vue.ls.set(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
+
             commit('SET_TOKEN', result.token)
             commit('SET_INFO', userInfo)
+            commit('SET_ROLECODES', result.roleCodes)
             commit('SET_NAME', { username: userInfo.username,realname: userInfo.realname, welcome: welcome() })
             commit('SET_AVATAR', userInfo.avatar)
             resolve()

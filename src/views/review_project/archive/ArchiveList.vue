@@ -143,8 +143,7 @@
             dataIndex: 'certificateNo',
             customRender: text => {
               if (text == null) {
-                return ( < label
-                style = "color:red" > 未上传 < /label>)
+                return ( <label style="color:red">未上传</label>)
               } else {
                 return text
               }
@@ -175,6 +174,18 @@
           importExcelUrl: 'review/project/importExcel',
         }
       }
+    },
+    created() {
+      if (this.$store.getters.roleCodes.includes('coordinator')) {
+        this.queryParam.coordinatorUserId = this.$store.getters.userInfo.id
+      }
+        if (this.$store.getters.roleCodes.includes('reviewer')) {
+        this.queryParam.reviewerUserId = this.$store.getters.userInfo.id
+      }
+        if (this.$store.getters.roleCodes.includes('busi_review_applier')) {
+        this.queryParam.busiReviewApplierUserId = this.$store.getters.userInfo.id
+      }
+      this.loadData()
     },
     computed: {
       importExcelUrl() {

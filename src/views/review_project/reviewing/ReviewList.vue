@@ -207,7 +207,18 @@
         return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`
       }
     },
-
+    created() {
+      if (this.$store.getters.roleCodes.includes('coordinator')) {
+        this.queryParam.coordinatorUserId = this.$store.getters.userInfo.id
+      }
+      if (this.$store.getters.roleCodes.includes('reviewer')) {
+        this.queryParam.reviewerUserId = this.$store.getters.userInfo.id
+      }
+      if (this.$store.getters.roleCodes.includes('busi_review_applier')) {
+        this.queryParam.busiReviewApplierUserId = this.$store.getters.userInfo.id
+      }
+      this.loadData()
+    },
     methods: {
       detail(record) {
         this.$refs.detail.edit(record);
