@@ -443,7 +443,24 @@
         },
         confirmLoading: false,
         form: this.$form.createForm(this),
+
         validatorRules: {
+          name: {rules: [{required: true, message: '请输入企业名称!'}]},
+          businessLicenseNo: {rules: [{required: true, message: '请输入营业执照编号!'}]},
+          businessLicenseFile: {rules: [{required: true, message: '请上传营业执照文件!'}]},
+          registeredCapital: {rules: [{required: true, message: '请选择注册资本!'}]},
+          sitesLinks: {rules: [{required: true, message: '请输入网站链接!'}]},
+
+          objectName: {rules: [{required: true, message: '请输入企业主体名称!'}]},
+          licenseNo: {rules: [{required: true, message: '请输入经营许可证号码!'}]},
+          positionSize: {rules: [{required: true, message: '请选择坐席规模!'}]},
+          establishingSite: {rules: [{required: true, message: '请输入建制地点!'}]},
+
+          responsibleName: {rules: [{required: true, message: '请输入姓名!'}]},
+          email: {rules: [{required: true, type: 'email', message: '请输入电子邮箱!'}]},
+          tel: {rules: [{required: true, message: '请输入手机号码!'}]},
+          position: {rules: [{required: true, message: '请选择职位!'}]},
+
           remark: {rules: [{required: true, message: '请输入批注信息！'}]},
         },
         url: {

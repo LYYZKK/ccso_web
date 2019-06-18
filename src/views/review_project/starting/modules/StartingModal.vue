@@ -151,7 +151,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="电子邮箱">
-          <a-input placeholder="请输入电子邮箱" v-decorator="['email', validatorRules.email]"/>
+          <a-input placeholder="请输入电子邮箱" v-decorator="['email',  validatorRules.email]"/>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -260,7 +260,7 @@
           establishingSite: {rules: [{required: true, message: '请输入建制地点!'}]},
 
           responsibleName: {rules: [{required: true, message: '请输入姓名!'}]},
-          email: {rules: [{required: true, message: '请输入电子邮箱!'}]},
+          email: {rules: [{required: true, type: 'email', message: '请输入电子邮箱!'}]},
           tel: {rules: [{required: true, message: '请输入手机号码!'}]},
           position: {rules: [{required: true, message: '请选择职位!'}]},
         },
@@ -350,13 +350,8 @@
           (err, result) => {
             if (!err) {
               this.coordinators = result.coordinators
-              // 企业信息
-              copy2OldObject(this.model, result.enterpriseData)
-              // 负责人信息
-              this.model.reviewResponsible = result.responsibleData
 
               this.visible = true
-
               this.$nextTick(() => {
                 // 负责人信息
                 this.form.setFieldsValue(copy2NewKeyObject(result.responsibleData, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
@@ -365,15 +360,18 @@
                 this.form.setFieldsValue({birthYear: result.responsibleData.birthYear ? moment(result.responsibleData.birthYear) : null})
 
                 // 企业信息
-                this.form.setFieldsValue(pick(this.model,
-                  'name',
-                  'logo',
-                  'businessLicenseNo',
-                  'businessLicenseFile',
-                  'registeredCapital',
-                  'sitesLinks',
-                  'briefIntroduction',
-                  'industry')
+                this.form.setFieldsValue(copy2NewKeyObject(
+                  result.enterpriseData, ['name',
+                    'logo',
+                    'businessLicenseNo',
+                    'businessLicenseFile',
+                    'registeredCapital',
+                    'sitesLinks',
+                    'briefIntroduction',
+                    'industry'],
+                  {
+                    id: 'sysEnterpriseId'
+                  })
                 )
 
                 // 评审主体
@@ -400,14 +398,8 @@
         this.form.validateFields((err, values) => {
           if (!err) {
             that.confirmLoading = true
-            let httpurl = '', method = ''
-            if (!this.model.id) {
-              httpurl += this.url.add
-              method = 'post'
-            } else {
-              httpurl += this.url.edit
-              method = 'put'
-            }
+            const httpurl = this.url.add
+            const method = 'post'
             let formData = Object.assign(this.model, values, this.files)
             //时间格式化
             var selectedCoordinator = []
