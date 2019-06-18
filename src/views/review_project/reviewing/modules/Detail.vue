@@ -325,8 +325,7 @@
         </a-form-item>
         <h3 class="devide-title">原评审记录</h3>
         <a-form-item>
-          <span v-for="(value, index) in oldEnrtyRecord">
-            <label>第{{index+1}}次原评审记录</label>
+          <span v-for="(value, idx) in oldEnrtyRecord" :key="idx">
             <a-table
               ref="table"
               size="middle"
@@ -336,34 +335,34 @@
               :dataSource="value"
               :pagination=false
               :loading="loading"
-              :expandedRowKeys="expandedRowKeys"
+              :expandedRowKeys="oldExpandedRowKeys"
               :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
               @change="handleTableChange"
-              @expand="handleExpand"
-              >
+              @expand="handleExpand_old"
+            >
               <a-table
                 slot="expandedRowRender"
                 slot-scope="text"
-                :columns="columns_2_child"
-                :dataSource="dataSource_3_child"
+                :columns="columns_child_old"
+                :dataSource="dataSource_child_old"
                 size="middle"
                 bordered
                 rowKey="id"
                 :pagination="false"
                 :loading="loading"
               >
-                <span slot="action" slot-scope="text, record">
-                  <a-radio-group :defaultValue="toString(record.reviewEntryRecord.isRight)">
-                    <a-radio @click="saveUpdateEntryResult(record, 1)" value="1">符合</a-radio>
-                    <a-radio @click="saveUpdateEntryResult(record, 0)" value="0">不符合</a-radio>
-                    <a-radio @click="saveUpdateEntryResult(record, 2)" value="2">不适用</a-radio>
+                <span slot="oldAction" slot-scope="text, record">
+                  <a-radio-group :defaultValue="toString(record.reviewEntryRecords.isRight)" :disabled="true">
+                    <a-radio value="1">符合</a-radio>
+                    <a-radio value="0">不符合</a-radio>
+                    <a-radio value="2">不适用</a-radio>
                   </a-radio-group>
                   <a-divider type="vertical"/>
-                  <a @click="postil(record, record.reviewEntryRecord.isRight)" type="vertical">批注</a>
+                  <a @click="postil(record, record.reviewEntryRecords.isRight)">批注</a>
                 </span>
               </a-table>
             </a-table>
-            <br />
+            <br/>
           </span>
         </a-form-item>
         <h3 class="devide-title">评审记录</h3>
@@ -399,7 +398,7 @@
                   <a-radio @click="updateEntryResult(record, 2)" value="2">不适用</a-radio>
                 </a-radio-group>
                 <a-divider type="vertical"/>
-                <a @click="postil(record, record.reviewEntryRecord.isRight)" type="vertical">批注</a>
+                <a @click="postil(record, record.reviewEntryRecord.isRight)">批注</a>
               </span>
             </a-table>
           </a-table>
@@ -479,7 +478,7 @@
           getAllCategoryUrl: '/review/category/queryIdAndNameAll',
           updateUrl: '/review/entryRecord/update',
           getEntryRecordUrl: '/review/entry/getEntryRecord',
-          getOldReviewRecord: '/review/category/queryByReviewProjectAndNumber',
+          getOldReviewRecord: '/review/category/queryOldRecordByReviewProject',
           getReviewTime: '/review/time/queryByReviewProject',
           getSendBackByReviewProjectUrl: '/review/sendBack/getSendBackByReviewProject'
 
@@ -596,6 +595,68 @@
           },
         ],
 
+        // 原评审记录子表头
+        columns_child_old: [
+          {
+            title: '#',
+            width: 60,
+            align: 'center',
+            customRender: (t, r, index) => {
+              return parseInt(index) + 1
+            }
+          },
+          {
+            title: '编号',
+            align: 'center',
+            dataIndex: 'no',
+            width: 120,
+            customRender: (text, record) => {
+              return record.reviewEntry.no
+            }
+          },
+          {
+            title: '评审条目要求',
+            align: 'center',
+            dataIndex: 'requirements',
+            width: 320,
+            customRender: (text, record) => {
+              return (<j-ellipsis value={record.reviewEntry.requirements} length={20}/>)
+            }
+          },
+          {
+            title: '查看资料',
+            align: 'center',
+            dataIndex: 'path',
+            width: 100,
+            customRender: (text, record) => {
+              return (<a href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.path)}> 下载文件 </a>)
+            }
+          },
+          {
+            title: '评判时间',
+            align: 'center',
+            dataIndex: 'updateTime',
+            width: 180,
+            customRender: (text, record) => {
+              return record.reviewEntryRecords.updateTime
+            }
+          },
+          {
+            title: '评审员',
+            align: 'center',
+            dataIndex: 'updateBy',
+            width: 180,
+            customRender: (text, record) => {
+              return record.reviewEntryRecords.updateBy
+            }
+          },
+          {
+            title: '操作',
+            dataIndex: 'action',
+            align: 'center',
+            scopedSlots: {customRender: 'oldAction'},
+          },
+        ],
 
         // 评审记录子表头
         columns_2_child: [
@@ -612,22 +673,25 @@
           {
             title: '编号',
             align: 'center',
-            dataIndex: 'no'
+            dataIndex: 'no',
+            width: 120,
           },
           {
             title: '评审条目要求',
             align: 'center',
             dataIndex: 'requirements',
+            width: 320,
             customRender: text => {
-              return (<j-ellipsis value={text} length={10} />)
+              return (<j-ellipsis value={text} length={20}/>)
             }
           },
           {
             title: '查看资料',
             align: 'center',
             dataIndex: 'path',
+            width: 100,
             customRender: (text, record) => {
-              return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text, record.reviewInformationFile.originalFileName)}>下载文件</a>)
+              return (<a href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.reviewInformationFile.originalFileName)} > 下载文件 </a>)
             }
           },
           {
@@ -651,26 +715,18 @@
             title: '评判时间',
             align: 'center',
             dataIndex: 'updateTime',
-            width: 200,
+            width: 180,
             customRender: (text, record) => {
-              if (record.reviewEntryRecord != null) {
-                return record.reviewEntryRecord.updateTime
-              } else {
-                return '暂未评判'
-              }
+              return record.reviewEntryRecord.updateTime
             }
           },
           {
             title: '评审员',
             align: 'center',
             dataIndex: 'updateBy',
-            width: 160,
+            width: 180,
             customRender: (text, record) => {
-              if (record.reviewEntryRecord != null) {
-                return record.reviewEntryRecord.updateBy
-              } else {
-                return '暂未评判'
-              }
+              return record.reviewEntryRecord.updateBy
             }
           },
           {
@@ -713,10 +769,12 @@
         dataSource_2: [],
         dataSource_3: [],
         dataSource_3_child: [],
+        dataSource_child_old: [],
         expandedRowKeys: [],
         oldEnrtyRecord: [],
         uploadLoading: false,
-        operateType: 'view'
+        operateType: 'view',
+        oldExpandedRowKeys: []
       }
     },
     methods: {
@@ -740,6 +798,17 @@
               this.dataSource_3_child = res.result
             }
           });
+          this.loading = false;
+        }
+      },
+
+      // 得到旧纪录嵌套表格子表格数据
+      handleExpand_old(expanded, record) {
+        this.oldExpandedRowKeys = []
+        if (expanded === true) {
+          this.loading = true;
+          this.oldExpandedRowKeys.push(record.id)
+          this.dataSource_child_old = record.entryAndRecordModels
           this.loading = false;
         }
       },
