@@ -290,6 +290,7 @@
         }
       })
     },
+    mounted: {},
     methods: {
       handleChange_2(info) {
         this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'businessLicenseFile'})
@@ -306,87 +307,76 @@
         //TODO 验证文件大小
       },
       add() {
-        async.series(
-          {
-            coordinators: async cb => {
-              getAction(this.url.getAccountByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
-                if (res.success) {
-                  const dataSource = []
-                  for (let i = 0; i < res.result.length; i++) {
-                    const data = {
-                      key: i.toString(),
-                      title: res.result[i].name,
-                      userId: res.result[i].id
-                    }
-                    dataSource.push(data)
-                  }
-                  cb(null, dataSource)
-                }
-              })
-            },
-            enterpriseData: async cb => {
-              getAction(this.url.getEnterpriseDataByUserIdUrl, { userId: this.$store.getters.userInfo.id }).then(res => {
-                if (res.success) {
-                  this.enterpriseId = res.result.id
-                  cb(null, res.result || {})
-                }
-              })
-            },
-            responsibleData: async cb => {
-              getAction(this.url.getResponsibleUrl, {enterpriseId: this.enterpriseId}).then((res) => {
-                if (res.success) {
-                  cb(null, res.result || {})
-                }
-              })
-            },
-            reviewObjectData: async cb => {
-              getAction(this.url.getReviewObjectUrl, {enterpriseId: this.enterpriseId}).then((res) => {
-                if (res.success) {
-                  cb(null, res.result || {})
-                }
-              })
+        this.visible = true
+        getAction(this.url.getAccountByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
+          if (res.success) {
+            const dataSource = []
+            for (let i = 0; i < res.result.length; i++) {
+              const data = {
+                key: i.toString(),
+                title: res.result[i].name,
+                userId: res.result[i].id
+              }
+              dataSource.push(data)
             }
-          },
-          (err, result) => {
-            if (!err) {
-              this.coordinators = result.coordinators
-
-              this.visible = true
-              this.$nextTick(() => {
-                // 负责人信息
-                this.form.setFieldsValue(copy2NewKeyObject(result.responsibleData, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
-                  id: 'responsibleId', name: 'responsibleName'
-                }))
-                this.form.setFieldsValue({birthYear: result.responsibleData.birthYear ? moment(result.responsibleData.birthYear) : null})
-
-                // 企业信息
-                this.form.setFieldsValue(copy2NewKeyObject(
-                  result.enterpriseData, ['name',
-                    'logo',
-                    'businessLicenseNo',
-                    'businessLicenseFile',
-                    'registeredCapital',
-                    'sitesLinks',
-                    'briefIntroduction',
-                    'industry'],
-                  {
-                    id: 'sysEnterpriseId'
-                  })
-                )
-
-                // 评审主体
-                this.form.setFieldsValue(copy2NewKeyObject(
-                  result.reviewObjectData, ['id', 'name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
-                  {
-                    id: 'objectId',
-                    name: 'objectName'
-                  })
-                )
-                this.form.setFieldsValue({establishingYear: result.reviewObjectData.establishingYear ? moment(result.reviewObjectData.establishingYear) : null})
-              })
-            }
+            this.coordinators = dataSource
           }
-        )
+        })
+        getAction(this.url.getEnterpriseDataByUserIdUrl, {userId: this.$store.getters.userInfo.id}).then(res => {
+          if (res.success) {
+            this.enterpriseId = res.result.id
+
+            getAction(this.url.getResponsibleUrl, {enterpriseId: this.enterpriseId}).then((res) => {
+              if (res.success) {
+                this.$nextTick(() => {
+                  // 负责人信息
+                  this.responsibleData = copy2NewKeyObject(res.result, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
+                    id: 'responsibleId', name: 'responsibleName'
+                  })
+                  this.form.setFieldsValue(this.responsibleData)
+                  this.form.setFieldsValue({birthYear: res.result.birthYear ? moment(res.result.birthYear) : null})
+                  this.responsibleData.birthYear = res.result.birthYear ? moment(res.result.birthYear) : null
+                })
+              }
+            })
+            getAction(this.url.getReviewObjectUrl, {enterpriseId: this.enterpriseId}).then((res) => {
+              if (res.success) {
+                this.$nextTick(() => {
+                  // 评审主体
+                  this.reviewObjectData = copy2NewKeyObject(
+                    res.result, ['id', 'name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
+                    {
+                      id: 'objectId',
+                      name: 'objectName'
+                    })
+                  this.form.setFieldsValue(this.reviewObjectData)
+                  this.form.setFieldsValue({establishingYear: res.result.establishingYear ? moment(res.result.establishingYear) : null})
+                  this.reviewObjectData.establishingYear = res.result.establishingYear ? moment(res.result.establishingYear) : null
+                  this.businessType = res.result.businessType
+                })
+              }
+            })
+
+            this.$nextTick(() => {
+              // 企业信息
+              this.enterpriseData = copy2NewKeyObject(
+                res.result, [
+                  'id',
+                  'name',
+                  'logo',
+                  'businessLicenseNo',
+                  'businessLicenseFile',
+                  'registeredCapital',
+                  'sitesLinks',
+                  'briefIntroduction',
+                  'industry'],
+                {
+                  id: 'sysEnterpriseId'
+                })
+              this.form.setFieldsValue(this.enterpriseData)
+            })
+          }
+        })
       },
       close() {
         this.$emit('close')
@@ -412,6 +402,10 @@
             formData.enterpriseType = this.enterpriseType
             formData.isPay = this.isPay
             formData.businessType = this.businessType
+            formData.sysEnterpriseId = this.enterpriseData.sysEnterpriseId
+            formData.objectId = this.reviewObjectData.objectId
+            formData.responsibleId = this.responsibleData.responsibleId
+            formData.responsibleName = this.responsibleData.responsibleName
             console.log('send request with formData =', formData)
             httpAction(httpurl, formData, method).then((res) => {
               if (res.success) {
