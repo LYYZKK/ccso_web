@@ -5,7 +5,8 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
     :destroyOnClose="true"
-    >
+    @cancel="handleCancel"
+  >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <div v-if="sendBackNum > 0">
