@@ -58,9 +58,9 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a @click="detail(record,'look')">查看</a>
+          <a @click="showOperateModal(record, true, 'view')">查看</a>
           <a-divider type="vertical"/>
-          <a @click="handleEdit(record)">编辑</a>
+          <a @click="showOperateModal(record, false, 'edit')">编辑</a>
           <a-divider type="vertical"/>
           <a @click="start(record.id)">启动</a>
         </span>
@@ -217,11 +217,8 @@
       start(id) {
         this.$refs.start.edit(id);
       },
-      handleEdit(record) {
-        this.$refs.detail.edit(record, '0');
-      },
-      detail(record) {
-        this.$refs.detail.edit(record, '1');
+      showOperateModal(record, isShowProjectInfo, operateType) {
+        this.$refs.detail.edit(record, isShowProjectInfo, operateType);
       },
     }
   }

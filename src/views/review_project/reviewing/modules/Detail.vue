@@ -4,11 +4,8 @@
     :width="1500"
     :visible="visible"
     :confirmLoading="confirmLoading"
-    @cancel="handleCancel"
     :maskClosable="false"
-    :destroyOnClose="true"
-    @ok="handleOk"
-    cancelText="关闭">
+    :destroyOnClose="true">
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <div v-if="sendBackNum > 0">
@@ -408,6 +405,12 @@
       </a-form>
     </a-spin>
     <submit ref="Submit"/>
+    <template slot="footer">
+      <a-button key="back" @click="handleCancel">关闭</a-button>
+      <a-button key="submit" type="primary" :loading="loading" @click="handleOk" v-if="operateType === 'edit'">
+        确定
+      </a-button>
+    </template>
   </a-modal>
 </template>
 
@@ -533,11 +536,9 @@
             dataIndex: 'path',
             customRender: (text, record) => {
               if (text != null) {
-                return ( < a
-                href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)} > 下载文件 < /a>)
+                return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)}>下载文件</a>)
               } else {
-                return ( < span
-                style = "color: red;" > 未上传 < /span>)
+                return (<span style="color: red;">未上传</span>)
               }
             }
           },
@@ -616,10 +617,7 @@
             align: 'center',
             dataIndex: 'requirements',
             customRender: text => {
-              return ( < j-ellipsis
-              value = {text}
-              length = {10}
-              />)
+              return (<j-ellipsis value={text} length={10} />)
             }
           },
           {
@@ -627,8 +625,7 @@
             align: 'center',
             dataIndex: 'path',
             customRender: (text, record) => {
-              return ( < a
-              href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.reviewInformationFile.originalFileName)} > 下载文件 < /a>)
+              return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text, record.reviewInformationFile.originalFileName)}>下载文件</a>)
             }
           },
           {
@@ -697,7 +694,8 @@
         dataSource_3_child: [],
         expandedRowKeys: [],
         oldEnrtyRecord: [],
-        uploadLoading: false
+        uploadLoading: false,
+        operateType: 'view'
       }
     },
     methods: {
@@ -735,7 +733,8 @@
         )
       },
 
-      edit(record) {
+      edit(record, operateType) {
+        this.operateType = operateType
         this.reviewProjectId = record.id
         this.dataSource_3_child = []
         this.getSelectedPersonnelByRoleCode(record.id, "coordinator")
