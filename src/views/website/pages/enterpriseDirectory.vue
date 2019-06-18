@@ -8,7 +8,7 @@
             <span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span> > 企业名录
           </div>
         </div>
-        <div class="search">
+        <div>
           <a-input-search
             placeholder="请输入姓名/编号"
             style="width: 200px"
@@ -36,9 +36,7 @@
                   style="display:flex;flex-direction: column;align-items: center;font-size: 12px;margin-top:10px;"
                 >
                   <span class="name">{{item.name}}</span>
-                  <span
-                    style="cursor:pointer"
-                  >{{item.businessLicenseNo}}</span>
+                  <span style="cursor:pointer">{{item.businessLicenseNo}}</span>
                   <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
                   <span class="brief">{{item.briefIntroduction}}</span>
                 </div>
@@ -60,7 +58,9 @@
             <div class="moveItem" v-for="(b,k) in cooperateEnterprisesAll" :key="k">
               <div v-for="(item,index) in b" :key="index" class="item">
                 <img :src="IMAGE_REVIEW_URL_RENDER(item.logo)" alt="LOGO">
-                <div style="display:flex;flex-direction: column;align-items: center;font-size: 12px;margin-top:10px;">
+                <div
+                  style="display:flex;flex-direction: column;align-items: center;font-size: 12px;margin-top:10px;"
+                >
                   <span class="name">{{item.name}}</span>
                   <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
                   <span class="brief">{{item.briefIntroduction}}</span>
@@ -88,8 +88,8 @@ export default {
       reviewEnterprisesAll: [],
       cooperateEnterprises: [],
       cooperateEnterprisesAll: [],
-      keyText: "",
-      fuzzySearchFields: ",name,briefIntroduction,",
+      keyText: '',
+      fuzzySearchFields: ',name,briefIntroduction,',
       url: 'sys/enterprise/list'
     }
   },
@@ -153,7 +153,7 @@ export default {
 <style lang="scss" scoped>
 @import '../common.scss';
 .enterprise {
-  .title{
+  .title {
     margin-bottom: 20px;
   }
   .name {
@@ -209,8 +209,8 @@ export default {
     }
     img {
       display: inline-block;
-      max-width: 100%;
-      height: 100px;
+      width: 198px;
+      height: 48px;
       border: 1px solid #deeffb;
     }
   }

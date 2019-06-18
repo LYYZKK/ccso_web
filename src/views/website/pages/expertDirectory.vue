@@ -8,7 +8,7 @@
             <span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span> > 专家名录
           </div>
         </div>
-        <div class="search">
+        <div>
           <a-input-search
             placeholder="请输入姓名/编号"
             style="width: 200px"
@@ -33,7 +33,7 @@
             <div class="moveItem" v-for="(a, i) in professorAll" :key="i">
               <div v-for="(item, index) in a" :key="index">
                 <div class="img-container">
-                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
+                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)||defaultImg" alt="个人照片">
                   <div class="name-container">
                     <span class="name">{{item.name}}</span>
                     <br>
@@ -60,7 +60,7 @@
             <div class="moveItem" v-for="(a, i) in approvarAll" :key="i">
               <div v-for="(item, index) in a" :key="index">
                 <div class="img-container">
-                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
+                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)||defaultImg" alt="个人照片">
                   <div class="name-container">
                     <span class="name">{{item.name}}</span>
                     <br>
@@ -87,7 +87,7 @@
             <div class="moveItem" v-for="(a, i) in cooperatorAll" :key="i">
               <div v-for="(item, index) in a" :key="index">
                 <div class="img-container">
-                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)" alt="个人照片">
+                  <img :src="IMAGE_REVIEW_URL_RENDER(item.personalPhoto)||defaultImg" alt="个人照片">
                   <div class="name-container">
                     <span class="name">{{item.name}}</span>
                     <br>
@@ -110,6 +110,7 @@ import { getAction } from '@/api/manage'
 import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
 import ConstConfig from '@/config/constant.config'
 import constantCfgMixin from '@/mixins/constant.cfg'
+import defaultImg from '../../../../static/images/default.png'
 
 export default {
   mixins: [constantCfgMixin],
@@ -122,7 +123,8 @@ export default {
       approvarAll: [],
       cooperatorAll: [],
       keyText: '',
-      url: 'sys/personnel/list'
+      url: 'sys/personnel/list',
+      defaultImg:defaultImg
     }
   },
   methods: {
@@ -259,8 +261,8 @@ export default {
       }
     }
     img {
-      width: 80px;
-      height: 100px;
+      width: 70px;
+      height: 90px;
       display: inline-block;
       border: 1px solid #deeffb;
     }
