@@ -58,15 +58,17 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <span v-if="record.isAssign==1 && record.isRecord==1">
+          <span v-if="record.isAssign == 1 && record.isRecord == 1">
             <a @click="showOperateModal(record, 'view')">查看评审</a>
             <a-divider type="vertical"/>
-            <a @click="submitArchive(record.id)">归档</a>
-            <a-divider type="vertical" />
+            <span v-has="permissions.file">
+              <a @click="submitArchive(record.id)">归档</a>
+              <a-divider type="vertical" />
+            </span>
             <a @click="sendBack(record.id, 2)">补审</a>
           </span>
           <a @click="showOperateModal(record, 'allocateReviewer')" v-else>分配评审员</a>
-          <span v-show="record.isAssign==0 || record.isRecord==0">
+          <span v-show="record.isAssign == 0 || record.isRecord == 0">
             <a-divider type="vertical"/>
             <a @click="projectSubmit(record.id)">提交</a>
             <span v-show="toNumber(record.sendBackNum)<2">
@@ -198,6 +200,9 @@
           importExcelUrl: 'review/project/importExcel',
           getSendBackByProject: '/review/sendBack/getSendBackByReviewProject'
         },
+        permissions: {
+          file: 'reviewing_project:file', // 归档.
+        }
       }
     },
     computed: {

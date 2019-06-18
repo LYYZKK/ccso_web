@@ -631,9 +631,27 @@
             }
           },
           {
+            title: '评判结果',
+            align: 'center',
+            dataIndex: 'updateTime',
+            width: 80,
+            customRender: (text, record, idx) => {
+              if (record.reviewEntryRecord.isRight === '0') {
+                return (<a-tag color={"red"}>不符合</a-tag>)
+              } else if (record.reviewEntryRecord.isRight === '1') {
+                return (<a-tag color={"green"}>符合</a-tag>)
+              } else if (record.reviewEntryRecord.isRight === '2') {
+                return (<a-tag color={"orange"}>不适用</a-tag>)
+              } else {
+                return (<a-tag>无</a-tag>)
+              }
+            }
+          },
+          {
             title: '评判时间',
             align: 'center',
             dataIndex: 'updateTime',
+            width: 200,
             customRender: (text, record) => {
               if (record.reviewEntryRecord != null) {
                 return record.reviewEntryRecord.updateTime
@@ -646,6 +664,7 @@
             title: '评审员',
             align: 'center',
             dataIndex: 'updateBy',
+            width: 160,
             customRender: (text, record) => {
               if (record.reviewEntryRecord != null) {
                 return record.reviewEntryRecord.updateBy

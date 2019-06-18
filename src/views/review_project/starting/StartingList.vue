@@ -61,8 +61,10 @@
           <a @click="showOperateModal(record, true, 'view')">查看</a>
           <a-divider type="vertical"/>
           <a @click="showOperateModal(record, false, 'edit')">编辑</a>
-          <a-divider type="vertical"/>
-          <a @click="start(record.id)">启动</a>
+          <span v-has="permissions.start">
+            <a-divider type="vertical"/>
+            <a @click="start(record.id)">启动</a>
+          </span>
         </span>
 
       </a-table>
@@ -192,7 +194,8 @@
           importExcelUrl: 'review/project/importExcel',
         },
         permissions: {
-          add: 'starting_review_project:add'
+          add: 'starting_review_project:add',
+          start: 'starting_review_project:start',
         }
       }
     },
