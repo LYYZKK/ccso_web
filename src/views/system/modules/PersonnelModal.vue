@@ -6,6 +6,7 @@
     :confirmLoading="confirmLoading"
     @ok="handleOk"
     @cancel="handleCancel"
+    :destroyOnClose="true"
     cancelText="关闭">
 
     <a-spin :spinning="confirmLoading">
@@ -223,7 +224,8 @@
           add: '/sys/personnel/add',
           edit: '/sys/personnel/edit',
           enterpriseUrl: '/sys/enterprise/queryIdAndNameAll',
-          roleUrl: "/sys/role/queryIdAndNameAll",
+          roleUrl: '/sys/role/queryIdAndNameAll',
+          getRoleDataUrl: '/sys/role/getByUserId',
         },
         uploadLoading: false,
         enterpriseData: [],
@@ -289,6 +291,9 @@
           //时间格式化
           this.form.setFieldsValue({birthDate: this.model.birthDate ? moment(this.model.birthDate) : null})
           this.form.setFieldsValue({certificateDate: this.model.certificateDate ? moment(this.model.certificateDate) : null})
+          if (record!=null) {
+            this.selectedRole = record.roleIds.split(',')
+          }
         })
       },
       close() {
