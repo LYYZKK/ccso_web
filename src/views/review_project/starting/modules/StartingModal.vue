@@ -352,6 +352,7 @@
                   this.form.setFieldsValue(this.reviewObjectData)
                   this.form.setFieldsValue({establishingYear: res.result.establishingYear ? moment(res.result.establishingYear) : null})
                   this.reviewObjectData.establishingYear = res.result.establishingYear ? moment(res.result.establishingYear) : null
+                  this.businessType = res.result.businessType
                 })
               }
             })
