@@ -146,14 +146,6 @@
                 />
               </a-form-item>
             </a-col>
-            <a-col class="gutter-row" :span="12">
-              <a-form-item
-                :labelCol="labelCol"
-                :wrapperCol="wrapperCol"
-                label="网站简介">
-                <a-textarea placeholder="请输入网站简介" v-decorator="['briefIntroduction', {}]"/>
-              </a-form-item>
-            </a-col>
           </a-row>
         </a-card>
 
@@ -602,7 +594,7 @@
             formData.reviewObject = Object.assign(this.model.reviewObject, values)
             formData.reviewObject.name = values.objectName
             //时间格式化
-            formData.businessTypes = this.businessType
+            formData.reviewObject.businessType = this.businessType
             formData.reviewProjectId = this.reviewProjectId
             var selectedCoordinator = []
             for (var i = 0; i < this.targetKeys.length; i++) {

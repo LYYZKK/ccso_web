@@ -313,7 +313,7 @@
         const that = this
         // 触发表单验证
         this.form.validateFields((err, values) => {
-          if (!err && this.targetKeys.length > 0) {
+          if (!err) {
             that.confirmLoading = true
             let httpurl = '', method = ''
             if (!this.model.id) {
@@ -326,8 +326,10 @@
             let formData = Object.assign(this.model, values, this.files)
             //时间格式化
             var selectedCoordinator = []
-            for (var i = 0; i < this.targetKeys.length; i++) {
-              selectedCoordinator.push(this.personnel[this.targetKeys[i]].userId)
+            if (this.targetKeys.length > 0) {
+              for (var i = 0; i < this.targetKeys.length; i++) {
+                selectedCoordinator.push(this.personnel[this.targetKeys[i]].userId)
+              }
             }
             formData.coordinatorIds = selectedCoordinator.join(',')
             formData.enterpriseType = this.enterpriseType
@@ -346,7 +348,6 @@
               that.close()
             })
           }
-          this.confirmLoading = false
           this.$emit('error', {err})
         })
       },
