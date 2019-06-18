@@ -16,7 +16,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="企业名称">
-          <a-input placeholder="请输入企业名称" v-decorator="['name', validatorRules.name]"/>
+          <a-input placeholder="请输入企业名称" v-decorator="['name', validatorRules.name]" :disabled="true"/>
         </a-form-item>
         <a-form-item label="LOGO" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-upload
@@ -193,7 +193,7 @@
           :wrapperCol="wrapperCol"
           class="coordinator-form-item">
           <a-transfer
-            :dataSource="personnel"
+            :dataSource="coordinators"
             :filterOption="filterTransferOption"
             :targetKeys="targetKeys"
             showSearch
@@ -219,9 +219,14 @@
 </template>
 
 <script>
+  import async from 'async'
+  import moment from 'moment'
+  import pick from 'lodash.pick'
+
   import antMixin from '@/mixins/ant-mixin'
   import constantCfgMixin from '@/mixins/constant.cfg'
 
+  import {copy2OldObject, copy2NewKeyObject} from '@/utils/util'
   import {httpAction, getAction} from '@/api/manage'
   import {getDictItemByDictCodeAndItemCode} from '@/components/dict/JDictSelectUtil'
   import ConstConfig from '@/config/constant.config'
@@ -264,11 +269,14 @@
         url: {
           add: '/review/project/add',
           edit: '/review/project/edit',
-          getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode'
+          getAccountByRoleCodeUrl: '/sys/user/queryUserByRoleCode',
+          getEnterpriseDataByUserIdUrl: '/sys/enterprise/getByUserId',
+          getResponsibleUrl: '/review/responsible/queryByEnterpriseId',
+          getReviewObjectUrl: '/review/object/queryByEnterpriseId',
         },
         businessType: '',
         isPay: '0',
-        personnel: [],
+        coordinators: [],
         targetKeys: [],
         uploadLoading: false,
         enterpriseType: ''
@@ -281,12 +289,7 @@
           this.enterpriseType = res.itemValue
         }
       })
-    }
-    ,
-    mounted() {
-      this.getPersonnel()
-    }
-    ,
+    },
     methods: {
       handleChange_2(info) {
         this.UPLOAD_CHANGE_HANDLER({info, fieldName: 'businessLicenseFile'})
@@ -303,7 +306,89 @@
         //TODO 验证文件大小
       },
       add() {
-        this.visible = true
+        async.series(
+          {
+            coordinators: async cb => {
+              getAction(this.url.getAccountByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
+                if (res.success) {
+                  const dataSource = []
+                  for (let i = 0; i < res.result.length; i++) {
+                    const data = {
+                      key: i.toString(),
+                      title: res.result[i].name,
+                      userId: res.result[i].id
+                    }
+                    dataSource.push(data)
+                  }
+                  cb(null, dataSource)
+                }
+              })
+            },
+            enterpriseData: async cb => {
+              getAction(this.url.getEnterpriseDataByUserIdUrl, { userId: this.$store.getters.userInfo.id }).then(res => {
+                if (res.success) {
+                  this.enterpriseId = res.result.id
+                  cb(null, res.result || {})
+                }
+              })
+            },
+            responsibleData: async cb => {
+              getAction(this.url.getResponsibleUrl, {enterpriseId: this.enterpriseId}).then((res) => {
+                if (res.success) {
+                  cb(null, res.result || {})
+                }
+              })
+            },
+            reviewObjectData: async cb => {
+              getAction(this.url.getReviewObjectUrl, {enterpriseId: this.enterpriseId}).then((res) => {
+                if (res.success) {
+                  cb(null, res.result || {})
+                }
+              })
+            }
+          },
+          (err, result) => {
+            if (!err) {
+              this.coordinators = result.coordinators
+              // 企业信息
+              copy2OldObject(this.model, result.enterpriseData)
+              // 负责人信息
+              this.model.reviewResponsible = result.responsibleData
+
+              this.visible = true
+
+              this.$nextTick(() => {
+                // 负责人信息
+                this.form.setFieldsValue(copy2NewKeyObject(result.responsibleData, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
+                  id: 'responsibleId', name: 'responsibleName'
+                }))
+                this.form.setFieldsValue({birthYear: result.responsibleData.birthYear ? moment(result.responsibleData.birthYear) : null})
+
+                // 企业信息
+                this.form.setFieldsValue(pick(this.model,
+                  'name',
+                  'logo',
+                  'businessLicenseNo',
+                  'businessLicenseFile',
+                  'registeredCapital',
+                  'sitesLinks',
+                  'briefIntroduction',
+                  'industry')
+                )
+
+                // 评审主体
+                this.form.setFieldsValue(copy2NewKeyObject(
+                  result.reviewObjectData, ['id', 'name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
+                  {
+                    id: 'objectId',
+                    name: 'objectName'
+                  })
+                )
+                this.form.setFieldsValue({establishingYear: result.reviewObjectData.establishingYear ? moment(result.reviewObjectData.establishingYear) : null})
+              })
+            }
+          }
+        )
       },
       close() {
         this.$emit('close')
@@ -354,21 +439,11 @@
       handleCancel() {
         this.close()
       },
-      getPersonnel() {
-        const dataSource = []
-        getAction(this.url.getAccountByRoleCodeUrl, {roleCode: 'coordinator'}).then(res => {
-          if (res.success) {
-            for (let i = 0; i < res.result.length; i++) {
-              const data = {
-                key: i.toString(),
-                title: res.result[i].name,
-                userId: res.result[i].id
-              }
-              dataSource.push(data)
-            }
-          }
-        })
-        this.personnel = dataSource
+      getCoordinators() {
+
+      },
+      getEnterpriseData() {
+
       },
       handleChange_coordinator(targetKeys) {
         this.targetKeys = targetKeys

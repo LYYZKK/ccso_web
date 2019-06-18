@@ -229,15 +229,14 @@ export function topNavScrollToSelectItem(doc) {
 
 /**
  * 【从对象中copy指定属性到新属性并返回新对象】
- *  @date 2019-04-08
- *  顶部导航栏滚动条位置滚动到选中的菜单处
+ *
  * @param orignal_obj 源对象
  * @param old_keys 需要 copy 的属性
  * @param diff_old_new_keyMap 需要特殊转换名称的新旧属性关系
  *
  * @return 替换属性名称后返回的新对象
  */
-export function copy2NewKeyObjeect(orignal_obj = {}, old_keys = [], diff_old_new_keyMap = {}) {
+export function copy2NewKeyObject(orignal_obj = {}, old_keys = [], diff_old_new_keyMap = {}) {
   const new_obj = {}
   const diffOldKeys = keys(diff_old_new_keyMap)
   for (let old_key in orignal_obj) {
@@ -251,4 +250,27 @@ export function copy2NewKeyObjeect(orignal_obj = {}, old_keys = [], diff_old_new
   }
 
   return new_obj
+}
+
+/**
+ * 【从新对象中copy指定属性到旧对象】
+ *
+ * @param old_obj 旧对象
+ * @param new_obj 新对象
+ * @param keys 需要copy的属性列表, 默认为空表示全部copy
+ *
+ * @return 替换属性名称后返回的新对象
+ */
+export function copy2OldObject(old_obj = {}, new_obj = {}, keys = []) {
+  if (keys.length > 0) {
+    keys.forEach(key => {
+      old_obj[key] = new_obj[key]
+    })
+  } else {
+    for (let key in new_obj) {
+      old_obj[key] = new_obj[key]
+    }
+  }
+
+  return old_obj
 }
