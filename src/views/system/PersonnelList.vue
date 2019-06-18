@@ -300,7 +300,6 @@
             this.$message.error(res.message)
           }
           this.confirmLoading = false
-          this.record.surfaceShow = surfaceShowValue
         }).finally(() => {
           this.confirmLoading = false
           this.loadData();

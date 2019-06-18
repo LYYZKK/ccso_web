@@ -10,29 +10,14 @@
             type="inner"
             @openChange="onOpenChange"
           >
-            <a-menu-item key="/account/settings/base">
-              <router-link :to="{ name: 'account-settings-base' }">
-                基本设置
+            <a-menu-item key="/account/settings/enterprise">
+              <router-link :to="{ name: 'account-settings-enterprise' }">
+                企业信息
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/account/settings/security">
-              <router-link :to="{ name: 'account-settings-security' }">
-                安全设置
-              </router-link>
-            </a-menu-item>
-            <a-menu-item key="/account/settings/custom">
-              <router-link :to="{ name: 'account-settings-custom' }">
-                个性化
-              </router-link>
-            </a-menu-item>
-            <a-menu-item key="/account/settings/binding">
-              <router-link :to="{ name: 'account-settings-binding' }">
-                账户绑定
-              </router-link>
-            </a-menu-item>
-            <a-menu-item key="/account/settings/notification">
-              <router-link :to="{ name: 'account-settings-notification' }">
-                新消息通知
+            <a-menu-item key="/account/settings/user">
+              <router-link :to="{ name: 'account-settings-user' }">
+                帐号信息
               </router-link>
             </a-menu-item>
           </a-menu>

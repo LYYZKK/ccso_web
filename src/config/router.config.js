@@ -87,46 +87,28 @@ export const asyncRouterMap = [
         path: '/account',
         component: RouteView,
         name: 'account',
-        meta: {title: '个人页', icon: 'user', keepAlive: true, permission: ['user']},
+        meta: {title: '我的帐号', icon: 'user', keepAlive: true, permission: ['user']},
         children: [
           {
             path: 'settings',
             name: 'settings',
             component: () => import('@/views/account/settings/Index'),
-            meta: {title: '个人设置', hideHeader: true, keepAlive: true, permission: ['user']},
-            redirect: '/account/settings/base',
+            meta: {title: '修改信息', hideHeader: true, keepAlive: true, permission: ['user']},
+            redirect: '/account/settings/enterprise',
             alwaysShow: true,
             children: [
               {
-                path: 'base',
-                name: 'BaseSettings',
-                component: () => import('@/views/account/settings/BaseSetting'),
-                meta: {title: '基本设置', hidden: true, keepAlive: true, permission: ['user']}
+                path: 'enterprise',
+                name: 'EnterpriseSettings',
+                component: () => import('@/views/account/settings/Enterprise'),
+                meta: {title: '企业信息', hidden: true, keepAlive: true, permission: ['user']}
               },
               {
-                path: 'security',
-                name: 'SecuritySettings',
-                component: () => import('@/views/account/settings/Security'),
-                meta: {title: '安全设置', hidden: true, keepAlive: true, permission: ['user']}
-              },
-              {
-                path: 'custom',
-                name: 'CustomSettings',
-                component: () => import('@/views/account/settings/Custom'),
-                meta: {title: '个性化设置', hidden: true, keepAlive: true, permission: ['user']}
-              },
-              {
-                path: 'binding',
-                name: 'BindingSettings',
-                component: () => import('@/views/account/settings/Binding'),
-                meta: {title: '账户绑定', hidden: true, keepAlive: true, permission: ['user']}
-              },
-              {
-                path: '/account/settings/notification',
-                name: 'NotificationSettings',
-                component: () => import('@/views/account/settings/Notification'),
-                meta: {title: '新消息通知', hidden: true, keepAlive: true, permission: ['user']}
-              },
+                path: 'user',
+                name: 'UserSettings',
+                component: () => import('@/views/account/settings/User'),
+                meta: {title: '用户信息', hidden: true, keepAlive: true, permission: ['user']}
+              }
             ]
           },
         ]
