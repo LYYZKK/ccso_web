@@ -4,10 +4,8 @@
     :width="1200"
     :visible="visible"
     :confirmLoading="confirmLoading"
-    @cancel="handleCancel"
-    @ok="handleOk"
     :destroyOnClose="true"
-    cancelText="关闭">
+    >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
         <div v-if="sendBackNum > 0">
@@ -19,7 +17,7 @@
           <a-divider/>
         </div>
 
-        <a-card title="项目信息" :bordered="false" v-if="isShow=='1'">
+        <a-card title="项目信息" :bordered="false" v-if="isShowProjectInfo">
           <a-row :gutter="16">
             <a-col class="gutter-row" :span="12">
               <a-form-item
@@ -34,7 +32,7 @@
                 :labelCol="labelCol"
                 :wrapperCol="wrapperCol"
                 label="当前状态">
-                <a-input defaultValue="启动中"/>
+                <a-tag color="green">启动中</a-tag>
               </a-form-item>
             </a-col>
           </a-row>
@@ -351,6 +349,12 @@
         </a-table>
       </a-card>
     </a-spin>
+    <template slot="footer">
+      <a-button key="back" @click="handleCancel">关闭</a-button>
+      <a-button key="submit" type="primary" :loading="loading" @click="handleOk" v-if="operateType === 'edit'">
+        确定
+      </a-button>
+    </template>
   </a-modal>
 </template>
 
@@ -454,11 +458,9 @@
             dataIndex: 'path',
             customRender: (text, record) => {
               if (text != null) {
-                return ( < a
-                href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)} > 下载文件 < /a>)
+                return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)}>下载文件</a>)
               } else {
-                return ( < span
-                style = "color: red;" > 未上传 < /span>)
+                return (<span style="color: red;">未上传</span>)
               }
             }
           },
@@ -507,10 +509,11 @@
           licenseNo: '',
           positionSize: '',
         },
-        isShow: '0',
+        isShowProjectInfo: false,
         sendBackMsg: '',
         sendBackNum: '-1',
         uploadLoading: false,
+        operateType: 'view'
       }
     },
     methods: {
@@ -538,10 +541,10 @@
         )
       },
 
-      edit(record, judge) {
-        if (judge == '1') {
-          this.isShow = judge
-        }
+      edit(record, isShowProjectInfo, operateType) {
+        this.isShowProjectInfo = isShowProjectInfo
+        this.operateType = operateType
+
         this.personnel = []
         this.reviewProjectId = record.id
         this.form.resetFields()
@@ -636,7 +639,7 @@
       },
       close() {
         this.$emit('close')
-        this.isShow = '0'
+        this.isShowProjectInfo = false
         this.sendBackMsg = '-1'
         this.sendBackNum = '-1'
         this.visible = false
@@ -682,11 +685,8 @@
                     title: res.result[i].name,
                     userId: res.result[i].id
                   }
-                  //a17f574d849f5b678f4dcc646d26c212
                   for (var j = 0; j < this.selectdCoordinator.length; j++) {
                     if (this.selectdCoordinator[j].userId == res.result[i].id) {
-                      // 已选
-                      console.log("userId：" + res.result[i].id)
                       targetKeys.push(data.key)
                     }
                   }

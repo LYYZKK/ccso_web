@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { login, logout } from "@/api/login"
-import { ACCESS_TOKEN, USER_NAME,USER_INFO } from "@/store/mutation-types"
+import { ACCESS_TOKEN, USER_NAME, USER_INFO, USER_ROLECODES } from "@/store/mutation-types"
 import { welcome } from "@/utils/util"
 import { queryPermissionsByUser } from '@/api/api'
 
@@ -50,6 +50,7 @@ const user = {
             Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
             Vue.ls.set(USER_NAME, userInfo.username, 7 * 24 * 60 * 60 * 1000)
             Vue.ls.set(USER_INFO, userInfo, 7 * 24 * 60 * 60 * 1000)
+            Vue.ls.set(USER_ROLECODES, result.roleCodes)
 
             commit('SET_TOKEN', result.token)
             commit('SET_INFO', userInfo)

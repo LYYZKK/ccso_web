@@ -10,6 +10,7 @@ export const DEFAULT_FIXED_HEADER_HIDDEN = 'DEFAULT_FIXED_HEADER_HIDDEN'
 export const DEFAULT_CONTENT_WIDTH_TYPE = 'DEFAULT_CONTENT_WIDTH_TYPE'
 export const USER_NAME = 'Login_Username'
 export const USER_INFO = 'Login_Userinfo'
+export const USER_ROLECODES = 'Login_UserRoleCodes'
 
 export const CONTENT_WIDTH_TYPE = {
   Fluid: 'Fluid',

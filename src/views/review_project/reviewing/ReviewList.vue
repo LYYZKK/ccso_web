@@ -59,13 +59,13 @@
 
         <span slot="action" slot-scope="text, record">
           <span v-if="record.isAssign==1 && record.isRecord==1">
-            <a @click="detail(record)">查看评审</a>
+            <a @click="showOperateModal(record, 'view')">查看评审</a>
             <a-divider type="vertical"/>
             <a @click="submitArchive(record.id)">归档</a>
             <a-divider type="vertical" />
             <a @click="sendBack(record.id, 2)">补审</a>
           </span>
-          <a @click="detail(record)" v-else>分配评审员</a>
+          <a @click="showOperateModal(record, 'allocateReviewer')" v-else>分配评审员</a>
           <span v-show="record.isAssign==0 || record.isRecord==0">
             <a-divider type="vertical"/>
             <a @click="projectSubmit(record.id)">提交</a>
@@ -148,7 +148,7 @@
             align: 'center',
             dataIndex: 'state',
             customRender: text => {
-              return '评审中'
+              return (<a-tag color="green">评审中</a-tag>)
             }
           },
           {
@@ -157,9 +157,9 @@
             dataIndex: 'isAssign',
             customRender: text => {
               if (text == 0) {
-                return '未排配'
+                return (<a-tag color="orange">未排配</a-tag>)
               } else {
-                return '已排配'
+                return (<a-tag color="green">已排配</a-tag>)
               }
             }
           },
@@ -169,9 +169,9 @@
             dataIndex: 'isRecord',
             customRender: text => {
               if (text == 0) {
-                return '未提交'
+                return (<a-tag color="orange">未提交</a-tag>)
               } else {
-                return '已提交'
+                return (<a-tag color="green">已提交</a-tag>)
               }
             }
           },
@@ -220,8 +220,8 @@
       this.loadData()
     },
     methods: {
-      detail(record) {
-        this.$refs.detail.edit(record);
+      showOperateModal(record, operateType) {
+        this.$refs.detail.edit(record, operateType)
       },
       sendBack(id, type) {
         this.$refs.submit.editSendBack(id, type);

@@ -58,9 +58,9 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a @click="detail(record,'look')">查看</a>
+          <a @click="showOperateModal(record, true, 'view')">查看</a>
           <a-divider type="vertical"/>
-          <a @click="handleEdit(record)">编辑</a>
+          <a @click="showOperateModal(record, false, 'edit')">编辑</a>
           <a-divider type="vertical"/>
           <a @click="start(record.id)">启动</a>
         </span>
@@ -136,7 +136,7 @@
             align: 'center',
             dataIndex: 'state',
             customRender: text => {
-              return '启动中'
+              return (<a-tag color="green">启动中</a-tag>)
             }
           },
           {
@@ -161,9 +161,9 @@
             dataIndex: 'isPay',
             customRender: text => {
               if (text == 0) {
-                return '未支付'
+                return (<a-tag color="orange">未支付</a-tag>)
               } else {
-                return '已支付'
+                return (<a-tag color="green">已支付</a-tag>)
               }
             }
           },
@@ -217,11 +217,8 @@
       start(id) {
         this.$refs.start.edit(id);
       },
-      handleEdit(record) {
-        this.$refs.detail.edit(record, '0');
-      },
-      detail(record) {
-        this.$refs.detail.edit(record, '1');
+      showOperateModal(record, isShowProjectInfo, operateType) {
+        this.$refs.detail.edit(record, isShowProjectInfo, operateType);
       },
     }
   }
