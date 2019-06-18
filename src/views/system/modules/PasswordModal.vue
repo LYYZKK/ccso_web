@@ -7,6 +7,7 @@
     @ok="handleSubmit"
     @cancel="handleCancel"
     cancelText="关闭"
+    :destroyOnClose="true"
     style="top:20px;"
   >
     <a-spin :spinning="confirmLoading">
