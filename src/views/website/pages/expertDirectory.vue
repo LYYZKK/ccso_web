@@ -8,7 +8,7 @@
             <span @click="$router.push('/website/home')" style="cursor:pointer;">首页</span> > 专家名录
           </div>
         </div>
-        <div class="searchbox">
+        <div>
           <a-input-search
             placeholder="请输入姓名/编号"
             style="width: 200px"
@@ -261,8 +261,8 @@ export default {
       }
     }
     img {
-      width: 80px;
-      height: 100px;
+      width: 70px;
+      height: 90px;
       display: inline-block;
       border: 1px solid #deeffb;
     }
