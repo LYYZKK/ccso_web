@@ -31,7 +31,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="当前状态">
-          <a-input defaultValue="启动中"/>
+          <a-tag color="green">评审中</a-tag>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
