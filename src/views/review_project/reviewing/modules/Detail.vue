@@ -323,7 +323,7 @@
           </span>
           </a-table>
         </a-form-item>
-        <h3 class="devide-title">原评审记录</h3>
+        <h3 class="devide-title" v-show="oldEnrtyRecord.length>0">原评审记录</h3>
         <a-form-item>
           <span v-for="(value, idx) in oldEnrtyRecord" :key="idx">
             <a-table
@@ -629,7 +629,7 @@
             dataIndex: 'path',
             width: 100,
             customRender: (text, record) => {
-              return (<a href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.path)}> 下载文件 </a>)
+              return (<a href = {this.FILE_DOWNLOAD_URL_RENDER(record.reviewInformationFile.path, record.reviewInformationFile.originalFileName)}> 下载文件 </a>)
             }
           },
           {
