@@ -19,18 +19,10 @@
       </a-form>
       <a-form :form="form" v-else-if="judgeFunction=='postil'">
         <a-form-item
-          v-show="postilText!=null"
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="原批注信息">
-          <a-tooltip title="prompt text">
-            <span>{{postilText}}</span>
-          </a-tooltip>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="批注信息">
+          label="批注信息"
+        >
           <a-textarea placeholder="请输入批注信息" v-decorator="['postilRemark', validatorRules.postilRemark]"/>
         </a-form-item>
       </a-form>
@@ -52,6 +44,7 @@
   import {httpAction, getAction} from '@/api/manage'
   import AFormItem from "ant-design-vue/es/form/FormItem";
   import ATextarea from "ant-design-vue/es/input/TextArea";
+  import {copy2NewKeyObject} from '@/utils/util'
 
   export default {
     name: 'Submit',
@@ -118,7 +111,11 @@
           number: record.reviewEntryRecord.number
         }).then(res => {
           if (res.success) {
-            this.postilText = res.result.records[0].remark
+            this.$nextTick(() => {
+              this.form.setFieldsValue(copy2NewKeyObject(res.result.records[0], ['remark'], {
+                remark: 'postilRemark'
+              }))
+            })
           }
         })
       },

@@ -449,7 +449,7 @@
           </a-row>
         </a-card>
 
-        <a-card title="原评审记录" :bordered="false">
+        <a-card title="原评审记录" :bordered="false" v-if="oldEnrtyRecord.length > 0">
           <a-row :gutter="16">
             <a-col class="gutter-row" :span="24">
               <a-form-item>
@@ -765,7 +765,7 @@
             dataIndex: 'path',
             width: 100,
             customRender: (text, record) => {
-              return (<a href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.path)}> 下载文件 </a>)
+              return (<a href = {this.FILE_DOWNLOAD_URL_RENDER(record.reviewInformationFile.path, record.reviewInformationFile.originalFileName)}>下载文件</a>)
             }
           },
           {
