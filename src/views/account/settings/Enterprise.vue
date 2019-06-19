@@ -1,150 +1,210 @@
 <template>
   <div class="account-settings-info-view">
     <a-row :gutter="16">
-      <a-col :md="24" :lg="16">
+      <a-col :md="24" :lg="24">
         <a-form layout="vertical" :form="form">
           <a-card title="企业信息" :bordered="false">
-            <a-form-item
-              label="企业名称">
-              <a-input placeholder="请输入企业名称" v-decorator="['name', validatorRules.name]"/>
-            </a-form-item>
-            <a-form-item label="LOGO">
-              <a-upload
-                listType="picture-card"
-                :showUploadList="false"
-                :action="FILE_UPLOAD_ACTION"
-                :data="{'isup':1}"
-                :headers="FILE_UPLOAD_HEADERS"
-                :beforeUpload="beforeUpload"
-                @change="handleLogoChange"
-                v-decorator="['logo', {}]"
-              >
-                <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
-                     style="height:104px;max-width:300px"/>
-                <div v-else>
-                  <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
-                  <div class="ant-upload-text">上传</div>
-                </div>
-              </a-upload>
-            </a-form-item>
-            <a-form-item
-              label="营业执照编号">
-              <a-input placeholder="请输入营业执照编号" v-decorator="['businessLicenseNo', validatorRules.businessLicenseNo]"/>
-            </a-form-item>
-            <a-form-item
-              label="营业执照文件">
-              <a-upload
-                name="file"
-                :action="FILE_UPLOAD_ACTION"
-                :headers="FILE_UPLOAD_HEADERS"
-                :data="{'isup':1}"
-                v-decorator="['businessLicenseFile', validatorRules.businessLicenseFile]"
-                @change="handleBusiLicenseFileChange">
-                <a-button>
-                  <a-icon type="upload"/>
-                  选择文件
-                </a-button>
-              </a-upload>
-            </a-form-item>
-            <a-form-item
-              label="注册资本">
-              <j-dict-select-tag
-                v-decorator="['registeredCapital', validatorRules.registeredCapital]"
-                :triggerChange="true"
-                placeholder="请选择注册资本"
-                dictCode="registered_capital"
-              />
-            </a-form-item>
-            <a-form-item
-              label="网站链接">
-              <a-input placeholder="请输入网站链接" v-decorator="['sitesLinks', validatorRules.sitesLinks]"/>
-            </a-form-item>
-            <a-form-item
-              label="网站简介">
-              <a-textarea placeholder="请输入网站简介" v-decorator="['briefIntroduction', {}]"/>
-            </a-form-item>
-            <a-form-item
-              label="行业">
-              <j-dict-select-tag
-                v-decorator="['industry', {}]"
-                :triggerChange="true"
-                placeholder="请选择行业"
-                dictCode="industry"
-              />
-            </a-form-item>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="企业名称">
+                  <a-input placeholder="请输入企业名称" v-decorator="['name', validatorRules.name]"/>
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item label="LOGO">
+                  <a-upload
+                    listType="picture-card"
+                    :showUploadList="false"
+                    :action="FILE_UPLOAD_ACTION"
+                    :data="{'isup':1}"
+                    :headers="FILE_UPLOAD_HEADERS"
+                    :beforeUpload="beforeUpload"
+                    @change="handleLogoChange"
+                    v-decorator="['logo', {}]"
+                  >
+                    <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
+                         style="height:104px;max-width:300px"/>
+                    <div v-else>
+                      <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
+                      <div class="ant-upload-text">上传</div>
+                    </div>
+                  </a-upload>
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="营业执照编号">
+                  <a-input placeholder="请输入营业执照编号" v-decorator="['businessLicenseNo', validatorRules.businessLicenseNo]"/>
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="营业执照文件">
+                  <a-upload
+                    name="file"
+                    :action="FILE_UPLOAD_ACTION"
+                    :headers="FILE_UPLOAD_HEADERS"
+                    :data="{'isup':1}"
+                    v-decorator="['businessLicenseFile', validatorRules.businessLicenseFile]"
+                    @change="handleBusiLicenseFileChange">
+                    <a-button>
+                      <a-icon type="upload"/>
+                      选择文件
+                    </a-button>
+                  </a-upload>
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="注册资本">
+                  <j-dict-select-tag
+                    v-decorator="['registeredCapital', validatorRules.registeredCapital]"
+                    :triggerChange="true"
+                    placeholder="请选择注册资本"
+                    dictCode="registered_capital"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="网站链接">
+                  <a-input placeholder="请输入网站链接" v-decorator="['sitesLinks', validatorRules.sitesLinks]"/>
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="网站简介">
+                  <a-textarea placeholder="请输入网站简介" v-decorator="['briefIntroduction', {}]"/>
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="行业">
+                  <j-dict-select-tag
+                    v-decorator="['industry', {}]"
+                    :triggerChange="true"
+                    placeholder="请选择行业"
+                    dictCode="industry"
+                  />
+                </a-form-item>
+              </a-col>
+            </a-row>
           </a-card>
 
           <a-card title="企业主体名称" :bordered="false">
-            <a-form-item
-              label="企业主体名称">
-              <a-input placeholder="请输入企业主体名称" v-decorator="['objectName', {}]"/>
-            </a-form-item>
-            <a-form-item
-              label="经营许可证号码">
-              <a-input placeholder="请输入经营许可证号码" v-decorator="['licenseNo', {}]"/>
-            </a-form-item>
-            <a-form-item
-              label="坐席规模">
-              <j-dict-select-tag
-                v-decorator="['positionSize', {}]"
-                :triggerChange="true"
-                placeholder="请选择坐席规模"
-                dictCode="position_size"
-              />
-            </a-form-item>
-            <a-form-item
-              label="建制地点">
-              <a-input placeholder="请输入建制地点" v-decorator="['establishingSite', {}]"/>
-            </a-form-item>
-            <a-form-item
-              label="建制年份">
-              <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY"/>
-            </a-form-item>
-            <a-form-item
-              label="业务类型">
-              <a-radio-group v-model="businessType">
-                <a-radio value="1">服务</a-radio>
-                <a-radio value="2">营销</a-radio>
-                <a-radio value="3">综合</a-radio>
-              </a-radio-group>
-            </a-form-item>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="企业主体名称">
+                  <a-input placeholder="请输入企业主体名称" v-decorator="['objectName', {}]"/>
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="经营许可证号码">
+                  <a-input placeholder="请输入经营许可证号码" v-decorator="['licenseNo', {}]"/>
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="坐席规模">
+                  <j-dict-select-tag
+                    v-decorator="['positionSize', {}]"
+                    :triggerChange="true"
+                    placeholder="请选择坐席规模"
+                    dictCode="position_size"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="建制地点">
+                  <a-input placeholder="请输入建制地点" v-decorator="['establishingSite', {}]"/>
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="建制年份">
+                  <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY"/>
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="业务类型">
+                  <a-radio-group v-model="businessType">
+                    <a-radio value="1">服务</a-radio>
+                    <a-radio value="2">营销</a-radio>
+                    <a-radio value="3">综合</a-radio>
+                  </a-radio-group>
+                </a-form-item>
+              </a-col>
+            </a-row>
           </a-card>
 
           <a-card title="负责人信息" :bordered="false">
-            <a-form-item
-              label="负责人姓名">
-              <a-input placeholder="请输入姓名" v-decorator="['responsibleName', {}]"/>
-            </a-form-item>
-            <a-form-item
-              label="电子邮箱">
-              <a-input placeholder="请输入电子邮箱" v-decorator="['email', validatorRules.email]"/>
-            </a-form-item>
-            <a-form-item
-              label="手机号码">
-              <a-input placeholder="请输入手机号码" v-decorator="['tel', {}]"/>
-            </a-form-item>
-            <a-form-item
-              label="职位">
-              <j-dict-select-tag
-                v-decorator="['position', {}]"
-                :triggerChange="true"
-                placeholder="请选择职位"
-                dictCode="position"
-              />
-            </a-form-item>
-            <a-form-item
-              label="性别">
-              <j-dict-select-tag
-                v-decorator="['sex', {}]"
-                :triggerChange="true"
-                placeholder="请选择性别"
-                dictCode="sex"
-              />
-            </a-form-item>
-            <a-form-item
-              label="出生年份">
-              <a-MonthPicker v-decorator="[ 'birthYear', {}]" format="YYYY"/>
-            </a-form-item>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="负责人姓名">
+                  <a-input placeholder="请输入姓名" v-decorator="['responsibleName', {}]"/>
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="电子邮箱">
+                  <a-input placeholder="请输入电子邮箱" v-decorator="['email', validatorRules.email]"/>
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="手机号码">
+                  <a-input placeholder="请输入手机号码" v-decorator="['tel', {}]"/>
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="职位">
+                  <j-dict-select-tag
+                    v-decorator="['position', {}]"
+                    :triggerChange="true"
+                    placeholder="请选择职位"
+                    dictCode="position"
+                  />
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <a-row :gutter="16">
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="性别">
+                  <j-dict-select-tag
+                    v-decorator="['sex', {}]"
+                    :triggerChange="true"
+                    placeholder="请选择性别"
+                    dictCode="sex"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col class="gutter-row" :span="12">
+                <a-form-item
+                  label="出生年份">
+                  <a-MonthPicker v-decorator="[ 'birthYear', {}]" format="YYYY"/>
+                </a-form-item>
+              </a-col>
+            </a-row>
           </a-card>
 
           <a-form-item>
