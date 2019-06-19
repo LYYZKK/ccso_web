@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :title="title"
-    :width="1500"
+    :width="1200"
     :visible="visible"
     :confirmLoading="confirmLoading"
     :maskClosable="false"
@@ -322,7 +322,7 @@
 
         <a-card title="评审资料" :bordered="false">
           <a-row :gutter="24">
-            <a-col class="gutter-row" :span="12">
+            <a-col class="gutter-row" :span="24">
               <a-form-item>
                 <a-table
                   ref="table"
