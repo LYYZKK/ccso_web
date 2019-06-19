@@ -544,7 +544,7 @@
     <submit ref="Submit"/>
     <template slot="footer">
       <a-button key="back" @click="handleCancel">关闭</a-button>
-      <a-button key="submit" type="primary" :loading="loading" @click="handleOk" v-if="operateType === 'edit'">
+      <a-button key="submit" type="primary" :loading="loading" @click="handleOk" v-if="operateType === 'allocateReviewer'">
         确定
       </a-button>
     </template>
