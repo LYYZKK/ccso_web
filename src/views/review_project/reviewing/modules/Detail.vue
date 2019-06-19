@@ -19,390 +19,526 @@
           <a-divider/>
         </div>
 
-        <h3>项目信息</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="项目编号">
-          <a-input v-decorator="['no', {}]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="当前状态">
-          <a-tag color="green">评审中</a-tag>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="评审结果">
-          <a-input defaultValue="未知"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="新建时间">
-          <a-input v-decorator="['createTime', {}]"/>
-        </a-form-item>
+        <a-card title="项目信息" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="项目编号">
+                <a-input v-decorator="['no', {}]"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="当前状态">
+                <a-tag color="green">评审中</a-tag>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="评审结果">
+                <a-input defaultValue="未知"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="新建时间">
+                <a-input v-decorator="['createTime', {}]"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-card>
 
-        <h3>企业信息</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="企业名称">
-          <a-input placeholder="请输入企业名称" v-decorator="['name', validatorRules.name]"/>
-        </a-form-item>
-        <a-form-item label="LOGO" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-upload
-            listType="picture-card"
-            :showUploadList="false"
-            :action="FILE_UPLOAD_ACTION"
-            :data="{'isup':1}"
-            :headers="FILE_UPLOAD_HEADERS"
-            v-decorator="['logo', {}]"
-          >
-            <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
-                 style="height:104px;max-width:300px"/>
-            <div v-else>
-              <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
-              <div class="ant-upload-text">上传</div>
-            </div>
-          </a-upload>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="营业执照编号">
-          <a-input placeholder="请输入营业执照编号" v-decorator="['businessLicenseNo', validatorRules.businessLicenseNo]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="注册资本">
-          <j-dict-select-tag
-            v-decorator="['registeredCapital', validatorRules.registeredCapital]"
-            :triggerChange="true"
-            placeholder="请选择注册资本"
-            dictCode="registered_capital"
-          />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="网站链接">
-          <a-input placeholder="请输入网站链接" v-decorator="['sitesLinks', validatorRules.sitesLinks]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="网站简介">
-          <a-textarea placeholder="请输入网站简介" v-decorator="['briefIntroduction', {}]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="行业">
-          <j-dict-select-tag
-            v-decorator="['industry', {}]"
-            :triggerChange="true"
-            placeholder="请选择行业"
-            dictCode="industry"
-          />
-        </a-form-item>
-        <h3 class="devide-title">评审主体信息</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="企业主体名称">
-          <a-input placeholder="请输入企业主体名称" v-decorator="['objectName', {}]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="经营许可证号码">
-          <a-input placeholder="请输入经营许可证号码" v-decorator="['licenseNo', {}]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="坐席规模">
-          <j-dict-select-tag
-            v-decorator="['positionSize', {}]"
-            :triggerChange="true"
-            placeholder="请选择坐席规模"
-            dictCode="position_size"
-          />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="建制地点">
-          <a-input placeholder="请输入建制地点" v-decorator="['establishingSite', {}]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="建制年份">
-          <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="业务类型">
-          <a-radio-group v-model="businessType">
-            <a-radio value="1">服务</a-radio>
-            <a-radio value="2">营销</a-radio>
-            <a-radio value="3">综合</a-radio>
-          </a-radio-group>
-        </a-form-item>
-        <h3 class="devide-title">负责人信息</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="负责人姓名">
-          <a-input placeholder="请输入姓名" v-decorator="['responsibleName', {}]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="电子邮箱">
-          <a-input placeholder="请输入电子邮箱" v-decorator="['email', validatorRules.email]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="手机号码">
-          <a-input placeholder="请输入手机号码" v-decorator="['tel', {}]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="职位">
-          <j-dict-select-tag
-            v-decorator="['position', {}]"
-            :triggerChange="true"
-            placeholder="请选择职位"
-            dictCode="position"
-          />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="性别">
-          <j-dict-select-tag
-            v-decorator="['sex', {}]"
-            :triggerChange="true"
-            placeholder="请选择性别"
-            dictCode="sex"
-          />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="出生年份">
-          <a-MonthPicker v-decorator="[ 'birthYear', {}]" format="YYYY"/>
-        </a-form-item>
-        <h3 class="devide-title">已选择协调员</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          class="coordinator-form-item">
-          <a-transfer
-            :dataSource="coordinator"
-            :filterOption="filterTransferOption"
-            :targetKeys="targetKeys_1"
-            showSearch
-            @change="handleChange_coordinator"
-            :titles="['可选协调员', '已选协调员']"
-            :render="item => item.title"
-          >
-          </a-transfer>
-        </a-form-item>
-        <h3 class="devide-title">请选择支付信息</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="支付状态">
-          <a-radio-group v-model="isPay">
-            <a-radio value="0">未支付</a-radio>
-            <a-radio value="1">已支付</a-radio>
-          </a-radio-group>
-        </a-form-item>
+        <a-card title="企业信息" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="企业名称">
+                <a-input placeholder="请输入企业名称" v-decorator="['name', validatorRules.name]"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item label="LOGO" :labelCol="labelCol" :wrapperCol="wrapperCol">
+                <a-upload
+                  listType="picture-card"
+                  :showUploadList="false"
+                  :action="FILE_UPLOAD_ACTION"
+                  :data="{'isup':1}"
+                  :headers="FILE_UPLOAD_HEADERS"
+                  v-decorator="['logo', {}]"
+                >
+                  <img v-if="model.logo" :src="IMAGE_REVIEW_URL_RENDER(model.logo)" alt="头像"
+                       style="height:104px;max-width:300px"/>
+                  <div v-else>
+                    <a-icon :type="uploadLoading ? 'loading' : 'plus'"/>
+                    <div class="ant-upload-text">上传</div>
+                  </div>
+                </a-upload>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="营业执照编号">
+                <a-input placeholder="请输入营业执照编号" v-decorator="['businessLicenseNo', validatorRules.businessLicenseNo]"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="注册资本">
+                <j-dict-select-tag
+                  v-decorator="['registeredCapital', validatorRules.registeredCapital]"
+                  :triggerChange="true"
+                  placeholder="请选择注册资本"
+                  dictCode="registered_capital"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="网站链接">
+                <a-input placeholder="请输入网站链接" v-decorator="['sitesLinks', validatorRules.sitesLinks]"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="网站简介">
+                <a-textarea placeholder="请输入网站简介" v-decorator="['briefIntroduction', {}]"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="行业">
+                <j-dict-select-tag
+                  v-decorator="['industry', {}]"
+                  :triggerChange="true"
+                  placeholder="请选择行业"
+                  dictCode="industry"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12"></a-col>
+          </a-row>
+        </a-card>
 
-        <h3 class="devide-title">评审资料</h3>
-        <a-form-item>
-          <a-table
-            ref="table"
-            size="middle"
-            bordered
-            rowKey="id"
-            :columns="columns_1"
-            :dataSource="dataSource_1"
-            :pagination=false
-            :loading="loading"
-            :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-            @change="handleTableChange">
-        <span slot="action" slot-scope="text, record">
-          <a-upload
-            name="file"
-            @change="handleUploadChange">
-            <a-button>
-                <a-icon type="upload"/>
-                选择文件
-            </a-button>
-          </a-upload>
-        </span>
-          </a-table>
-        </a-form-item>
-        <h3 class="devide-title">请选择计划时间</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="资料评审计划开始">
-          <a-date-picker v-decorator="[ 'informationBeginTime', {}]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="资料评审计划结束">
-          <a-date-picker v-decorator="[ 'informationEndTime', {}]"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="现场评审计划开始">
-          <a-date-picker v-decorator="[ 'sceneBeginTime', {}]" format="YYYY-MM-DD"/>
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="现场评审计划结束">
-          <a-date-picker v-decorator="[ 'sceneEndTime', {}]"/>
-        </a-form-item>
-        <h3 class="devide-title">请选择评审员</h3>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          class="coordinator-form-item">
-          <a-transfer
-            :dataSource="reviewer"
-            :filterOption="filterTransferOption"
-            :targetKeys="targetKeys_2"
-            showSearch
-            @change="handleChange_reviewer"
-            :titles="['可选评审员', '已选评审员']"
-            :render="item => item.title"
-          >
-          </a-transfer>
-        </a-form-item>
-        <h3 class="devide-title">评审现场记录</h3>
-        <a-form-item>
-          <a-table
-            ref="table"
-            size="middle"
-            bordered
-            rowKey="id"
-            :columns="columns_1"
-            :dataSource="dataSource_2"
-            :pagination=false
-            :loading="loading"
-            :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-            @change="handleTableChange">
-          <span slot="action" slot-scope="text, record">
-            <a-upload
-              name="file"
-              :action="url.uploadInformationFileUrl"
-              :headers="FILE_UPLOAD_HEADERS"
-              :data="{'reviewInformationId':record.informationId, 'reviewProjectId':reviewProjectId,'type':1, 'reviewInformationFileId': record.reviewInformationFileId}"
-              @change="handleUploadChange">
-              <a-button>
-                  <a-icon type="upload"/>
-                  选择文件
-              </a-button>
-            </a-upload>
-          </span>
-          </a-table>
-        </a-form-item>
-        <h3 class="devide-title">原评审记录</h3>
-        <a-form-item>
-          <span v-for="(value, idx) in oldEnrtyRecord" :key="idx">
-            <a-table
-              ref="table"
-              size="middle"
-              bordered
-              rowKey="id"
-              :columns="columns_2"
-              :dataSource="value"
-              :pagination=false
-              :loading="loading"
-              :expandedRowKeys="oldExpandedRowKeys"
-              :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-              @change="handleTableChange"
-              @expand="handleExpand_old"
-            >
-              <a-table
-                slot="expandedRowRender"
-                slot-scope="text"
-                :columns="columns_child_old"
-                :dataSource="dataSource_child_old"
-                size="middle"
-                bordered
-                rowKey="id"
-                :pagination="false"
-                :loading="loading"
-              >
-                <span slot="oldAction" slot-scope="text, record">
-                  <a-radio-group :defaultValue="toString(record.reviewEntryRecords.isRight)" :disabled="true">
-                    <a-radio value="1">符合</a-radio>
-                    <a-radio value="0">不符合</a-radio>
-                    <a-radio value="2">不适用</a-radio>
-                  </a-radio-group>
-                  <a-divider type="vertical"/>
-                  <a @click="postil(record, record.reviewEntryRecords.isRight)">批注</a>
-                </span>
-              </a-table>
-            </a-table>
-            <br/>
-          </span>
-        </a-form-item>
-        <h3 class="devide-title">评审记录</h3>
-        <a-form-item>
-          <a-table
-            ref="table"
-            size="middle"
-            bordered
-            rowKey="id"
-            :columns="columns_2"
-            :dataSource="dataSource_3"
-            :pagination=false
-            :loading="loading"
-            :expandedRowKeys="expandedRowKeys"
-            :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-            @change="handleTableChange"
-            @expand="handleExpand">
-            <a-table
-              slot="expandedRowRender"
-              slot-scope="text"
-              :columns="columns_2_child"
-              :dataSource="dataSource_3_child"
-              size="middle"
-              bordered
-              rowKey="id"
-              :pagination="false"
-              :loading="loading"
-            >
-              <span slot="action" slot-scope="text, record">
-                <a-radio-group :defaultValue="toString(record.reviewEntryRecord.isRight)">
-                  <a-radio @click="updateEntryResult(record, 1)" value="1">符合</a-radio>
-                  <a-radio @click="updateEntryResult(record, 0)" value="0">不符合</a-radio>
-                  <a-radio @click="updateEntryResult(record, 2)" value="2">不适用</a-radio>
+        <a-card title="评审主体信息" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="企业主体名称">
+                <a-input placeholder="请输入企业主体名称" v-decorator="['objectName', {}]"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="经营许可证号码">
+                <a-input placeholder="请输入经营许可证号码" v-decorator="['licenseNo', {}]"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="坐席规模">
+                <j-dict-select-tag
+                  v-decorator="['positionSize', {}]"
+                  :triggerChange="true"
+                  placeholder="请选择坐席规模"
+                  dictCode="position_size"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="建制地点">
+                <a-input placeholder="请输入建制地点" v-decorator="['establishingSite', {}]"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="建制年份">
+                <a-MonthPicker v-decorator="[ 'establishingYear', {}]" format="YYYY"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="业务类型">
+                <a-radio-group v-model="businessType">
+                  <a-radio value="1">服务</a-radio>
+                  <a-radio value="2">营销</a-radio>
+                  <a-radio value="3">综合</a-radio>
                 </a-radio-group>
-                <a-divider type="vertical"/>
-                <a @click="postil(record, record.reviewEntryRecord.isRight)">批注</a>
-              </span>
-            </a-table>
-          </a-table>
-        </a-form-item>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="负责人信息" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="负责人姓名">
+                <a-input placeholder="请输入姓名" v-decorator="['responsibleName', {}]"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="电子邮箱">
+                <a-input placeholder="请输入电子邮箱" v-decorator="['email', validatorRules.email]"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="手机号码">
+                <a-input placeholder="请输入手机号码" v-decorator="['tel', {}]"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="职位">
+                <j-dict-select-tag
+                  v-decorator="['position', {}]"
+                  :triggerChange="true"
+                  placeholder="请选择职位"
+                  dictCode="position"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="性别">
+                <j-dict-select-tag
+                  v-decorator="['sex', {}]"
+                  :triggerChange="true"
+                  placeholder="请选择性别"
+                  dictCode="sex"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="出生年份">
+                <a-MonthPicker v-decorator="[ 'birthYear', {}]" format="YYYY"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="已选择协调员" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="15">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                class="coordinator-form-item">
+                <a-transfer
+                  :dataSource="coordinator"
+                  :filterOption="filterTransferOption"
+                  :targetKeys="targetKeys_1"
+                  showSearch
+                  @change="handleChange_coordinator"
+                  :titles="['可选协调员', '已选协调员']"
+                  :render="item => item.title"
+                >
+                </a-transfer>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="9"></a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="请选择支付信息" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="支付状态">
+                <a-radio-group v-model="isPay">
+                  <a-radio value="0">未支付</a-radio>
+                  <a-radio value="1">已支付</a-radio>
+                </a-radio-group>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12"></a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="评审资料" :bordered="false">
+          <a-row :gutter="24">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item>
+                <a-table
+                  ref="table"
+                  size="middle"
+                  bordered
+                  rowKey="id"
+                  :columns="columns_1"
+                  :dataSource="dataSource_1"
+                  :pagination=false
+                  :loading="loading"
+                  :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+                  @change="handleTableChange"
+                >
+                  <span slot="action" slot-scope="text, record">
+                    <a-upload
+                      name="file"
+                      @change="handleUploadChange">
+                      <a-button>
+                          <a-icon type="upload"/>
+                          选择文件
+                      </a-button>
+                    </a-upload>
+                  </span>
+                </a-table>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="请选择计划时间" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="资料评审计划开始">
+                <a-date-picker v-decorator="[ 'informationBeginTime', {}]"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="资料评审计划结束">
+                <a-date-picker v-decorator="[ 'informationEndTime', {}]"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="现场评审计划开始">
+                <a-date-picker v-decorator="[ 'sceneBeginTime', {}]" format="YYYY-MM-DD"/>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="12">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="现场评审计划结束">
+                <a-date-picker v-decorator="[ 'sceneEndTime', {}]"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="请选择评审员" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="15">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                class="coordinator-form-item">
+                <a-transfer
+                  :dataSource="reviewer"
+                  :filterOption="filterTransferOption"
+                  :targetKeys="targetKeys_2"
+                  showSearch
+                  @change="handleChange_reviewer"
+                  :titles="['可选评审员', '已选评审员']"
+                  :render="item => item.title"
+                >
+                </a-transfer>
+              </a-form-item>
+            </a-col>
+            <a-col class="gutter-row" :span="9"></a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="评审现场记录" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="24">
+              <a-form-item>
+                <a-table
+                  ref="table"
+                  size="middle"
+                  bordered
+                  rowKey="id"
+                  :columns="columns_1"
+                  :dataSource="dataSource_2"
+                  :pagination=false
+                  :loading="loading"
+                  :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+                  @change="handleTableChange"
+                >
+                  <span slot="action" slot-scope="text, record">
+                    <a-upload
+                      name="file"
+                      :action="url.uploadInformationFileUrl"
+                      :headers="FILE_UPLOAD_HEADERS"
+                      :data="{'reviewInformationId':record.informationId, 'reviewProjectId':reviewProjectId,'type':1, 'reviewInformationFileId': record.reviewInformationFileId}"
+                      @change="handleUploadChange">
+                      <a-button>
+                          <a-icon type="upload"/>
+                          选择文件
+                      </a-button>
+                    </a-upload>
+                  </span>
+                </a-table>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="原评审记录" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="24">
+              <a-form-item>
+                <span v-for="(value, idx) in oldEnrtyRecord" :key="idx">
+                  <a-table
+                    ref="table"
+                    size="middle"
+                    bordered
+                    rowKey="id"
+                    :columns="columns_2"
+                    :dataSource="value"
+                    :pagination=false
+                    :loading="loading"
+                    :expandedRowKeys="oldExpandedRowKeys"
+                    :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+                    @change="handleTableChange"
+                    @expand="handleExpand_old"
+                  >
+                    <a-table
+                      slot="expandedRowRender"
+                      slot-scope="text"
+                      :columns="columns_child_old"
+                      :dataSource="dataSource_child_old"
+                      size="middle"
+                      bordered
+                      rowKey="id"
+                      :pagination="false"
+                      :loading="loading"
+                    >
+                      <span slot="oldAction" slot-scope="text, record">
+                        <a-radio-group :defaultValue="toString(record.reviewEntryRecords.isRight)" :disabled="true">
+                          <a-radio value="1">符合</a-radio>
+                          <a-radio value="0">不符合</a-radio>
+                          <a-radio value="2">不适用</a-radio>
+                        </a-radio-group>
+                        <a-divider type="vertical"/>
+                        <a @click="postil(record, record.reviewEntryRecords.isRight)">批注</a>
+                      </span>
+                    </a-table>
+                  </a-table>
+                </span>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-card>
+
+        <a-card title="评审记录" :bordered="false">
+          <a-row :gutter="16">
+            <a-col class="gutter-row" :span="24">
+              <a-form-item>
+                <a-table
+                  ref="table"
+                  size="middle"
+                  bordered
+                  rowKey="id"
+                  :columns="columns_2"
+                  :dataSource="dataSource_3"
+                  :pagination=false
+                  :loading="loading"
+                  :expandedRowKeys="expandedRowKeys"
+                  :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+                  @change="handleTableChange"
+                  @expand="handleExpand">
+                  <a-table
+                    slot="expandedRowRender"
+                    slot-scope="text"
+                    :columns="columns_2_child"
+                    :dataSource="dataSource_3_child"
+                    size="middle"
+                    bordered
+                    rowKey="id"
+                    :pagination="false"
+                    :loading="loading"
+                  >
+                    <span slot="action" slot-scope="text, record">
+                      <a-radio-group :defaultValue="toString(record.reviewEntryRecord.isRight)">
+                        <a-radio @click="updateEntryResult(record, 1)" value="1">符合</a-radio>
+                        <a-radio @click="updateEntryResult(record, 0)" value="0">不符合</a-radio>
+                        <a-radio @click="updateEntryResult(record, 2)" value="2">不适用</a-radio>
+                      </a-radio-group>
+                      <a-divider type="vertical"/>
+                      <a @click="postil(record, record.reviewEntryRecord.isRight)">批注</a>
+                    </span>
+                  </a-table>
+                </a-table>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-card>
       </a-form>
     </a-spin>
     <submit ref="Submit"/>
