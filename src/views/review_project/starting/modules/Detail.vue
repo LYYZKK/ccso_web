@@ -459,9 +459,11 @@
             dataIndex: 'path',
             customRender: (text, record) => {
               if (text != null) {
-                return (<a href={this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)}>下载文件</a>)
+                return ( < a
+                href = {this.FILE_DOWNLOAD_URL_RENDER(text, record.originalFileName)} > 下载文件 < /a>)
               } else {
-                return (<span style="color: red;">未上传</span>)
+                return ( < span
+                style = "color: red;" > 未上传 < /span>)
               }
             }
           },
@@ -562,7 +564,10 @@
           }))
           this.model.logo = this.model.sysEnterprise.logo
           // 得到评审负责人信息
-          getAction(this.url.getResponsibleUrl, {enterpriseId: record.sysEnterprise.id}).then((res) => {
+          getAction(this.url.getResponsibleUrl, {
+            enterpriseId: record.sysEnterprise.id,
+            reviewProjectId: this.reviewProjectId
+          }).then((res) => {
             if (res.success) {
               this.form.setFieldsValue(copy2NewKeyObject(res.result, ['id', 'name', 'email', 'tel', 'position', 'sex'], {
                 id: 'responsibleId', name: 'responsibleName'
@@ -572,7 +577,10 @@
             }
           })
           // 得到评审主体信息
-          getAction(this.url.getReviewObjectUrl, {enterpriseId: record.sysEnterprise.id}).then((res) => {
+          getAction(this.url.getReviewObjectUrl, {
+            enterpriseId: record.sysEnterprise.id,
+            reviewProjectId: this.reviewProjectId
+          }).then((res) => {
             if (res.success) {
               this.form.setFieldsValue(copy2NewKeyObject(
                 res.result, ['id', 'name', 'establishingSite', 'establishingYear', 'licenseNo', 'positionSize'],
