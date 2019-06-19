@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :title="title"
-    :width="1200"
+    :width="1320"
     :visible="visible"
     :confirmLoading="confirmLoading"
     :maskClosable="false"
@@ -754,9 +754,9 @@
             title: '评审条目要求',
             align: 'center',
             dataIndex: 'requirements',
-            width: 320,
+            width: 200,
             customRender: (text, record) => {
-              return (<j-ellipsis value={record.reviewEntry.requirements} length={20}/>)
+              return (<j-ellipsis value={record.reviewEntry.requirements} length={10}/>)
             }
           },
           {
@@ -781,7 +781,7 @@
             title: '评审员',
             align: 'center',
             dataIndex: 'updateBy',
-            width: 180,
+            width: 150,
             customRender: (text, record) => {
               return record.reviewEntryRecords.updateBy
             }
@@ -816,9 +816,9 @@
             title: '评审条目要求',
             align: 'center',
             dataIndex: 'requirements',
-            width: 320,
+            width: 180,
             customRender: text => {
-              return (<j-ellipsis value={text} length={20}/>)
+              return (<j-ellipsis value={text} length={10}/>)
             }
           },
           {
@@ -860,7 +860,7 @@
             title: '评审员',
             align: 'center',
             dataIndex: 'updateBy',
-            width: 180,
+            width: 150,
             customRender: (text, record) => {
               return record.reviewEntryRecord.updateBy
             }
