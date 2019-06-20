@@ -13,13 +13,13 @@
       <a-form layout="inline">
         <a-row :gutter="24">
 
-          <a-col :md="6" :sm="8">
+          <a-col :md="8" :sm="12">
             <a-form-item label="搜索日志">
               <a-input placeholder="请输入搜索关键词" v-model="queryParam.keyWord"></a-input>
             </a-form-item>
           </a-col>
 
-          <a-col :md="8" :sm="10">
+          <a-col :md="8" :sm="12">
             <a-form-item label="创建时间" :labelCol="labelCol" :wrapperCol="wrapperCol">
               <a-range-picker
                 style="width: 210px"
@@ -32,7 +32,7 @@
             </a-form-item>
           </a-col>
 
-          <a-col :md="8" :sm="10" >
+          <a-col :md="8" :sm="12">
             <span style="float: right;" class="table-page-search-submitButtons">
               <a-button type="primary" style="left: -35px" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px;left: -35px">重置</a-button>

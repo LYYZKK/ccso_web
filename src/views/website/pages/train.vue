@@ -13,7 +13,7 @@
           <div class="title">标准培训</div>
           <div class="list">
             <div v-for="(item, idx) in articles" :key="idx" @click="showArticle(idx)" :class="activeClasses[idx]">
-              <j-ellipsis :withTooltip="isDesktop() ? true : false" :value="item.title" :length="8"/>
+              <j-ellipsis :showMore="isDesktop() ? true : false" :value="item.title" :length="8"/>
             </div>
           </div>
         </div>

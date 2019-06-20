@@ -6,21 +6,21 @@
         <a-form layout="inline">
           <a-row :gutter="24">
 
-            <a-col :md="6" :sm="8">
+            <a-col :md="8" :sm="12">
               <a-form-item label="姓名">
                 <a-input placeholder="请输入姓名" v-model="queryParam.name"></a-input>
               </a-form-item>
             </a-col>
-            <a-col :md="6" :sm="8">
+            <a-col :md="8" :sm="12">
               <a-form-item label="身份证号码">
                 <a-input placeholder="请输入身份证号码" v-model="queryParam.idCard"></a-input>
               </a-form-item>
             </a-col>
-            <a-col :md="6" :sm="8">
-            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
-              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-            </span>
+            <a-col :md="8" :sm="12">
+              <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+                <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
+                <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
+              </span>
             </a-col>
 
           </a-row>

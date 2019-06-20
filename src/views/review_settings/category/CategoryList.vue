@@ -6,18 +6,18 @@
       <a-form layout="inline">
         <a-row :gutter="24">
 
-          <a-col :md="6" :sm="8">
+          <a-col :md="8" :sm="12">
             <a-form-item label="编号">
               <a-input placeholder="请输入编号" v-model="queryParam.no"></a-input>
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="8">
+          <a-col :md="8" :sm="12">
             <a-form-item label="分类名称">
               <a-input placeholder="请输入分类名称" v-model="queryParam.name"></a-input>
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
-            <a-col :md="6" :sm="8">
+            <a-col :md="8" :sm="12">
               <a-form-item label="达标百分比">
                 <a-input-number
                   placeholder="请输入"
@@ -39,7 +39,7 @@
               </a-form-item>
             </a-col>
           </template>
-          <a-col :md="6" :sm="8">
+          <a-col :md="8" :sm="12">
             <span class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload">重置</a-button>

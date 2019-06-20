@@ -6,17 +6,17 @@
         <a-form layout="inline">
           <a-row :gutter="24">
 
-            <a-col :md="6" :sm="8">
+            <a-col :md="8" :sm="12">
               <a-form-item label="企业名称">
                 <a-input placeholder="请输入企业名称" v-model="queryParam.name"></a-input>
               </a-form-item>
             </a-col>
-            <a-col :md="6" :sm="8">
+            <a-col :md="8" :sm="12">
               <a-form-item label="营业执照编号">
                 <a-input placeholder="请输入营业执照编号" v-model="queryParam.businessLicenseNo"></a-input>
               </a-form-item>
             </a-col>
-            <a-col :md="6" :sm="8">
+            <a-col :md="8" :sm="12">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>

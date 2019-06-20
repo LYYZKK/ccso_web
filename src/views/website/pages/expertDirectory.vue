@@ -40,7 +40,6 @@
                     <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
                   </div>
                 </div>
-                <div class="brief">{{item.individualResume}}</div>
               </div>
             </div>
           </a-carousel>
@@ -67,7 +66,6 @@
                     <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
                   </div>
                 </div>
-                <div class="brief">{{item.individualResume}}</div>
               </div>
             </div>
           </a-carousel>
@@ -94,7 +92,6 @@
                     <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
                   </div>
                 </div>
-                <div class="brief">{{item.individualResume}}</div>
               </div>
             </div>
           </a-carousel>

@@ -38,7 +38,6 @@
                   <span class="name">{{item.name}}</span>
                   <span style="cursor:pointer">{{item.businessLicenseNo}}</span>
                   <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
-                  <span class="brief">{{item.briefIntroduction}}</span>
                 </div>
               </div>
             </div>
@@ -63,7 +62,6 @@
                 >
                   <span class="name">{{item.name}}</span>
                   <span class="date">{{formatDateTime(item.updateTime, 'YYYY-MM-DD')}}</span>
-                  <span class="brief">{{item.briefIntroduction}}</span>
                 </div>
               </div>
             </div>

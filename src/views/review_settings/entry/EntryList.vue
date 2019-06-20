@@ -4,18 +4,18 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="24">
-          <a-col :md="6" :sm="8">
+          <a-col :md="8" :sm="12">
             <a-form-item label="编号">
               <a-input placeholder="请输入编号" v-model="queryParam.no"></a-input>
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="8">
+          <a-col :md="8" :sm="12">
             <a-form-item label="评审需求">
               <a-input placeholder="请输入评审需求" v-model="queryParam.requirements"></a-input>
             </a-form-item>
           </a-col>
 
-          <a-col :md="6" :sm="8">
+          <a-col :md="8" :sm="12">
             <a-form-item label="评审类别">
               <a-select
                 showSearch
@@ -31,7 +31,7 @@
             </a-form-item>
           </a-col>
           <template v-if="toggleSearchStatus">
-            <a-col :md="6" :sm="8">
+            <a-col :md="8" :sm="12">
               <a-form-item label="评审资料">
                 <a-select
                   showSearch
