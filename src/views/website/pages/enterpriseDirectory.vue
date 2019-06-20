@@ -73,11 +73,11 @@
 </template>
 
 <script>
-import async from 'async'
 import { getAction } from '@/api/manage'
 import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
 import ConstConfig from '@/config/constant.config'
 import constantCfgMixin from '@/mixins/constant.cfg'
+
 export default {
   mixins: [constantCfgMixin],
   data() {
@@ -87,60 +87,46 @@ export default {
       cooperateEnterprises: [],
       cooperateEnterprisesAll: [],
       keyText: '',
-      fuzzySearchFields: ',name,briefIntroduction,',
+      fuzzySearchFields: ',name,',
       url: 'sys/enterprise/list'
     }
   },
   methods: {
     getData() {
-      async.series(
-        {
-          surfaceShow: async cb => {
-            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
-            cb(null, res.itemValue)
-          },
-          enterprise_type_review: async cb => {
-            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.enterprise_type_review })
-            cb(null, res.itemValue)
-          },
-          enterprise_type_cooperate: async cb => {
-            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.enterprise_type_cooperate })
-            cb(null, res.itemValue)
-          }
-        },
-        async (err, result) => {
-          if (!err) {
-            const res = await getAction(`${window._CONFIG['domainURL']}/${this.url}`, {
+      getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true }).then(surfaceShowRes => {
+        getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.enterprise_type_review }).then(enterpriseTypeReviewRes => {
+          getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.enterprise_type_cooperate }).then(enterpriseTypeCooperateRes => {
+            getAction(`${window._CONFIG['domainURL']}/${this.url}`, {
               pageSize: -1,
-              surfaceShow: result.surfaceShow,
+              surfaceShow: surfaceShowRes.itemValue,
               keyText: this.keyText,
               fuzzySearchFields: this.fuzzySearchFields
-            })
-            if (res.code === 0) {
-              this.reviewEnterprisesAll = []
-              this.cooperateEnterprisesAll = []
-              const records = res.result.records
-              records.forEach(v => {
-                if (v.enterpriseType === result.enterprise_type_review) {
-                  this.reviewEnterprises.push(v)
-                } else if (v.enterpriseType === result.enterprise_type_cooperate) {
-                  this.cooperateEnterprises.push(v)
+            }).then(enterpriseRes => {
+              if (enterpriseRes.success) {
+                this.reviewEnterprisesAll = []
+                this.cooperateEnterprisesAll = []
+                const records = enterpriseRes.result.records
+                records.forEach(v => {
+                  if (v.enterpriseType === enterpriseTypeReviewRes.itemValue) {
+                    this.reviewEnterprises.push(v)
+                  } else if (v.enterpriseType === enterpriseTypeCooperateRes.itemValue) {
+                    this.cooperateEnterprises.push(v)
+                  }
+                })
+                for (let m = 0; m < this.reviewEnterprises.length; m + 3) {
+                  this.reviewEnterprisesAll.push(this.reviewEnterprises.splice(m, m + 3))
                 }
-              })
-              for (let m = 0; m < this.reviewEnterprises.length; m + 3) {
-                this.reviewEnterprisesAll.push(this.reviewEnterprises.splice(m, m + 3))
+                for (let m = 0; m < this.cooperateEnterprises.length; m + 3) {
+                  this.cooperateEnterprisesAll.push(this.cooperateEnterprises.splice(m, m + 3))
+                }
               }
-              for (let m = 0; m < this.cooperateEnterprises.length; m + 3) {
-                this.cooperateEnterprisesAll.push(this.cooperateEnterprises.splice(m, m + 3))
-              }
-            }
-          }
-        }
-      )
+            })
+          })
+        })
+      })
     },
     to(url) {
-      return
-      window.open(url)
+      return window.open(url)
     }
   },
   mounted() {

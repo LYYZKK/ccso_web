@@ -102,7 +102,6 @@
 </template>
 
 <script>
-import async from 'async'
 import { getAction } from '@/api/manage'
 import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
 import ConstConfig from '@/config/constant.config'
@@ -121,66 +120,51 @@ export default {
       cooperatorAll: [],
       keyText: '',
       url: 'sys/personnel/list',
-      defaultImg:defaultImg
+      defaultImg
     }
   },
   methods: {
     getData() {
-      async.series(
-        {
-          surfaceShow: async cb => {
-            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
-            cb(null, res.itemValue)
-          },
-          certificate_type_professor: async cb => {
-            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_professor })
-            cb(null, res.itemValue)
-          },
-          certificate_type_approvar: async cb => {
-            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_approvar })
-            cb(null, res.itemValue)
-          },
-          certificate_type_cooperator: async cb => {
-            const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_cooperator })
-            cb(null, res.itemValue)
-          }
-        },
-        async (err, result) => {
-          if (!err) {
-            const res = await getAction(`${window._CONFIG['domainURL']}/${this.url}`, {
-              pageSize: -1,
-              surfaceShow: result.surfaceShow,
-              keyText: this.keyText
-            })
-            if (res.code === 0) {
-              this.professorAll = []
-              this.approvarAll = []
-              this.cooperatorAll = []
-              const records = res.result.records
-              records.forEach(v => {
-                if (v.certificateType === result.certificate_type_professor) {
-                  this.professor.push(v)
-                }
-                if (v.certificateType === result.certificate_type_approvar) {
-                  this.approvar.push(v)
-                }
-                if (v.certificateType === result.certificate_type_cooperator) {
-                  this.cooperator.push(v)
+      getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true }).then(surfaceShowRes => {
+        getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_professor }).then(certificateTypeProfessorRes => {
+          getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_approvar }).then(certificateTypeApprovarRes => {
+            getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.certificate_type_cooperator }).then(certificateTypeCooperatorRes => {
+              getAction(`${window._CONFIG['domainURL']}/${this.url}`, {
+                pageSize: -1,
+                surfaceShow: surfaceShowRes.itemValue,
+                keyText: this.keyText
+              }).then(expertRes => {
+                if (expertRes.success) {
+                  this.professorAll = []
+                  this.approvarAll = []
+                  this.cooperatorAll = []
+                  const records = expertRes.result.records
+                  records.forEach(v => {
+                    if (v.certificateType === certificateTypeProfessorRes.itemValue) {
+                      this.professor.push(v)
+                    }
+                    if (v.certificateType === certificateTypeApprovarRes.itemValue) {
+                      this.approvar.push(v)
+                    }
+                    if (v.certificateType === certificateTypeCooperatorRes.itemValue) {
+                      this.cooperator.push(v)
+                    }
+                  })
+                  for (let m = 0; m < this.professor.length; m + 4) {
+                    this.professorAll.push(this.professor.splice(m, m + 4))
+                  }
+                  for (let m = 0; m < this.approvar.length; m + 4) {
+                    this.approvarAll.push(this.approvar.splice(m, m + 4))
+                  }
+                  for (let m = 0; m < this.cooperator.length; m + 4) {
+                    this.cooperatorAll.push(this.cooperator.splice(m, m + 4))
+                  }
                 }
               })
-              for (let m = 0; m < this.professor.length; m + 4) {
-                this.professorAll.push(this.professor.splice(m, m + 4))
-              }
-              for (let m = 0; m < this.approvar.length; m + 4) {
-                this.approvarAll.push(this.approvar.splice(m, m + 4))
-              }
-              for (let m = 0; m < this.cooperator.length; m + 4) {
-                this.cooperatorAll.push(this.cooperator.splice(m, m + 4))
-              }
-            }
-          }
-        }
-      )
+            })
+          })
+        })
+      })
     }
   },
   mounted() {
@@ -190,7 +174,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../common.scss';
-// 轮播
 .expert {
   .img-container {
     display: flex;

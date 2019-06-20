@@ -32,8 +32,6 @@
 </template>
 
 <script>
-import async from 'async'
-
 import { getAction } from '@/api/manage'
 import { getDictItemByDictCodeAndItemCode } from '@/components/dict/JDictSelectUtil'
 import ConstConfig from '@/config/constant.config'
@@ -93,24 +91,14 @@ export default {
     }
   },
   mounted() {
-    async.series(
-      {
-        articleType: async cb => {
-          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_type_news })
-          this.article_type_news = res.itemValue
-          cb(null, res.itemValue)
-        },
-        surfaceShow: async cb => {
-          const res = await getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true })
-          cb(null, res.itemValue)
-        },
-      },
-      (err, result) => {
-        if (!err) {
-          this.getArticle({ ...result })
-        }
-      }
-    )
+    getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT.article_type_news }).then(articleTypeRes => {
+      getDictItemByDictCodeAndItemCode({ ...ConstConfig.DICT._true }).then(surfaceShowRes => {
+        this.getArticle({
+          articleType: articleTypeRes.itemValue,
+          surfaceShow: surfaceShowRes.itemValue
+        })
+      })
+    })
   }
 }
 </script>
