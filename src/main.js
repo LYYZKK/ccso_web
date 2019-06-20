@@ -9,16 +9,15 @@ import { VueAxios } from "@/utils/request"
 
 import Antd from 'ant-design-vue'
 import Viser from 'viser-vue'
-import 'ant-design-vue/dist/antd.less';  // or 'ant-design-vue/dist/antd.less'
+import 'ant-design-vue/dist/antd.less'
 
 import '@/permission' // permission control
 import '@/utils/filter' // base filter
 import Print from 'vue-print-nb-jeecg'
-/*import '@babel/polyfill'*/
 import VueApexCharts from 'vue-apexcharts'
 
-
 import  VueQuillEditor from 'vue-quill-editor'
+
 // require styles 引入样式
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
