@@ -66,6 +66,8 @@ export default {
   padding: 10px 0;
   display: flex;
   justify-content: space-evenly;
+  display: -ms-flexbox;
+  -ms-flex-pack: justify;
   align-items: center;
   flex-wrap: wrap;
   & > div {
