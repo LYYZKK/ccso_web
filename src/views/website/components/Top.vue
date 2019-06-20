@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="top" @click="goto('/website/home')">
-      <img src="../../../../static/images/top.jpg" alt="" />
+    <a-skeleton :loading="loading" active avatar>
+      <img src="../../../../static/images/top.jpg" alt="" :loading="load()"/>
+    </a-skeleton>
+      
     </div>
     <div class="navBar">
       <div @click="goto('/website/home')" :class="{on:'/website/home' === $route.path}">
@@ -35,6 +38,7 @@ export default {
   name: "Top",
   data() {
     return {
+      loading:true,
       navs:[
         {
           name:'网站首页',
@@ -71,6 +75,12 @@ export default {
     goto(path){
       this.$router.push({path})
     },
+    load(){
+      console.log('加载')
+      this.$nextTick(function(){
+        this.loading = false
+      })
+    }
   },
 };
 </script>
